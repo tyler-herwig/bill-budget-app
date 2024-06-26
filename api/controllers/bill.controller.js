@@ -1,4 +1,4 @@
-const Bill = require('../models/bill'); // Adjust the path to your Bill model
+const Bill = require('../models/bill');
 
 exports.getAllBills = async (req, res) => {
     try {
@@ -19,7 +19,7 @@ exports.getAllBills = async (req, res) => {
                             date_paid: "$date_paid"
                         }
                     },
-                    totalAmount: { $sum: "$amount" } // Optionally, calculate the total amount for each group
+                    totalAmount: { $sum: "$amount" }
                 }
             },
             {
@@ -40,7 +40,7 @@ exports.getAllBills = async (req, res) => {
                             month: "$_id.month",
                             monthName: "$monthName",
                             bills: "$bills",
-                            totalAmount: "$totalAmount" // Include totalAmount if needed
+                            totalAmount: "$totalAmount"
                         }
                     }
                 }
@@ -67,3 +67,22 @@ exports.getAllBills = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+exports.updateBillById = async(req, res) => {
+    try {
+        const {id} = req.params;
+        const bill = await Bill.findByIdAndUpdate(id, req.body)
+
+        // Cannot find bill in database
+        if (!bill) {
+            return res.status(404).json({message: 'Cannot find bill'})
+        }
+
+        // Get product after update for response to user
+        const updatedBill = await Bill.findById(id);
+        res.status(200).json(updatedBill)
+
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}

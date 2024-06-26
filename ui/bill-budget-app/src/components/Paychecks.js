@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,18 +10,33 @@ import Paper from '@mui/material/Paper';
 import { NumericFormat } from 'react-number-format';
 import Chip from '@mui/material/Chip';
 import Star from '@mui/icons-material/Star';
+import { PaychecksContext } from './PaychecksContext';
+import moment from 'moment';
 
-function createData(date, amount) {
-    return { date, amount };
-}
+const Paychecks = () => {
+    const { paychecks } = useContext(PaychecksContext);
 
-const rows = [
-    createData('June 13th, 2024', 1578.00),
-    createData('June 18th, 2024', 526.00),
-    createData('June 25th, 2024', 526.00),
-];
+    const handlePaycheckDate = (paycheckDate) => {
+        const today = moment().startOf('day'); // Get today's date at midnight
+        const date = moment.utc(paycheckDate).startOf('day'); // Convert paycheckDate to a moment object and set time to midnight
 
-function Paychecks() {
+        return date.isSameOrBefore(today) ? (
+            <>
+                {moment.utc(paycheckDate).format('MMMM Do, YYYY')}{' '}
+                <Chip
+                    icon={<Star />}
+                    label="Received"
+                    color="success"
+                    variant="outlined"
+                    size="small"
+                    style={{ fontWeight: 100, fontSize: '10px' }}
+                />
+            </>
+        ) : (
+            moment.utc(paycheckDate).format('MMMM Do, YYYY')
+        );
+    };
+
     return (
         <TableContainer component={Paper}>
             <Table aria-label="Paychecks table">
@@ -34,25 +49,19 @@ function Paychecks() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.date} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    {paychecks.map((paycheck) => (
+                        <TableRow key={paycheck.date} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                             <TableCell component="th" scope="row" style={{ fontWeight: 'bold' }}>
-                                {row.date === 'June 25th, 2024' ? (
-                                    <>
-                                        {row.date} <Chip icon={<Star />} label="Current" color="success" variant="outlined" size="small" style={{fontWeight: 100, fontSize: '10px'}}/>
-                                    </>
-                                ) : (
-                                    row.date
-                                )}
+                                {handlePaycheckDate(paycheck.date)}
                             </TableCell>
                             <TableCell align="right">
-                                <NumericFormat value={row.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                                <NumericFormat value={paycheck.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
                             </TableCell>
                             <TableCell align="right">
-                                <NumericFormat value={row.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                                <NumericFormat value={paycheck.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
                             </TableCell>
                             <TableCell align="right">
-                                <NumericFormat value={row.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                                <NumericFormat value={paycheck.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
                             </TableCell>
                         </TableRow>
                     ))}

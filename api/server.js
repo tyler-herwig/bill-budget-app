@@ -3,6 +3,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
 const billRoutes = require('./routes/bill');
+const paycheckRoutes = require('./routes/paycheck');
 
 require('dotenv').config();
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({
 
 // Routes
 app.use('/api/', billRoutes);
+app.use('/api/', paycheckRoutes);
 
 mongoose.set("strictQuery", false)
 mongoose

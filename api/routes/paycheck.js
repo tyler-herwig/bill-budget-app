@@ -1,13 +1,12 @@
 // Import necessary modules
 const express = require("express");
-const { getAllBills, updateBillById } = require("../controllers/bill.controller.js");
+const { getAllPaychecks } = require("../controllers/paycheck.controller.js");
 
 // Create a router object
 const router = express.Router();
 
 // Define routes
-router.get('/bills', getAllBills);
-router.put('/bills/:id', updateBillById);
+router.get('/paychecks', getAllPaychecks);
 
 // Export the router
 module.exports = router;

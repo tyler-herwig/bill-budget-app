@@ -5,6 +5,8 @@ import { Box, Container, Grid, Paper } from '@mui/material';
 import { AccountBalance, Payments } from '@mui/icons-material';
 import ResponsiveAppBar from './components/ResponsiveAppBar';
 import Paychecks from './components/Paychecks';
+import { BillsProvider } from './components/BillsContext';
+import { PaychecksProvider } from './components/PaychecksContext';
 import Bills from './components/Bills';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -38,7 +40,9 @@ class App extends Component {
                                         <h2 align="left">
                                             <AccountBalance /> Paychecks
                                         </h2>
-                                        <Paychecks />
+                                        <PaychecksProvider>
+                                            <Paychecks />
+                                        </PaychecksProvider>
                                     </Item>
                                 </Grid>
                                 <Grid item xs={7}>
@@ -46,7 +50,9 @@ class App extends Component {
                                         <h2 align="left">
                                             <Payments /> Bills
                                         </h2>
-                                        <Bills />
+                                        <BillsProvider>
+                                            <Bills />
+                                        </BillsProvider>
                                     </Item>
                                 </Grid>
                             </Grid>

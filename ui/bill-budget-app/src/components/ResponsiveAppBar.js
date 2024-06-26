@@ -11,9 +11,9 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import {InsertChart} from "@mui/icons-material";
+import {InsertChart, AddBox} from "@mui/icons-material";
 
-const pages = ['Paychecks', 'Bills'];
+const pages = ['Add Paycheck', 'Add Bill'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -89,7 +89,7 @@ function ResponsiveAppBar() {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+                                    <Typography textAlign="center"><AddBox/> {page}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -118,9 +118,10 @@ function ResponsiveAppBar() {
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{ my: 2, color: 'white'}}
+                                startIcon={<AddBox/>}
                             >
-                                {page}
+                               {page}
                             </Button>
                         ))}
                     </Box>
