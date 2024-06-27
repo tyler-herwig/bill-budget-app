@@ -31,33 +31,33 @@ class App extends Component {
             <ThemeProvider theme={darkTheme}>
                 <CssBaseline />
                 <div className="App">
-                    <ResponsiveAppBar />
-                    <Container maxWidth="100%" style={{ marginTop: 15 }}>
-                        <Box sx={{ flexGrow: 1 }}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={5}>
-                                    <Item>
-                                        <h2 align="left">
-                                            <AccountBalance /> Paychecks
-                                        </h2>
-                                        <PaychecksProvider>
-                                            <Paychecks />
-                                        </PaychecksProvider>
-                                    </Item>
-                                </Grid>
-                                <Grid item xs={7}>
-                                    <Item>
-                                        <h2 align="left">
-                                            <Payments /> Bills
-                                        </h2>
-                                        <BillsProvider>
-                                            <Bills />
-                                        </BillsProvider>
-                                    </Item>
-                                </Grid>
-                            </Grid>
-                        </Box>
-                    </Container>
+                    <PaychecksProvider>
+                        <BillsProvider>
+                            <ResponsiveAppBar />
+                            <Container maxWidth="100%" style={{ marginTop: 15 }}>
+                                <Box sx={{ flexGrow: 1 }}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={5}>
+                                            <Item>
+                                                <h2 align="left">
+                                                    <AccountBalance /> Paychecks
+                                                </h2>
+                                                <Paychecks />
+                                            </Item>
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                            <Item>
+                                                <h2 align="left">
+                                                    <Payments /> Bills
+                                                </h2>
+                                                <Bills />
+                                            </Item>
+                                        </Grid>
+                                    </Grid>
+                                </Box>
+                            </Container>
+                        </BillsProvider>
+                    </PaychecksProvider>
                 </div>
             </ThemeProvider>
         );

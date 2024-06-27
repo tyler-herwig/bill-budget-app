@@ -9,7 +9,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { NumericFormat } from 'react-number-format';
 import Chip from '@mui/material/Chip';
-import Star from '@mui/icons-material/Star';
+import Paid from '@mui/icons-material/Paid';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import Error from '@mui/icons-material/Error';
 import { PaychecksContext } from './PaychecksContext';
 import moment from 'moment';
 
@@ -24,7 +26,7 @@ const Paychecks = () => {
             <>
                 {moment.utc(paycheckDate).format('MMMM Do, YYYY')}{' '}
                 <Chip
-                    icon={<Star />}
+                    icon={<Paid />}
                     label="Received"
                     color="success"
                     variant="outlined"
@@ -37,9 +39,35 @@ const Paychecks = () => {
         );
     };
 
+    const handleMoneyRemaining = (moneyRemaining) => {
+        if (moneyRemaining > 0) {
+            return (
+                <Chip
+                    icon={<CheckCircle />}
+                    label={<NumericFormat value={moneyRemaining.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'}/>}
+                    color="success"
+                    variant="outlined"
+                    size="small"
+                    style={{ fontWeight: 100, fontSize: '10px' }}
+                />
+            )
+        } else {
+            return (
+                <Chip
+                    icon={<Error />}
+                    label={<NumericFormat value={moneyRemaining.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'}/>}
+                    color="error"
+                    variant="outlined"
+                    size="small"
+                    style={{ fontWeight: 100, fontSize: '10px' }}
+                />
+            )
+        }
+    }
+
     return (
         <TableContainer component={Paper}>
-            <Table aria-label="Paychecks table">
+            <Table aria-label="Paychecks table" size="medium">
                 <TableHead>
                     <TableRow>
                         <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
@@ -58,10 +86,10 @@ const Paychecks = () => {
                                 <NumericFormat value={paycheck.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
                             </TableCell>
                             <TableCell align="right">
-                                <NumericFormat value={paycheck.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                                <NumericFormat value={paycheck.total_bills.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
                             </TableCell>
                             <TableCell align="right">
-                                <NumericFormat value={paycheck.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                                {handleMoneyRemaining(paycheck.money_remaining)}
                             </TableCell>
                         </TableRow>
                     ))}

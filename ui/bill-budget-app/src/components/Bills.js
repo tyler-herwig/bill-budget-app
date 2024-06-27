@@ -13,7 +13,9 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Checkbox from '@mui/material/Checkbox';
 import { NumericFormat } from 'react-number-format';
-import { Error } from '@mui/icons-material';
+import { Error, CalendarMonth } from '@mui/icons-material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import moment from 'moment';
 import { BillsContext } from './BillsContext';
 
@@ -33,7 +35,7 @@ const Bills = () => {
                 <>
                     <br />
                     <small style={{ color: 'grey', fontSize: '10px' }}>
-                        {moment(bill.date_paid).format('MMMM Do, YYYY')}
+                        {moment.utc(bill.date_paid).format('MMMM Do, YYYY')}
                     </small>
                 </>
             )}
@@ -47,13 +49,20 @@ const Bills = () => {
                     {yearData.months.map((monthData) => (
                         <div key={monthData.monthName}>
                             <CardHeader
-                                title={`${monthData.monthName}, ${yearData._id}`}
+                                title={
+                                    <Box display="flex" alignItems="center">
+                                        <CalendarMonth sx={{ mr: 1 }} />
+                                        <Typography variant="h6">
+                                            {`${monthData.monthName}, ${yearData._id}`}
+                                        </Typography>
+                                    </Box>
+                                }
                                 align="left"
                                 className='month-header'
                             />
                             <CardContent>
                                 <TableContainer component={Paper}>
-                                    <Table aria-label="simple table">
+                                    <Table aria-label="simple table" size="medium">
                                         <TableHead>
                                             <TableRow>
                                                 <TableCell style={{ fontWeight: 'bold' }}>Name</TableCell>
@@ -67,14 +76,14 @@ const Bills = () => {
                                                 <TableRow key={bill._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                                     <TableCell component="th" scope="row">
                                                         <b style={{ paddingRight: 10 }}>{bill.name}</b>
-                                                        <hr />
+                                                        <br/>
                                                         <small style={{ color: 'grey', fontSize: '10px' }}>{bill.description}</small>
                                                     </TableCell>
                                                     <TableCell align="right">
                                                         <NumericFormat value={bill.amount.toFixed(2)} displayType="text" thousandSeparator={true} prefix="$" />
                                                     </TableCell>
                                                     <TableCell>
-                                                        {moment(bill.date_due).format('MMMM Do, YYYY')}
+                                                        {moment.utc(bill.date_due).format('MMMM Do, YYYY')}
                                                     </TableCell>
                                                     <TableCell align={"center"}>
                                                         {handleDatePaid(bill, label)}

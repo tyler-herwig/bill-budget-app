@@ -33,6 +33,16 @@ exports.getAllBills = async (req, res) => {
                 }
             },
             {
+                $project: {
+                    _id: 1,
+                    bills: {
+                        $sortArray: { input: "$bills", sortBy: { date_due: 1 } } // Sort bills by date_due
+                    },
+                    totalAmount: 1,
+                    monthName: 1
+                }
+            },
+            {
                 $group: {
                     _id: "$_id.year",
                     months: {
@@ -65,6 +75,15 @@ exports.getAllBills = async (req, res) => {
         return res.status(200).json(results);
     } catch (error) {
         return res.status(500).json({ message: error.message });
+    }
+};
+
+exports.addBill = async (req, res) => {
+    try {
+        const bill = await Bill.create(req.body)
+        res.status(200).json(bill)
+    } catch (error) {
+        res.status(500).json({message: error.message})
     }
 };
 

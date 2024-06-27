@@ -36,12 +36,36 @@ export const BillsProvider = ({ children }) => {
         }
     };
 
+    const addBill = async (billName, billDescription, billDateDue, billAmount) => {
+        try {
+            const response = await fetch(`${API_URL}/bills`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: billName,
+                    description: billDescription,
+                    date_due: billDateDue,
+                    amount: billAmount
+                }),
+            });
+            if (response.ok) {
+                refreshBills(); // Refresh data after successful addition
+            } else {
+                console.error('Failed to add bill:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error adding bill:', error);
+        }
+    };
+
     useEffect(() => {
         refreshBills();
     }, []);
 
     return (
-        <BillsContext.Provider value={{ bills, refreshBills, updateBillDatePaid}}>
+        <BillsContext.Provider value={{ bills, refreshBills, updateBillDatePaid, addBill }}>
             {children}
         </BillsContext.Provider>
     );

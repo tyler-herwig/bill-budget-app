@@ -17,12 +17,36 @@ export const PaychecksProvider = ({ children }) => {
         }
     };
 
+    const addPaycheck = async (paycheckDate, paycheckAmount) => {
+        try {
+            const response = await fetch(`${API_URL}/paychecks`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    date: paycheckDate,
+                    amount: paycheckAmount,
+                }),
+            });
+            if (response.ok) {
+                refreshPaychecks();
+                return await response.json();
+            } else {
+                throw new Error('Failed to add paycheck');
+            }
+        } catch (error) {
+            console.error('Error adding paycheck:', error);
+            throw error;
+        }
+    };
+
     useEffect(() => {
         refreshPaychecks();
     }, []);
 
     return (
-        <PaychecksContext.Provider value={{ paychecks, refreshPaychecks}}>
+        <PaychecksContext.Provider value={{ paychecks, refreshPaychecks, addPaycheck }}>
             {children}
         </PaychecksContext.Provider>
     );
