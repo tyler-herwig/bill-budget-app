@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -16,16 +16,40 @@ import { NumericFormat } from 'react-number-format';
 import { Error, CalendarMonth } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 import moment from 'moment';
 import { BillsContext } from './BillsContext';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
 const Bills = () => {
     const { bills, updateBillDatePaid } = useContext(BillsContext);
     const label = { inputProps: { 'aria-label': 'Bill paid checkbox' } };
 
+    const [open, setOpen] = useState(false);
+    const [selectedBill, setSelectedBill] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(null);
+
     const handleDatePaidChange = (bill) => {
-        const newDatePaid = bill.date_paid ? null : new Date().toISOString();
-        updateBillDatePaid(bill._id, newDatePaid);
+        if (bill.date_paid) {
+            updateBillDatePaid(bill._id, null);
+        } else {
+            setSelectedBill(bill);
+            setOpen(true);
+        }
+    };
+
+    const handleDateSelection = () => {
+        if (selectedBill && selectedDate) {
+            updateBillDatePaid(selectedBill._id, selectedDate.toISOString());
+        }
+        setOpen(false);
+        setSelectedBill(null);
+        setSelectedDate(null);
     };
 
     const handleDatePaid = (bill, label) => (
@@ -85,7 +109,7 @@ const Bills = () => {
                                                     <TableCell>
                                                         {moment.utc(bill.date_due).format('MMMM Do, YYYY')}
                                                     </TableCell>
-                                                    <TableCell align={"center"}>
+                                                    <TableCell align="center">
                                                         {handleDatePaid(bill, label)}
                                                     </TableCell>
                                                 </TableRow>
@@ -98,6 +122,20 @@ const Bills = () => {
                     ))}
                 </Card>
             ))}
+            <Dialog open={open} onClose={() => setOpen(false)}>
+                <DialogTitle>Select Date Paid</DialogTitle>
+                <DialogContent>
+                    <DatePicker
+                        value={selectedDate}
+                        onChange={(newValue) => setSelectedDate(newValue)}
+                        renderInput={(params) => <TextField {...params} />}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpen(false)}>Cancel</Button>
+                    <Button onClick={handleDateSelection}>Submit</Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 };

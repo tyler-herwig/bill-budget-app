@@ -1,21 +1,9 @@
 import React, { useState, useContext } from 'react';
-import { Box, Button, ButtonGroup, FormControl, InputAdornment, InputLabel, Modal, OutlinedInput, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, FormControl, InputAdornment, InputLabel, OutlinedInput, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { BillsContext } from './BillsContext';
-
-const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
 
 const BillModal = ({ open, handleClose }) => {
     const [formData, setFormData] = useState({
@@ -46,24 +34,19 @@ const BillModal = ({ open, handleClose }) => {
     const handleSubmit = async () => {
         try {
             await addBill(formData.billName, formData.billDescription, formData.billDateDue.format('YYYY-MM-DD'), formData.billAmount);
-            handleClose(); // Close the modal on successful submission
+            handleClose(); // Close the dialog on successful submission
         } catch (error) {
             console.error('Error:', error);
         }
     };
 
     return (
-        <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-title"
-            aria-describedby="modal-description"
-        >
-            <Box sx={modalStyle}>
-                <Typography id="modal-title" variant="h6" component="h2">
-                    ADD BILL
-                </Typography>
-                <br />
+        <Dialog open={open} onClose={handleClose} aria-labelledby="dialog-title" aria-describedby="dialog-description">
+            <DialogTitle id="dialog-title">ADD BILL</DialogTitle>
+            <DialogContent>
+                <DialogContentText id="dialog-description">
+                    Please fill out the form below to add a new bill.
+                </DialogContentText>
                 <Box
                     component="form"
                     sx={{
@@ -105,15 +88,16 @@ const BillModal = ({ open, handleClose }) => {
                             label="Bill Due Date"
                             value={formData.billDateDue}
                             onChange={handleDateChange}
+                            renderInput={(params) => <OutlinedInput {...params} />}
                         />
                     </LocalizationProvider>
-                    <ButtonGroup variant="outlined" aria-label="Basic button group">
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button onClick={handleSubmit}>Add</Button>
-                    </ButtonGroup>
                 </Box>
-            </Box>
-        </Modal>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={handleSubmit}>Add</Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 

@@ -1,9 +1,11 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { PaychecksContext } from './PaychecksContext';
 
 export const BillsContext = createContext();
 
 export const BillsProvider = ({ children }) => {
     const [bills, setBills] = useState([]);
+    const { refreshPaychecks } = useContext(PaychecksContext);
 
     const API_URL = "http://localhost:5038/api";
 
@@ -28,6 +30,7 @@ export const BillsProvider = ({ children }) => {
             });
             if (response.ok) {
                 refreshBills(); // Refresh data after successful update
+                refreshPaychecks(); // Refresh paychecks after updating bill
             } else {
                 console.error('Failed to update bill:', response.statusText);
             }
@@ -52,6 +55,7 @@ export const BillsProvider = ({ children }) => {
             });
             if (response.ok) {
                 refreshBills(); // Refresh data after successful addition
+                refreshPaychecks(); // Refresh paychecks after adding bill
             } else {
                 console.error('Failed to add bill:', response.statusText);
             }

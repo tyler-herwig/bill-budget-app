@@ -1,21 +1,9 @@
 import React, { useState, useContext } from 'react';
-import { Box, Button, ButtonGroup, FormControl, InputAdornment, InputLabel, Modal, OutlinedInput, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, FormControl, InputAdornment, InputLabel, OutlinedInput, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { PaychecksContext } from './PaychecksContext';
-
-const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
 
 const PaycheckModal = ({ open, handleClose }) => {
     const [formData, setFormData] = useState({
@@ -36,24 +24,19 @@ const PaycheckModal = ({ open, handleClose }) => {
     const handleSubmit = async () => {
         try {
             await addPaycheck(formData.paycheckDate.format('YYYY-MM-DD'), formData.paycheckAmount);
-            handleClose(); // Close the modal on successful submission
+            handleClose(); // Close the dialog on successful submission
         } catch (error) {
             console.error('Error:', error);
         }
     };
 
     return (
-        <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-title"
-            aria-describedby="modal-description"
-        >
-            <Box sx={modalStyle}>
-                <Typography id="modal-title" variant="h6" component="h2">
-                    ADD PAYCHECK
-                </Typography>
-                <br />
+        <Dialog open={open} onClose={handleClose} aria-labelledby="dialog-title" aria-describedby="dialog-description">
+            <DialogTitle id="dialog-title">ADD PAYCHECK</DialogTitle>
+            <DialogContent>
+                <DialogContentText id="dialog-description">
+                    Please fill out the form below to add a new paycheck.
+                </DialogContentText>
                 <Box
                     component="form"
                     sx={{
@@ -67,6 +50,7 @@ const PaycheckModal = ({ open, handleClose }) => {
                             label="Paycheck Date"
                             value={formData.paycheckDate}
                             onChange={handleDateChange}
+                            renderInput={(params) => <OutlinedInput {...params} />}
                         />
                     </LocalizationProvider>
                     <FormControl>
@@ -79,13 +63,13 @@ const PaycheckModal = ({ open, handleClose }) => {
                             label="Amount"
                         />
                     </FormControl>
-                    <ButtonGroup variant="outlined" aria-label="Basic button group">
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button onClick={handleSubmit}>Add</Button>
-                    </ButtonGroup>
                 </Box>
-            </Box>
-        </Modal>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={handleSubmit}>Add</Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 
