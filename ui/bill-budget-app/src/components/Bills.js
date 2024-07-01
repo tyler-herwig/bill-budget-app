@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,13 +6,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Chip from '@mui/material/Chip';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Checkbox from '@mui/material/Checkbox';
 import { NumericFormat } from 'react-number-format';
-import { Error, CalendarMonth } from '@mui/icons-material';
+import { CalendarMonth, Edit } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -25,6 +23,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 
 const Bills = () => {
     const { bills, updateBillDatePaid } = useContext(BillsContext);
@@ -89,6 +88,7 @@ const Bills = () => {
                                     <Table aria-label="simple table" size="medium">
                                         <TableHead>
                                             <TableRow>
+                                                <TableCell></TableCell>
                                                 <TableCell style={{ fontWeight: 'bold' }}>Name</TableCell>
                                                 <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
                                                 <TableCell style={{ fontWeight: 'bold' }}>Due</TableCell>
@@ -98,6 +98,11 @@ const Bills = () => {
                                         <TableBody>
                                             {monthData.bills.map((bill) => (
                                                 <TableRow key={bill._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                    <TableCell>
+                                                        <IconButton aria-label="edit" color="primary">
+                                                            <Edit />
+                                                        </IconButton>
+                                                    </TableCell>
                                                     <TableCell component="th" scope="row">
                                                         <b style={{ paddingRight: 10 }}>{bill.name}</b>
                                                         <br/>
