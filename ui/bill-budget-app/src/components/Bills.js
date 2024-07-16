@@ -11,7 +11,7 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Checkbox from '@mui/material/Checkbox';
 import { NumericFormat } from 'react-number-format';
-import { CalendarMonth, Edit } from '@mui/icons-material';
+import { CalendarMonth, MoreHoriz } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -88,21 +88,16 @@ const Bills = () => {
                                     <Table aria-label="simple table" size="medium">
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell></TableCell>
                                                 <TableCell style={{ fontWeight: 'bold' }}>Name</TableCell>
                                                 <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
                                                 <TableCell style={{ fontWeight: 'bold' }}>Due</TableCell>
                                                 <TableCell style={{ fontWeight: 'bold' }} align="center">Paid</TableCell>
+                                                <TableCell></TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
                                             {monthData.bills.map((bill) => (
                                                 <TableRow key={bill._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                    <TableCell>
-                                                        <IconButton aria-label="edit" color="primary">
-                                                            <Edit />
-                                                        </IconButton>
-                                                    </TableCell>
                                                     <TableCell component="th" scope="row">
                                                         <b style={{ paddingRight: 10 }}>{bill.name}</b>
                                                         <br/>
@@ -116,6 +111,11 @@ const Bills = () => {
                                                     </TableCell>
                                                     <TableCell align="center">
                                                         {handleDatePaid(bill, label)}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <IconButton aria-label="edit" color="primary">
+                                                            <MoreHoriz />
+                                                        </IconButton>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}

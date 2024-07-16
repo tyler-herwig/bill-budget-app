@@ -1,5 +1,10 @@
 import React, {useContext} from 'react';
 import Table from '@mui/material/Table';
+import Box from '@mui/material/Box';
+import Tooltip from '@mui/material/Tooltip';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
@@ -12,22 +17,21 @@ import Chip from '@mui/material/Chip';
 import Paid from '@mui/icons-material/Paid';
 import CheckCircle from '@mui/icons-material/CheckCircle';
 import Error from '@mui/icons-material/Error';
-import Edit from '@mui/icons-material/Edit';
+import MoreHoriz from '@mui/icons-material/MoreHoriz';
 import { PaychecksContext } from './PaychecksContext';
 import PaycheckModal from './PaycheckModal';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ContentCut from '@mui/icons-material/ContentCut';
+import ContentCopy from '@mui/icons-material/ContentCopy';
+import ContentPaste from '@mui/icons-material/ContentPaste';
+import Cloud from '@mui/icons-material/Cloud';
+import PaycheckSettingsMenu from './PaycheckSettingsMenu';
 import moment from 'moment';
 
 const Paychecks = () => {
     const { paychecks } = useContext(PaychecksContext);
-    const [open, setOpen] = React.useState(false);
-    const [modalData, setModalData] = React.useState({});
-
-    const handleOpenModal = (data) => {
-        setModalData(data);
-        setOpen(true);
-    };
-
-    const handleCloseModal = () => setOpen(false);
 
     const handlePaycheckDate = (paycheckDate) => {
         const today = moment().startOf('day');
@@ -78,47 +82,40 @@ const Paychecks = () => {
     }
 
     return (
-        <>
-            <TableContainer component={Paper}>
-                <Table aria-label="Paychecks table" size="medium">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell></TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="right">Total Bills</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="right">Money Remaining</TableCell>
+        <TableContainer component={Paper}>
+            <Table aria-label="Paychecks table" size="medium">
+                <TableHead>
+                    <TableRow>
+                        <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
+                        <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
+                        <TableCell style={{ fontWeight: 'bold' }} align="right">Total Bills</TableCell>
+                        <TableCell style={{ fontWeight: 'bold' }} align="right">Money Remaining</TableCell>
+                        <TableCell></TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {paychecks.map((paycheck) => (
+                        <TableRow key={paycheck._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                            <TableCell component="th" scope="row" style={{ fontWeight: 'bold' }}>
+                                {handlePaycheckDate(paycheck.date)}
+                            </TableCell>
+                            <TableCell align="right">
+                                <NumericFormat value={paycheck.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                            </TableCell>
+                            <TableCell align="right">
+                                <NumericFormat value={paycheck.total_bills.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                            </TableCell>
+                            <TableCell align="right">
+                                {handleMoneyRemaining(paycheck.money_remaining)}
+                            </TableCell>
+                            <TableCell>
+                                <PaycheckSettingsMenu data={paycheck}/>
+                            </TableCell>
                         </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {paychecks.map((paycheck) => (
-                            <TableRow key={paycheck._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                <TableCell>
-                                    <IconButton aria-label="edit" color="primary" onClick={() => handleOpenModal(paycheck)}>
-                                        <Edit />
-                                    </IconButton>
-                                </TableCell>
-                                <TableCell component="th" scope="row" style={{ fontWeight: 'bold' }}>
-                                    {handlePaycheckDate(paycheck.date)}
-                                </TableCell>
-                                <TableCell align="right">
-                                    <NumericFormat value={paycheck.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-                                </TableCell>
-                                <TableCell align="right">
-                                    <NumericFormat value={paycheck.total_bills.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-                                </TableCell>
-                                <TableCell align="right">
-                                    {handleMoneyRemaining(paycheck.money_remaining)}
-                                </TableCell>
-                            </TableRow>
-                        ))}
-
-                    </TableBody>
-                </Table>
-            </TableContainer>
-
-            <PaycheckModal data={modalData} open={open} handleClose={handleCloseModal} />
-        </>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
 }
 

@@ -55,7 +55,7 @@ const PaycheckModal = ({ data, open, handleClose }) => {
             <DialogTitle id="dialog-title">{data ? 'EDIT PAYCHECK' : 'ADD PAYCHECK'}</DialogTitle>
             <DialogContent>
                 <DialogContentText id="dialog-description">
-                    Please fill out the form below to add a new paycheck.
+                    Please fill out the form below to { data ? 'update the paycheck' : 'add a new paycheck' }.
                 </DialogContentText>
                 <Box
                     component="form"
