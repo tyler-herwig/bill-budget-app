@@ -6,10 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BillModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BillModal.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Bills.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Bills.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/controllers/paycheck.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/controllers/paycheck.controller.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaycheckModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaycheckModal.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Paychecks.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Paychecks.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaychecksContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaychecksContext.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,6 +75,7 @@
       <workItem from="1719411223096" duration="90000" />
       <workItem from="1719411355064" duration="25220000" />
       <workItem from="1719857653343" duration="4012000" />
+      <workItem from="1721139847465" duration="2888000" />
     </task>
     <servers />
   </component>

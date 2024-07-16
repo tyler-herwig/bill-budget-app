@@ -14,14 +14,24 @@ import CheckCircle from '@mui/icons-material/CheckCircle';
 import Error from '@mui/icons-material/Error';
 import Edit from '@mui/icons-material/Edit';
 import { PaychecksContext } from './PaychecksContext';
+import PaycheckModal from './PaycheckModal';
 import moment from 'moment';
 
 const Paychecks = () => {
     const { paychecks } = useContext(PaychecksContext);
+    const [open, setOpen] = React.useState(false);
+    const [modalData, setModalData] = React.useState({});
+
+    const handleOpenModal = (data) => {
+        setModalData(data);
+        setOpen(true);
+    };
+
+    const handleCloseModal = () => setOpen(false);
 
     const handlePaycheckDate = (paycheckDate) => {
-        const today = moment().startOf('day'); // Get today's date at midnight
-        const date = moment.utc(paycheckDate).startOf('day'); // Convert paycheckDate to a moment object and set time to midnight
+        const today = moment().startOf('day');
+        const date = moment.utc(paycheckDate).startOf('day');
 
         return date.isSameOrBefore(today) ? (
             <>
@@ -68,43 +78,47 @@ const Paychecks = () => {
     }
 
     return (
-        <TableContainer component={Paper}>
-            <Table aria-label="Paychecks table" size="medium">
-                <TableHead>
-                    <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
-                        <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
-                        <TableCell style={{ fontWeight: 'bold' }} align="right">Total Bills</TableCell>
-                        <TableCell style={{ fontWeight: 'bold' }} align="right">Money Remaining</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {paychecks.map((paycheck) => (
-                        <TableRow key={paycheck.date} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                            <TableCell>
-                                <IconButton aria-label="edit" color="primary">
-                                    <Edit />
-                                </IconButton>
-                            </TableCell>
-                            <TableCell component="th" scope="row" style={{ fontWeight: 'bold' }}>
-                                {handlePaycheckDate(paycheck.date)}
-                            </TableCell>
-                            <TableCell align="right">
-                                <NumericFormat value={paycheck.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-                            </TableCell>
-                            <TableCell align="right">
-                                <NumericFormat value={paycheck.total_bills.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-                            </TableCell>
-                            <TableCell align="right">
-                                {handleMoneyRemaining(paycheck.money_remaining)}
-                            </TableCell>
+        <>
+            <TableContainer component={Paper}>
+                <Table aria-label="Paychecks table" size="medium">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell></TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }} align="right">Total Bills</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }} align="right">Money Remaining</TableCell>
                         </TableRow>
-                    ))}
+                    </TableHead>
+                    <TableBody>
+                        {paychecks.map((paycheck) => (
+                            <TableRow key={paycheck._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                <TableCell>
+                                    <IconButton aria-label="edit" color="primary" onClick={() => handleOpenModal(paycheck)}>
+                                        <Edit />
+                                    </IconButton>
+                                </TableCell>
+                                <TableCell component="th" scope="row" style={{ fontWeight: 'bold' }}>
+                                    {handlePaycheckDate(paycheck.date)}
+                                </TableCell>
+                                <TableCell align="right">
+                                    <NumericFormat value={paycheck.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                                </TableCell>
+                                <TableCell align="right">
+                                    <NumericFormat value={paycheck.total_bills.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                                </TableCell>
+                                <TableCell align="right">
+                                    {handleMoneyRemaining(paycheck.money_remaining)}
+                                </TableCell>
+                            </TableRow>
+                        ))}
 
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            <PaycheckModal data={modalData} open={open} handleClose={handleCloseModal} />
+        </>
     );
 }
 

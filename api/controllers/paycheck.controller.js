@@ -24,6 +24,7 @@ exports.getAllPaychecks = async (req, res) => {
             const remainingAmount = paycheck.amount - totalBillsAmount;
 
             results.push({
+                _id: paycheck._id,
                 date: paycheck.date,
                 amount: paycheck.amount,
                 total_bills: totalBillsAmount,
@@ -45,3 +46,22 @@ exports.addPaycheck = async (req, res) => {
         res.status(500).json({message: error.message})
     }
 };
+
+exports.updatePaycheck = async(req, res) => {
+    try {
+        const {id} = req.params;
+        const paycheck = await Paycheck.findByIdAndUpdate(id, req.body)
+
+        // Cannot find paycheck in database
+        if (!paycheck) {
+            return res.status(404).json({message: 'Cannot find paycheck'})
+        }
+
+        // Get paycheck after update for response to user
+        const updatedPaycheck = await Paycheck.findById(id);
+        res.status(200).json(updatedPaycheck)
+
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}

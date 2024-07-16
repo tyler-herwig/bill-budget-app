@@ -41,12 +41,36 @@ export const PaychecksProvider = ({ children }) => {
         }
     };
 
+    const updatePaycheck = async (id, paycheckDate, paycheckAmount) => {
+        try {
+            const response = await fetch(`${API_URL}/paychecks/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    date: paycheckDate,
+                    amount: paycheckAmount,
+                }),
+            });
+            if (response.ok) {
+                refreshPaychecks();
+                return await response.json();
+            } else {
+                throw new Error('Failed to update paycheck');
+            }
+        } catch (error) {
+            console.error('Error updating paycheck:', error);
+            throw error;
+        }
+    };
+
     useEffect(() => {
         refreshPaychecks();
     }, []);
 
     return (
-        <PaychecksContext.Provider value={{ paychecks, refreshPaychecks, addPaycheck }}>
+        <PaychecksContext.Provider value={{ paychecks, refreshPaychecks, addPaycheck, updatePaycheck }}>
             {children}
         </PaychecksContext.Provider>
     );

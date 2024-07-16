@@ -1,17 +1,28 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import moment from 'moment';
 import { PaychecksContext } from './PaychecksContext';
 
-const PaycheckModal = ({ open, handleClose }) => {
+const PaycheckModal = ({ data, open, handleClose }) => {
     const [formData, setFormData] = useState({
-        paycheckDate: dayjs(new Date()),
+        id: '',
+        paycheckDate: moment(new Date()),
         paycheckAmount: ''
     });
 
-    const { addPaycheck } = useContext(PaychecksContext);
+    useEffect(() => {
+        if (data) {
+            setFormData({
+                id: data._id || '',
+                paycheckDate: moment.utc(data.date || new Date()),
+                paycheckAmount: data.amount || ''
+            });
+        }
+    }, [data]);
+
+    const { addPaycheck, updatePaycheck } = useContext(PaychecksContext);
 
     const handleDateChange = (newValue) => {
         setFormData((prevState) => ({ ...prevState, paycheckDate: newValue }));
@@ -30,9 +41,18 @@ const PaycheckModal = ({ open, handleClose }) => {
         }
     };
 
+    const handleUpdate = async ()  => {
+        try {
+            await updatePaycheck(formData.id, formData.paycheckDate.format('YYYY-MM-DD'), formData.paycheckAmount);
+            handleClose(); // Close the dialog on successful update
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="dialog-title" aria-describedby="dialog-description">
-            <DialogTitle id="dialog-title">ADD PAYCHECK</DialogTitle>
+            <DialogTitle id="dialog-title">{data ? 'EDIT PAYCHECK' : 'ADD PAYCHECK'}</DialogTitle>
             <DialogContent>
                 <DialogContentText id="dialog-description">
                     Please fill out the form below to add a new paycheck.
@@ -45,7 +65,7 @@ const PaycheckModal = ({ open, handleClose }) => {
                     noValidate
                     autoComplete="off"
                 >
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
                         <DatePicker
                             label="Paycheck Date"
                             value={formData.paycheckDate}
@@ -67,7 +87,7 @@ const PaycheckModal = ({ open, handleClose }) => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleSubmit}>Add</Button>
+                {data ? <Button onClick={handleUpdate}>Update</Button> : <Button onClick={handleSubmit}>Add</Button>}
             </DialogActions>
         </Dialog>
     );
