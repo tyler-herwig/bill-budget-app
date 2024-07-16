@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Divider from '@mui/material/Divider';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
@@ -58,12 +59,8 @@ const PaycheckSettingsMenu = ({ data }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openSettings = Boolean(anchorEl);
     const [open, setOpen] = React.useState(false);
+    const [action, setAction] = React.useState('');
     const [modalData, setModalData] = React.useState({});
-
-    const handleOpenModal = (data) => {
-        setModalData(data);
-        setOpen(true);
-    };
 
     const handleCloseModal = () => setOpen(false);
 
@@ -76,8 +73,17 @@ const PaycheckSettingsMenu = ({ data }) => {
 
     const handleEditClick = () => {
         handleCloseSettings();
-        handleOpenModal(data);
+        setModalData(data);
+        setAction('edit');
+        setOpen(true);
     };
+
+    const handleDeleteClick = () => {
+        handleCloseSettings();
+        setModalData(data);
+        setAction('delete');
+        setOpen(true);
+    }
 
     return (
         <div>
@@ -112,16 +118,16 @@ const PaycheckSettingsMenu = ({ data }) => {
                     Duplicate
                 </MenuItem>
                 <Divider sx={{ my: 0.5 }} />
-                <MenuItem onClick={handleCloseSettings} disableRipple>
-                    <ArchiveIcon />
-                    Archive
+                <MenuItem onClick={handleDeleteClick}>
+                    <DeleteIcon />
+                    Delete
                 </MenuItem>
                 <MenuItem onClick={handleCloseSettings} disableRipple>
                     <MoreHorizIcon />
                     More
                 </MenuItem>
             </StyledMenu>
-            <PaycheckModal data={modalData} open={open} handleClose={handleCloseModal} />
+            <PaycheckModal action={action} data={modalData} open={open} handleClose={handleCloseModal} />
         </div>
     );
 }

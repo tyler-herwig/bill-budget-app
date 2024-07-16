@@ -65,3 +65,18 @@ exports.updatePaycheck = async(req, res) => {
         res.status(500).json({message: error.message})
     }
 }
+
+exports.deletePaycheck = async(req, res) => {
+    try {
+        const {id} = req.params
+        const paycheck = await Paycheck.findByIdAndDelete(id)
+
+        // Cannot find paycheck in database
+        if (!paycheck) {
+            return res.status(404).json({message: 'Cannot find paycheck'})
+        }
+        res.status(200).json({message: "Paycheck successfully deleted"})
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}

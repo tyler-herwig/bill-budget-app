@@ -27,7 +27,7 @@ export const PaychecksProvider = ({ children }) => {
                 body: JSON.stringify({
                     date: paycheckDate,
                     amount: paycheckAmount,
-                }),
+                })
             });
             if (response.ok) {
                 refreshPaychecks();
@@ -51,7 +51,7 @@ export const PaychecksProvider = ({ children }) => {
                 body: JSON.stringify({
                     date: paycheckDate,
                     amount: paycheckAmount,
-                }),
+                })
             });
             if (response.ok) {
                 refreshPaychecks();
@@ -65,12 +65,32 @@ export const PaychecksProvider = ({ children }) => {
         }
     };
 
+    const deletePaycheck = async (id) => {
+        try {
+            const response = await fetch(`${API_URL}/paychecks/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (response.ok) {
+                refreshPaychecks();
+                return await response.json();
+            } else {
+                throw new Error('Failed to delete paycheck');
+            }
+        } catch (error) {
+            console.error('Error deleting paycheck:', error);
+            throw error;
+        }
+    };
+
     useEffect(() => {
         refreshPaychecks();
     }, []);
 
     return (
-        <PaychecksContext.Provider value={{ paychecks, refreshPaychecks, addPaycheck, updatePaycheck }}>
+        <PaychecksContext.Provider value={{ paychecks, refreshPaychecks, addPaycheck, updatePaycheck, deletePaycheck }}>
             {children}
         </PaychecksContext.Provider>
     );

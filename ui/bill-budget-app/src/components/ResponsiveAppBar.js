@@ -161,7 +161,7 @@ function ResponsiveAppBar() {
             </AppBar>
 
             {modalContent === 'Add Paycheck' && (
-                <PaycheckModal open={open} handleClose={handleCloseModal} />
+                <PaycheckModal action='add' open={open} handleClose={handleCloseModal} />
             )}
             {modalContent === 'Add Bill' && (
                 <BillModal open={open} handleClose={handleCloseModal} />
