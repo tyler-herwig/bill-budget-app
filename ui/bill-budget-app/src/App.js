@@ -9,6 +9,7 @@ import { BillsProvider } from './components/BillsContext';
 import { PaychecksProvider } from './components/PaychecksContext';
 import Bills from './components/Bills';
 import BasicSpeedDial from './components/BasicSpeedDial';
+import UserIntroSection from './components/UserIntroSection';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -36,7 +37,9 @@ class App extends Component {
                         <BillsProvider>
                             <ResponsiveAppBar />
                             <Container maxWidth="100%" style={{ marginTop: 15 }}>
+
                                 <Box sx={{ flexGrow: 1 }}>
+                                    <UserIntroSection/>
                                     <Grid container spacing={2}>
                                         <Grid item xs={12} lg={5}>
                                             <Item>
