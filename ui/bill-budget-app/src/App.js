@@ -8,6 +8,7 @@ import Paychecks from './components/Paychecks';
 import { BillsProvider } from './components/BillsContext';
 import { PaychecksProvider } from './components/PaychecksContext';
 import Bills from './components/Bills';
+import BasicSpeedDial from './components/BasicSpeedDial';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -37,7 +38,7 @@ class App extends Component {
                             <Container maxWidth="100%" style={{ marginTop: 15 }}>
                                 <Box sx={{ flexGrow: 1 }}>
                                     <Grid container spacing={2}>
-                                        <Grid item xs={5}>
+                                        <Grid item xs={12} lg={5}>
                                             <Item>
                                                 <h2 align="left">
                                                     <AccountBalance /> Paychecks
@@ -45,7 +46,7 @@ class App extends Component {
                                                 <Paychecks />
                                             </Item>
                                         </Grid>
-                                        <Grid item xs={7}>
+                                        <Grid item xs={12} lg={7}>
                                             <Item>
                                                 <h2 align="left">
                                                     <Payments /> Bills
@@ -56,6 +57,7 @@ class App extends Component {
                                     </Grid>
                                 </Box>
                             </Container>
+                            <BasicSpeedDial/>
                         </BillsProvider>
                     </PaychecksProvider>
                 </div>
