@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BasicSpeedDial.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ResponsiveAppBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ResponsiveAppBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/UserIntroSection.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/UserIntroSection.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,20 +34,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/tyler/IdeaProjects/bill-budget-app/ui/bill-budget-app/src/components&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/tyler/IdeaProjects/bill-budget-app",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Users\\tyler\\AppData\\Local\\JetBrains\\IntelliJ IDEA 2024.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\tyler\IdeaProjects\bill-budget-app\ui\bill-budget-app\src\components" />
@@ -74,7 +73,9 @@
       <workItem from="1719411223096" duration="90000" />
       <workItem from="1719411355064" duration="25220000" />
       <workItem from="1719857653343" duration="4012000" />
-      <workItem from="1721139847465" duration="13917000" />
+      <workItem from="1721139847465" duration="20708000" />
+      <workItem from="1721229797147" duration="285000" />
+      <workItem from="1721239712094" duration="8183000" />
     </task>
     <servers />
   </component>
@@ -86,7 +87,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
