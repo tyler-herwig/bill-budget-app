@@ -80,7 +80,20 @@ export function FinancialOutlookChart() {
         <Line
             data={dynamicChartData}
             options={{
+                elements: {
+                    line: {
+                        tension: 0.25
+                    }
+                },
                 plugins: {
+                    legend: {
+                        labels: {
+                            boxWidth: 10,
+                            boxHeight: 10,
+                            useBorderRadius: true,
+                            borderRadius: 5
+                        }
+                    },
                     tooltip: {
                         callbacks: {
                             label: function (tooltipItem) {

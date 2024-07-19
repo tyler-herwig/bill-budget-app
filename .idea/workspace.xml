@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Corrected upcoming bill date and refactored.">
-      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BasicTabs.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/FinancialOutlookChart.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Bills.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Bills.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BillsContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BillsContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaycheckSettingsMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaycheckSettingsMenu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Paychecks.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Paychecks.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaychecksContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaychecksContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/UserIntroSection.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/UserIntroSection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/FinancialOutlookChart.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/FinancialOutlookChart.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +78,7 @@
       <workItem from="1721229797147" duration="285000" />
       <workItem from="1721239712094" duration="8183000" />
       <workItem from="1721403334055" duration="986000" />
-      <workItem from="1721404354655" duration="7183000" />
+      <workItem from="1721404354655" duration="8625000" />
     </task>
     <task id="LOCAL-00001" summary="Updated app name and description.">
       <option name="closed" value="true" />
