@@ -1,2 +1,3 @@
 /api/node_modules/
 /ui/bill-budget-app/node_modules/
+/ui/bill-budget-app/.env.local

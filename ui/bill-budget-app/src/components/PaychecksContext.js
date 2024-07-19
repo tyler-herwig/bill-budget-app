@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 
 export const PaychecksContext = createContext();
 
@@ -6,9 +6,10 @@ export const PaychecksProvider = ({ children }) => {
     const [paychecks, setPaychecks] = useState([]);
     const [loadingPaychecks, setLoadingPaychecks] = useState(true);
 
-    const API_URL = "http://localhost:5038/api";
+    const API_URL = process.env.REACT_APP_API_URL;
 
-    const refreshPaychecks = async () => {
+    // Memoize refreshPaychecks function
+    const refreshPaychecks = useCallback(async () => {
         setLoadingPaychecks(true);
         try {
             const response = await fetch(`${API_URL}/paychecks`);
@@ -19,9 +20,10 @@ export const PaychecksProvider = ({ children }) => {
         } finally {
             setLoadingPaychecks(false);
         }
-    };
+    }, [API_URL]);
 
-    const addPaycheck = async (paycheckDate, paycheckAmount) => {
+    // Memoize addPaycheck function
+    const addPaycheck = useCallback(async (paycheckDate, paycheckAmount) => {
         try {
             const response = await fetch(`${API_URL}/paychecks`, {
                 method: 'POST',
@@ -43,9 +45,10 @@ export const PaychecksProvider = ({ children }) => {
             console.error('Error adding paycheck:', error);
             throw error;
         }
-    };
+    }, [API_URL, refreshPaychecks]);
 
-    const updatePaycheck = async (id, paycheckDate, paycheckAmount) => {
+    // Memoize updatePaycheck function
+    const updatePaycheck = useCallback(async (id, paycheckDate, paycheckAmount) => {
         try {
             const response = await fetch(`${API_URL}/paychecks/${id}`, {
                 method: 'PUT',
@@ -67,9 +70,10 @@ export const PaychecksProvider = ({ children }) => {
             console.error('Error updating paycheck:', error);
             throw error;
         }
-    };
+    }, [API_URL, refreshPaychecks]);
 
-    const deletePaycheck = async (id) => {
+    // Memoize deletePaycheck function
+    const deletePaycheck = useCallback(async (id) => {
         try {
             const response = await fetch(`${API_URL}/paychecks/${id}`, {
                 method: 'DELETE',
@@ -87,11 +91,11 @@ export const PaychecksProvider = ({ children }) => {
             console.error('Error deleting paycheck:', error);
             throw error;
         }
-    };
+    }, [API_URL, refreshPaychecks]);
 
     useEffect(() => {
         refreshPaychecks();
-    }, []);
+    }, [refreshPaychecks]);
 
     return (
         <PaychecksContext.Provider value={{ paychecks, loadingPaychecks, refreshPaychecks, addPaycheck, updatePaycheck, deletePaycheck }}>

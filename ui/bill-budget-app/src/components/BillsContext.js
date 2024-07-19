@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { PaychecksContext } from './PaychecksContext';
 
 export const BillsContext = createContext();
@@ -8,9 +8,10 @@ export const BillsProvider = ({ children }) => {
     const [loadingBills, setLoadingBills] = useState(true);
     const { refreshPaychecks } = useContext(PaychecksContext);
 
-    const API_URL = "http://localhost:5038/api";
+    const API_URL = process.env.REACT_APP_API_URL;
 
-    const refreshBills = async () => {
+    // Memoize refreshBills function
+    const refreshBills = useCallback(async () => {
         setLoadingBills(true);
         try {
             const response = await fetch(`${API_URL}/bills`);
@@ -21,9 +22,10 @@ export const BillsProvider = ({ children }) => {
         } finally {
             setLoadingBills(false);
         }
-    };
+    }, [API_URL]);
 
-    const updateBillDatePaid = async (id, datePaid) => {
+    // Memoize updateBillDatePaid function
+    const updateBillDatePaid = useCallback(async (id, datePaid) => {
         try {
             const response = await fetch(`${API_URL}/bills/${id}`, {
                 method: 'PUT',
@@ -41,9 +43,10 @@ export const BillsProvider = ({ children }) => {
         } catch (error) {
             console.error('Error updating bill:', error);
         }
-    };
+    }, [API_URL, refreshBills, refreshPaychecks]);
 
-    const addBill = async (billName, billDescription, billDateDue, billAmount) => {
+    // Memoize addBill function
+    const addBill = useCallback(async (billName, billDescription, billDateDue, billAmount) => {
         try {
             const response = await fetch(`${API_URL}/bills`, {
                 method: 'POST',
@@ -66,11 +69,11 @@ export const BillsProvider = ({ children }) => {
         } catch (error) {
             console.error('Error adding bill:', error);
         }
-    };
+    }, [API_URL, refreshBills, refreshPaychecks]);
 
     useEffect(() => {
         refreshBills();
-    }, []);
+    }, [refreshBills]);
 
     return (
         <BillsContext.Provider value={{ bills, loadingBills, refreshBills, updateBillDatePaid, addBill }}>
