@@ -107,7 +107,7 @@ const PaycheckSettingsMenu = ({ data }) => {
                     <EditIcon />
                     Edit
                 </MenuItem>
-                <MenuItem onClick={handleCloseSettings} disableRipple>
+                <MenuItem onClick={handleCloseSettings} disableRipple disabled={true}>
                     <FileCopyIcon />
                     Duplicate
                 </MenuItem>
@@ -116,7 +116,7 @@ const PaycheckSettingsMenu = ({ data }) => {
                     <DeleteIcon />
                     Delete
                 </MenuItem>
-                <MenuItem onClick={handleCloseSettings} disableRipple>
+                <MenuItem onClick={handleCloseSettings} disableRipple disabled={true}>
                     <MoreHorizIcon />
                     More
                 </MenuItem>

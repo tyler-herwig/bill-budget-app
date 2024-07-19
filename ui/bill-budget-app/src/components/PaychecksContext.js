@@ -4,16 +4,20 @@ export const PaychecksContext = createContext();
 
 export const PaychecksProvider = ({ children }) => {
     const [paychecks, setPaychecks] = useState([]);
+    const [loadingPaychecks, setLoadingPaychecks] = useState(true);
 
     const API_URL = "http://localhost:5038/api";
 
     const refreshPaychecks = async () => {
+        setLoadingPaychecks(true);
         try {
             const response = await fetch(`${API_URL}/paychecks`);
             const data = await response.json();
             setPaychecks(data);
         } catch (error) {
             console.error('Error fetching paychecks:', error);
+        } finally {
+            setLoadingPaychecks(false);
         }
     };
 
@@ -30,7 +34,7 @@ export const PaychecksProvider = ({ children }) => {
                 })
             });
             if (response.ok) {
-                refreshPaychecks();
+                await refreshPaychecks();
                 return await response.json();
             } else {
                 throw new Error('Failed to add paycheck');
@@ -54,7 +58,7 @@ export const PaychecksProvider = ({ children }) => {
                 })
             });
             if (response.ok) {
-                refreshPaychecks();
+                await refreshPaychecks();
                 return await response.json();
             } else {
                 throw new Error('Failed to update paycheck');
@@ -74,7 +78,7 @@ export const PaychecksProvider = ({ children }) => {
                 }
             });
             if (response.ok) {
-                refreshPaychecks();
+                await refreshPaychecks();
                 return await response.json();
             } else {
                 throw new Error('Failed to delete paycheck');
@@ -90,7 +94,7 @@ export const PaychecksProvider = ({ children }) => {
     }, []);
 
     return (
-        <PaychecksContext.Provider value={{ paychecks, refreshPaychecks, addPaycheck, updatePaycheck, deletePaycheck }}>
+        <PaychecksContext.Provider value={{ paychecks, loadingPaychecks, refreshPaychecks, addPaycheck, updatePaycheck, deletePaycheck }}>
             {children}
         </PaychecksContext.Provider>
     );

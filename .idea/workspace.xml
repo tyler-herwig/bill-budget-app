@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Updated app name and description.">
+    <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Corrected upcoming bill date and refactored.">
+      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BasicTabs.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/FinancialOutlookChart.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Bills.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Bills.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BillsContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BillsContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaycheckSettingsMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaycheckSettingsMenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Paychecks.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Paychecks.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaychecksContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaychecksContext.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/UserIntroSection.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/UserIntroSection.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -78,7 +85,7 @@
       <workItem from="1721229797147" duration="285000" />
       <workItem from="1721239712094" duration="8183000" />
       <workItem from="1721403334055" duration="986000" />
-      <workItem from="1721404354655" duration="994000" />
+      <workItem from="1721404354655" duration="7183000" />
     </task>
     <task id="LOCAL-00001" summary="Updated app name and description.">
       <option name="closed" value="true" />
@@ -88,7 +95,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721404273868</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Corrected upcoming bill date and refactored.">
+      <option name="closed" value="true" />
+      <created>1721405581789</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1721405581789</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -119,6 +134,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Updated app name and description." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated app name and description." />
+    <MESSAGE value="Corrected upcoming bill date and refactored." />
+    <option name="LAST_COMMIT_MESSAGE" value="Corrected upcoming bill date and refactored." />
   </component>
 </project>

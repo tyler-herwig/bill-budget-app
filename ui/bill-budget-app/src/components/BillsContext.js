@@ -5,17 +5,21 @@ export const BillsContext = createContext();
 
 export const BillsProvider = ({ children }) => {
     const [bills, setBills] = useState([]);
+    const [loadingBills, setLoadingBills] = useState(true);
     const { refreshPaychecks } = useContext(PaychecksContext);
 
     const API_URL = "http://localhost:5038/api";
 
     const refreshBills = async () => {
+        setLoadingBills(true);
         try {
             const response = await fetch(`${API_URL}/bills`);
             const data = await response.json();
             setBills(data);
         } catch (error) {
             console.error('Error fetching bills:', error);
+        } finally {
+            setLoadingBills(false);
         }
     };
 
@@ -29,8 +33,8 @@ export const BillsProvider = ({ children }) => {
                 body: JSON.stringify({ date_paid: datePaid }),
             });
             if (response.ok) {
-                refreshBills(); // Refresh data after successful update
-                refreshPaychecks(); // Refresh paychecks after updating bill
+                await refreshBills(); // Refresh data after successful update
+                await refreshPaychecks(); // Refresh paychecks after updating bill
             } else {
                 console.error('Failed to update bill:', response.statusText);
             }
@@ -54,8 +58,8 @@ export const BillsProvider = ({ children }) => {
                 }),
             });
             if (response.ok) {
-                refreshBills(); // Refresh data after successful addition
-                refreshPaychecks(); // Refresh paychecks after adding bill
+                await refreshBills(); // Refresh data after successful addition
+                await refreshPaychecks(); // Refresh paychecks after adding bill
             } else {
                 console.error('Failed to add bill:', response.statusText);
             }
@@ -69,7 +73,7 @@ export const BillsProvider = ({ children }) => {
     }, []);
 
     return (
-        <BillsContext.Provider value={{ bills, refreshBills, updateBillDatePaid, addBill }}>
+        <BillsContext.Provider value={{ bills, loadingBills, refreshBills, updateBillDatePaid, addBill }}>
             {children}
         </BillsContext.Provider>
     );

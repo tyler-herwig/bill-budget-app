@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import {
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, Box, CircularProgress
 } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 import { Paid, CheckCircle, Error } from '@mui/icons-material';
@@ -9,7 +9,7 @@ import { PaychecksContext } from './PaychecksContext';
 import PaycheckSettingsMenu from './PaycheckSettingsMenu';
 
 const Paychecks = () => {
-    const { paychecks } = useContext(PaychecksContext);
+    const { paychecks, loadingPaychecks } = useContext(PaychecksContext);
 
     const handlePaycheckDate = (paycheckDate) => {
         const today = moment().startOf('day');
@@ -57,6 +57,19 @@ const Paychecks = () => {
                 />
             )
         }
+    }
+
+    if (loadingPaychecks) {
+        return (
+            <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                style={{ height: '100vh' }}
+            >
+                <CircularProgress />
+            </Box>
+        )
     }
 
     return (
