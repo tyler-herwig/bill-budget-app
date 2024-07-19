@@ -46,7 +46,19 @@ const UserIntroSection = () => {
         const currentDate = new Date();
 
         const upcomingPaycheck = paychecks.find(paycheck => new Date(paycheck.date) > currentDate);
-        setUpcomingData(upcomingPaycheck);
+
+        if (upcomingPaycheck) {
+            const upcomingBill = paychecks.find(
+                paycheck => new Date(paycheck.date) > new Date(upcomingPaycheck.date)
+            );
+            setUpcomingData({
+                paycheck: upcomingPaycheck,
+                bill: upcomingBill || {} // Handle case where no upcoming bill is found
+            });
+        } else {
+            console.log('No upcoming paycheck found');
+            setUpcomingData(null);
+        }
 
         const labelsSet = new Set();
         const paycheckTotalByMonth = {};
@@ -133,18 +145,18 @@ const UserIntroSection = () => {
                             <PaychecksBackgroundBox>
                                 <Typography variant="h6" style={{fontWeight: 'bold'}}><AccountBalance /> Upcoming Paycheck</Typography>
                             </PaychecksBackgroundBox>
-                            <Typography variant="h3">{<NumericFormat value={upcomingData.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
-                            <Typography variant="body2">Next payment on {moment.utc(upcomingData.date).format('MMMM Do')}</Typography>
+                            <Typography variant="h3">{<NumericFormat value={upcomingData.paycheck.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
+                            <Typography variant="body2">Next payment on {moment.utc(upcomingData.paycheck.date).format('MMMM Do')}</Typography>
                         </Grid>
                         <Grid item xs={6}>
                             <BillsBackgroundBox>
                                 <Typography variant="h6" style={{fontWeight: 'bold'}}><Payments /> Upcoming Bills</Typography>
                             </BillsBackgroundBox>
-                            <Typography variant="h3">{<NumericFormat value={upcomingData.total_bills.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
-                            <Typography variant="body2">Prior to {moment.utc(upcomingData.date).format('MMMM Do')}</Typography>
+                            <Typography variant="h3">{<NumericFormat value={upcomingData.paycheck.total_bills?.toFixed(2) || '0.00'} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
+                            <Typography variant="body2">Prior to {moment.utc(upcomingData.bill.date).format('MMMM Do')}</Typography>
                         </Grid>
                     </Grid>
-                    { handleStatusInfo(upcomingData.money_remaining) }
+                    { handleStatusInfo(upcomingData.paycheck.money_remaining) }
                 </InfoPaper>
             </Grid>
             <Grid item xs={12} md={6}>
