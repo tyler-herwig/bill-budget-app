@@ -1,17 +1,11 @@
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Divider from '@mui/material/Divider';
-import ArchiveIcon from '@mui/icons-material/Archive';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import IconButton from '@mui/material/IconButton';
-import MoreHoriz from '@mui/icons-material/MoreHoriz';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import {
+    Menu, MenuItem, Divider, IconButton
+} from '@mui/material';
+import {
+    Edit as EditIcon, Delete as DeleteIcon, FileCopy as FileCopyIcon, MoreHoriz as MoreHorizIcon
+} from '@mui/icons-material';
 import PaycheckModal from './PaycheckModal';
 
 const StyledMenu = styled((props) => (
@@ -97,7 +91,7 @@ const PaycheckSettingsMenu = ({ data }) => {
                 variant="contained"
                 onClick={handleClickSettings}
             >
-                <MoreHoriz />
+                <MoreHorizIcon />
             </IconButton>
 
             <StyledMenu

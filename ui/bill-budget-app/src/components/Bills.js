@@ -1,29 +1,14 @@
 import React, { useContext, useState } from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import Checkbox from '@mui/material/Checkbox';
+import {
+    Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
+    Card, CardHeader, CardContent, Checkbox, TextField, Dialog, DialogActions, DialogContent,
+    DialogTitle, Button, IconButton
+} from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 import { CalendarMonth, MoreHoriz } from '@mui/icons-material';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment from 'moment';
 import { BillsContext } from './BillsContext';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 
 const Bills = () => {
     const { bills, updateBillDatePaid } = useContext(BillsContext);

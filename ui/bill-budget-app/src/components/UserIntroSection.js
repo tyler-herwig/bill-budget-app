@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Typography, Grid, Paper } from '@mui/material';
+import { Box, Typography, Grid, Paper, Alert, Divider } from '@mui/material';
 import { styled } from '@mui/system';
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
-import Alert from '@mui/material/Alert';
 import { AccountBalance, Payments, QueryStats } from '@mui/icons-material';
-import Divider from '@mui/material/Divider';
 import { PaychecksContext } from './PaychecksContext';
 import { BillsContext } from './BillsContext';
 import { NumericFormat } from 'react-number-format';

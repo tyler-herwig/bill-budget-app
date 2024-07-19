@@ -1,34 +1,12 @@
-import React, {useContext} from 'react';
-import Table from '@mui/material/Table';
-import Box from '@mui/material/Box';
-import Tooltip from '@mui/material/Tooltip';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
+import React, { useContext } from 'react';
+import {
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip
+} from '@mui/material';
 import { NumericFormat } from 'react-number-format';
-import Chip from '@mui/material/Chip';
-import Paid from '@mui/icons-material/Paid';
-import CheckCircle from '@mui/icons-material/CheckCircle';
-import Error from '@mui/icons-material/Error';
-import MoreHoriz from '@mui/icons-material/MoreHoriz';
-import { PaychecksContext } from './PaychecksContext';
-import PaycheckModal from './PaycheckModal';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ContentCut from '@mui/icons-material/ContentCut';
-import ContentCopy from '@mui/icons-material/ContentCopy';
-import ContentPaste from '@mui/icons-material/ContentPaste';
-import Cloud from '@mui/icons-material/Cloud';
-import PaycheckSettingsMenu from './PaycheckSettingsMenu';
+import { Paid, CheckCircle, Error } from '@mui/icons-material';
 import moment from 'moment';
+import { PaychecksContext } from './PaychecksContext';
+import PaycheckSettingsMenu from './PaycheckSettingsMenu';
 
 const Paychecks = () => {
     const { paychecks } = useContext(PaychecksContext);
