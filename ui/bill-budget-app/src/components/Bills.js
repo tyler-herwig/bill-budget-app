@@ -2,16 +2,17 @@ import React, { useContext, useState } from 'react';
 import {
     Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
     Card, CardHeader, CardContent, Checkbox, TextField, Dialog, DialogActions, DialogContent,
-    DialogTitle, Button, IconButton, CircularProgress
+    DialogTitle, Button
 } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
-import { CalendarMonth, MoreHoriz } from '@mui/icons-material';
+import { CalendarMonth } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment from 'moment';
+import BillSettingsMenu from './BillSettingsMenu';
 import { BillsContext } from './BillsContext';
 
 const Bills = () => {
-    const { bills, loadingBills, updateBillDatePaid } = useContext(BillsContext);
+    const { bills, updateBillDatePaid } = useContext(BillsContext);
     const label = { inputProps: { 'aria-label': 'Bill paid checkbox' } };
 
     const [open, setOpen] = useState(false);
@@ -49,19 +50,6 @@ const Bills = () => {
             )}
         </>
     );
-
-    if (loadingBills) {
-        return (
-            <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                style={{ height: '100vh' }}
-            >
-                <CircularProgress />
-            </Box>
-        )
-    }
 
     return (
         <>
@@ -111,9 +99,7 @@ const Bills = () => {
                                                         {handleDatePaid(bill, label)}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <IconButton aria-label="edit" color="primary">
-                                                            <MoreHoriz />
-                                                        </IconButton>
+                                                        <BillSettingsMenu data={bill}/>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}

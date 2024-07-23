@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, CircularProgress } from '@mui/material';
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
 import moment from 'moment';
@@ -7,8 +6,8 @@ import { PaychecksContext } from './PaychecksContext';
 import { BillsContext } from './BillsContext';
 
 export function FinancialOutlookChart() {
-    const { paychecks, loadingPaychecks } = useContext(PaychecksContext);
-    const { bills, loadingBills } = useContext(BillsContext);
+    const { paychecks } = useContext(PaychecksContext);
+    const { bills } = useContext(BillsContext);
 
     const [chartData, setChartData] = useState({ labels: [], paychecks: [], bills: [] });
 
@@ -62,19 +61,6 @@ export function FinancialOutlookChart() {
             },
         ],
     };
-
-    if (loadingPaychecks || loadingBills) {
-        return (
-            <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                style={{ height: '40vh' }}
-            >
-                <CircularProgress />
-            </Box>
-        )
-    }
 
     return (
         <Line

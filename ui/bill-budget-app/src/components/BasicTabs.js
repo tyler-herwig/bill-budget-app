@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/system';
-import { Box, Typography, Grid, Alert, Tabs, Tab, CircularProgress } from '@mui/material';
+import { Box, Typography, Grid, Alert, Tabs, Tab } from '@mui/material';
 import { AccountBalance, Payments } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
 import moment from 'moment';
@@ -55,7 +55,7 @@ function a11yProps(index) {
 }
 
 export function BasicTabs() {
-    const { paychecks, loadingPaychecks } = useContext(PaychecksContext);
+    const { paychecks } = useContext(PaychecksContext);
     const { bills } = useContext(BillsContext);
 
     const [value, setValue] = React.useState(0);
@@ -112,19 +112,6 @@ export function BasicTabs() {
         }
     }
 
-    if (loadingPaychecks) {
-        return (
-            <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                style={{ height: '40vh' }}
-            >
-                <CircularProgress />
-            </Box>
-        )
-    }
-
     if (!upcomingData || !currentData) {
         return null;
     }
@@ -144,14 +131,14 @@ export function BasicTabs() {
                             <Typography variant="h6" style={{fontWeight: 'bold'}}><AccountBalance /> Current Paycheck</Typography>
                         </PaychecksBackgroundBox>
                         <Typography variant="h3">{<NumericFormat value={currentData.paycheck.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
-                        <Typography variant="body2">You got paid on {moment.utc(currentData.paycheck.date).format('MMMM Do, YYYY')}</Typography>
+                        <Typography variant="caption">You got paid on {moment.utc(currentData.paycheck.date).format('MMMM Do, YYYY')}</Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <BillsBackgroundBox>
                             <Typography variant="h6" style={{fontWeight: 'bold'}}><Payments /> Current Bills</Typography>
                         </BillsBackgroundBox>
                         <Typography variant="h3">{<NumericFormat value={currentData.paycheck.total_bills?.toFixed(2) || '0.00'} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
-                        <Typography variant="body2">Prior to {moment.utc(currentData.bill.date).format('MMMM Do, YYYY')}</Typography>
+                        <Typography variant="caption">From {moment.utc(currentData.paycheck.date).format('MMMM Do, YYYY')} to {moment.utc(currentData.bill.date).format('MMMM Do, YYYY')}</Typography>
                     </Grid>
                 </Grid>
                 <br/>
@@ -164,14 +151,14 @@ export function BasicTabs() {
                             <Typography variant="h6" style={{fontWeight: 'bold'}}><AccountBalance /> Upcoming Paycheck</Typography>
                         </PaychecksBackgroundBox>
                         <Typography variant="h3">{<NumericFormat value={upcomingData.paycheck.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
-                        <Typography variant="body2">Next payment on {moment.utc(upcomingData.paycheck.date).format('MMMM Do')}</Typography>
+                        <Typography variant="caption">Next payment on {moment.utc(upcomingData.paycheck.date).format('MMMM Do')}</Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <BillsBackgroundBox>
                             <Typography variant="h6" style={{fontWeight: 'bold'}}><Payments /> Upcoming Bills</Typography>
                         </BillsBackgroundBox>
                         <Typography variant="h3">{<NumericFormat value={upcomingData.paycheck.total_bills?.toFixed(2) || '0.00'} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
-                        <Typography variant="body2">Prior to {moment.utc(upcomingData.bill.date).format('MMMM Do')}</Typography>
+                        <Typography variant="caption">From {moment.utc(upcomingData.paycheck.date).format('MMMM Do')} to {moment.utc(upcomingData.bill.date).format('MMMM Do')}</Typography>
                     </Grid>
                 </Grid>
                 <br/>

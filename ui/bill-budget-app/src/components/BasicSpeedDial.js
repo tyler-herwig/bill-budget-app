@@ -41,7 +41,7 @@ export default function BasicSpeedDial() {
                 <PaycheckModal action='add' open={open} handleClose={handleCloseModal} />
             )}
             {modalContent === 'Add Bill' && (
-                <BillModal open={open} handleClose={handleCloseModal} />
+                <BillModal action='add' open={open} handleClose={handleCloseModal} />
             )}
         </>
     );

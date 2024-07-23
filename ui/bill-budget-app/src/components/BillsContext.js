@@ -71,12 +71,62 @@ export const BillsProvider = ({ children }) => {
         }
     }, [API_URL, refreshBills, refreshPaychecks]);
 
+    // Memoize updateBill function
+    const updateBill = useCallback(async (id, billName, billDescription, billDateDue, billAmount) => {
+        try {
+            const response = await fetch(`${API_URL}/bills/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: billName,
+                    description: billDescription,
+                    date_due: billDateDue,
+                    amount: billAmount
+                })
+            });
+            if (response.ok) {
+                await refreshBills();
+                await refreshPaychecks();
+                return await response.json();
+            } else {
+                throw new Error('Failed to update bill');
+            }
+        } catch (error) {
+            console.error('Error updating bill:', error);
+            throw error;
+        }
+    }, [API_URL, refreshBills, refreshPaychecks]);
+
+    // Memoize deleteBill function
+    const deleteBill = useCallback(async (id) => {
+        try {
+            const response = await fetch(`${API_URL}/bills/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (response.ok) {
+                await refreshBills();
+                await refreshPaychecks();
+                return await response.json();
+            } else {
+                throw new Error('Failed to delete bill');
+            }
+        } catch (error) {
+            console.error('Error deleting bill:', error);
+            throw error;
+        }
+    }, [API_URL, refreshBills, refreshPaychecks]);
+
     useEffect(() => {
         refreshBills();
     }, [refreshBills]);
 
     return (
-        <BillsContext.Provider value={{ bills, loadingBills, refreshBills, updateBillDatePaid, addBill }}>
+        <BillsContext.Provider value={{ bills, loadingBills, refreshBills, updateBillDatePaid, addBill, updateBill, deleteBill }}>
             {children}
         </BillsContext.Provider>
     );
