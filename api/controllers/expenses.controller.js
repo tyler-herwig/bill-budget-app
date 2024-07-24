@@ -138,18 +138,55 @@ exports.getAllExpenses = async (req, res) => {
     try {
         const expenses = await Expense.aggregate([
             {
-                $addFields: {
-                    year: { $year: '$date_due' },
-                    month: { $month: '$date_due' }
+                $lookup: {
+                    from: 'recurringexpenses', // The collection name for recurring expenses
+                    localField: 'recurring_expense_id',
+                    foreignField: '_id',
+                    as: 'recurrenceInfo'
                 }
             },
             {
-                $sort: { date_due: 1 }
+                $unwind: {
+                    path: '$recurrenceInfo',
+                    preserveNullAndEmptyArrays: true // Ensures one-time expenses are still included
+                }
+            },
+            {
+                $addFields: {
+                    year: { $year: '$date_due' },
+                    month: { $month: '$date_due' },
+                    dateDueKey: {
+                        $dateToString: { format: "%Y-%m-%d", date: '$date_due' } // Create a sort key for date_due
+                    }
+                }
             },
             {
                 $group: {
                     _id: { year: '$year', month: '$month' },
-                    expenses: { $push: '$$ROOT' },
+                    expenses: {
+                        $push: {
+                            _id: '$_id',
+                            name: '$name',
+                            description: '$description',
+                            amount: '$amount',
+                            date_due: '$date_due',
+                            date_paid: '$date_paid',
+                            type: '$type',
+                            status: '$status',
+                            recurring_expense_id: '$recurring_expense_id',
+                            recurrence: {
+                                $cond: [
+                                    { $eq: ['$recurring_expense_id', null] },
+                                    '$$REMOVE', // Remove recurrence field for one-time expenses
+                                    {
+                                        frequency: '$recurrenceInfo.recurrence.frequency',
+                                        start_date: '$recurrenceInfo.recurrence.start_date',
+                                        end_date: '$recurrenceInfo.recurrence.end_date'
+                                    }
+                                ]
+                            }
+                        }
+                    },
                     totalAmount: { $sum: '$amount' }
                 }
             },
@@ -183,7 +220,72 @@ exports.getAllExpenses = async (req, res) => {
                 }
             },
             {
-                $sort: { year: 1, month: 1 }
+                $addFields: {
+                    // Sort expenses by the combined year, month, and date_due key
+                    expenses: {
+                        $map: {
+                            input: { $filter: { input: '$expenses', as: 'expense', cond: { $ne: ['$$expense.date_due', null] } } },
+                            as: 'expense',
+                            in: {
+                                _id: '$$expense._id',
+                                name: '$$expense.name',
+                                description: '$$expense.description',
+                                amount: '$$expense.amount',
+                                date_due: '$$expense.date_due',
+                                date_paid: '$$expense.date_paid',
+                                type: '$$expense.type',
+                                status: '$$expense.status',
+                                recurring_expense_id: '$$expense.recurring_expense_id',
+                                recurrence: '$$expense.recurrence'
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                $unwind: '$expenses'
+            },
+            {
+                $sort: { year: 1, month: 1, 'expenses.date_due': 1 } // Sort by year, month, and date_due within each group
+            },
+            {
+                $group: {
+                    _id: { year: '$year', month: '$month' },
+                    expenses: { $push: '$expenses' },
+                    totalAmount: { $sum: '$totalAmount' }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    year: '$_id.year',
+                    month: '$_id.month',
+                    fullMonthName: {
+                        $arrayElemAt: [
+                            [
+                                '',
+                                'January',
+                                'February',
+                                'March',
+                                'April',
+                                'May',
+                                'June',
+                                'July',
+                                'August',
+                                'September',
+                                'October',
+                                'November',
+                                'December'
+                            ],
+                            '$_id.month'
+                        ]
+                    },
+                    expenses: 1,
+                    totalAmount: 1
+                }
+            },
+            {
+                $sort: { year: 1, month: 1 } // Final sort by year and month
             }
         ]);
 

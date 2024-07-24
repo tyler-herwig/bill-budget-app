@@ -23,9 +23,74 @@ export const ExpensesProvider = ({ children }) => {
         }
     }, [API_URL]);
 
+    const addExpense = useCallback(async (expense) => {
+        try {
+            delete expense._id;
+            const response = await fetch(`${API_URL}/expenses/one-time`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(expense),
+            });
+            if (response.ok) {
+                await refreshExpenses(); // Refresh data after successful addition
+                await refreshPaychecks(); // Refresh paychecks after adding bill
+            } else {
+                console.error('Failed to add expense:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error adding expense:', error);
+        }
+    }, [API_URL, refreshExpenses, refreshPaychecks]);
+
+    const addRecurringExpense = useCallback(async (expense) => {
+        try {
+            delete expense._id;
+            const response = await fetch(`${API_URL}/expenses/recurring`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(expense),
+            });
+            if (response.ok) {
+                await refreshExpenses(); // Refresh data after successful addition
+                await refreshPaychecks(); // Refresh paychecks after adding bill
+            } else {
+                console.error('Failed to add expense:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error adding expense:', error);
+        }
+    }, [API_URL, refreshExpenses, refreshPaychecks]);
+
     const updateExpense = useCallback(async (expense) => {
         try {
             const response = await fetch(`${API_URL}/expenses/one-time/${expense._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(expense)
+            });
+            if (response.ok) {
+                await refreshExpenses();
+                await refreshPaychecks();
+                return await response.json();
+            } else {
+                throw new Error('Failed to update expense');
+            }
+        } catch (error) {
+            console.error('Error updating expense:', error);
+            throw error;
+        }
+    }, [API_URL, refreshExpenses, refreshPaychecks]);
+
+    const updateRecurringExpense = useCallback(async (expense) => {
+        delete expense._id;
+        try {
+            const response = await fetch(`${API_URL}/expenses/recurring/${expense.recurring_expense_id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,7 +115,7 @@ export const ExpensesProvider = ({ children }) => {
     }, [refreshExpenses]);
 
     return (
-        <ExpensesContext.Provider value={{ expenses, loadingExpenses, refreshExpenses, updateExpense }}>
+        <ExpensesContext.Provider value={{ expenses, loadingExpenses, refreshExpenses, addExpense, addRecurringExpense, updateExpense, updateRecurringExpense }}>
             {children}
         </ExpensesContext.Provider>
     );

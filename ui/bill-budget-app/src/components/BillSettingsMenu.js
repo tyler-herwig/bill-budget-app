@@ -6,7 +6,8 @@ import {
 import {
     Edit as EditIcon, Delete as DeleteIcon, FileCopy as FileCopyIcon, MoreHoriz as MoreHorizIcon
 } from '@mui/icons-material';
-import BillModal from './BillModal';
+import RecurringExpenseModal from './RecurringExpenseModal';
+import OneTimeExpenseModal from './OneTimeExpenseModal';
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -77,15 +78,19 @@ const BillSettingsMenu = ({ data }) => {
         setModalData(data);
         setAction('delete');
         setOpen(true);
-    }
+    };
+
+    const ModalComponent = data.type === 'recurring'
+        ? RecurringExpenseModal
+        : OneTimeExpenseModal;
 
     return (
         <div>
             <IconButton
                 aria-label="edit"
                 color="primary"
-                id={`edit-bill-settings-${data._id}`}
-                aria-controls={openSettings ? 'bill-settings-menu' : undefined}
+                id={`edit-expense-settings-${data._id}`}
+                aria-controls={openSettings ? 'expense-settings-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={openSettings ? 'true' : undefined}
                 variant="contained"
@@ -95,9 +100,9 @@ const BillSettingsMenu = ({ data }) => {
             </IconButton>
 
             <StyledMenu
-                id="bill-settings-menu"
+                id="expense-settings-menu"
                 MenuListProps={{
-                    'aria-labelledby': `edit-bill-settings-${data._id}`,
+                    'aria-labelledby': `edit-expense-settings-${data._id}`,
                 }}
                 anchorEl={anchorEl}
                 open={openSettings}
@@ -121,7 +126,7 @@ const BillSettingsMenu = ({ data }) => {
                     More
                 </MenuItem>
             </StyledMenu>
-            <BillModal action={action} data={modalData} open={open} handleClose={handleCloseModal} />
+            <ModalComponent action={action} data={modalData} open={open} handleClose={handleCloseModal} />
         </div>
     );
 }

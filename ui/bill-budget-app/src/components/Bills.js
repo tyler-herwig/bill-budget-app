@@ -115,7 +115,7 @@ const Bills = () => {
                                                         {handleDatePaid(expense, label)}
                                                     </TableCell>
                                                     <TableCell>
-
+                                                        <BillSettingsMenu data={expense}/>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
