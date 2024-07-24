@@ -2,49 +2,57 @@ import React, { useContext, useState } from 'react';
 import {
     Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
     Card, CardHeader, CardContent, Checkbox, TextField, Dialog, DialogActions, DialogContent,
-    DialogTitle, Button
+    DialogTitle, Button, Chip
 } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
-import { CalendarMonth } from '@mui/icons-material';
+import { CalendarMonth, Loop } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment from 'moment';
 import BillSettingsMenu from './BillSettingsMenu';
-import { BillsContext } from './BillsContext';
+import { ExpensesContext } from './ExpensesContext';
 
 const Bills = () => {
-    const { bills, updateBillDatePaid } = useContext(BillsContext);
-    const label = { inputProps: { 'aria-label': 'Bill paid checkbox' } };
+    const { expenses, updateExpense } = useContext(ExpensesContext);
+    const label = { inputProps: { 'aria-label': 'Expense paid checkbox' } };
 
     const [open, setOpen] = useState(false);
-    const [selectedBill, setSelectedBill] = useState(null);
+    const [selectedExpense, setSelectedExpense] = useState(null);
     const [selectedDate, setSelectedDate] = useState(null);
 
-    const handleDatePaidChange = (bill) => {
-        if (bill.date_paid) {
-            updateBillDatePaid(bill._id, null);
+    const handleDatePaidChange = (expense) => {
+        if (expense.date_paid) {
+            updateExpense({
+                _id: expense._id,
+                date_paid: null,
+                status: 'unpaid'
+            });
         } else {
-            setSelectedBill(bill);
+            setSelectedExpense(expense);
             setOpen(true);
         }
     };
 
     const handleDateSelection = () => {
-        if (selectedBill && selectedDate) {
-            updateBillDatePaid(selectedBill._id, selectedDate.toISOString());
+        if (selectedExpense && selectedDate) {
+            updateExpense({
+                _id: selectedExpense._id,
+                date_paid: selectedDate.toISOString(),
+                status: 'paid'
+            });
         }
         setOpen(false);
-        setSelectedBill(null);
+        setSelectedExpense(null);
         setSelectedDate(null);
     };
 
-    const handleDatePaid = (bill, label) => (
+    const handleDatePaid = (expense, label) => (
         <>
-            <Checkbox {...label} checked={!!bill.date_paid} onChange={() => handleDatePaidChange(bill)}/>
-            {bill.date_paid && (
+            <Checkbox {...label} checked={!!expense.date_paid} onChange={() => handleDatePaidChange(expense)}/>
+            {expense.date_paid && (
                 <>
                     <br />
                     <small style={{ color: 'grey', fontSize: '10px' }}>
-                        {moment.utc(bill.date_paid).format('MMMM Do, YYYY')}
+                        {moment.utc(expense.date_paid).format('MMMM Do, YYYY')}
                     </small>
                 </>
             )}
@@ -53,16 +61,14 @@ const Bills = () => {
 
     return (
         <>
-            {bills.map((yearData) => (
-                <Card key={yearData._id} style={{ marginBottom: '15px' }}>
-                    {yearData.months.map((monthData) => (
-                        <div key={monthData.monthName}>
+            {expenses.map((monthData) => (
+                <Card key={monthData.fullMonthName + monthData.year} style={{ marginBottom: '15px' }}>
                             <CardHeader
                                 title={
                                     <Box display="flex" alignItems="center">
                                         <CalendarMonth sx={{ mr: 1 }} />
                                         <Typography variant="h6">
-                                            {`${monthData.monthName}, ${yearData._id}`}
+                                            {`${monthData.fullMonthName}, ${monthData.year}`}
                                         </Typography>
                                     </Box>
                                 }
@@ -82,24 +88,34 @@ const Bills = () => {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {monthData.bills.map((bill) => (
-                                                <TableRow key={bill._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                            {monthData.expenses.map((expense) => (
+                                                <TableRow key={expense._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                                     <TableCell component="th" scope="row">
-                                                        <b style={{ paddingRight: 10 }}>{bill.name}</b>
+                                                        <b style={{ paddingRight: 10 }}>{expense.name}</b>
                                                         <br/>
-                                                        <small style={{ color: 'grey', fontSize: '10px' }}>{bill.description}</small>
+                                                        <small style={{ color: 'grey', fontSize: '10px' }}>{expense.description}</small>
                                                     </TableCell>
                                                     <TableCell align="right">
-                                                        <NumericFormat value={bill.amount.toFixed(2)} displayType="text" thousandSeparator={true} prefix="$" />
+                                                        <NumericFormat value={expense.amount.toFixed(2)} displayType="text" thousandSeparator={true} prefix="$" />
                                                     </TableCell>
                                                     <TableCell>
-                                                        {moment.utc(bill.date_due).format('MMMM Do, YYYY')}
+                                                        {moment.utc(expense.date_due).format('MMMM Do, YYYY')}
+                                                        {expense.type === 'recurring' && (
+                                                            <Chip
+                                                                icon={<Loop />}
+                                                                label="Recurring"
+                                                                color="primary"
+                                                                variant="outlined"
+                                                                size="small"
+                                                                style={{ fontWeight: 100, fontSize: '10px', marginLeft: 5 }}
+                                                            />
+                                                        )}
                                                     </TableCell>
                                                     <TableCell align="center">
-                                                        {handleDatePaid(bill, label)}
+                                                        {handleDatePaid(expense, label)}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <BillSettingsMenu data={bill}/>
+
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
@@ -107,8 +123,6 @@ const Bills = () => {
                                     </Table>
                                 </TableContainer>
                             </CardContent>
-                        </div>
-                    ))}
                 </Card>
             ))}
             <Dialog open={open} onClose={() => setOpen(false)}>

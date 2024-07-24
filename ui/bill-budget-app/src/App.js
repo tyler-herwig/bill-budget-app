@@ -7,6 +7,7 @@ import ResponsiveAppBar from './components/ResponsiveAppBar';
 import Paychecks from './components/Paychecks';
 import { BillsProvider, BillsContext } from './components/BillsContext';
 import { PaychecksProvider, PaychecksContext } from './components/PaychecksContext';
+import { ExpensesProvider, ExpensesContext } from './components/ExpensesContext';
 import Bills from './components/Bills';
 import BasicSpeedDial from './components/BasicSpeedDial';
 import UserIntroSection from './components/UserIntroSection';
@@ -31,8 +32,9 @@ const Item = styled(Paper)(({ theme }) => ({
 const AppContent = () => {
     const { loadingBills } = useContext(BillsContext);
     const { loadingPaychecks } = useContext(PaychecksContext);
+    const { loadingExpenses } = useContext(ExpensesContext);
 
-    const isLoading = loadingBills || loadingPaychecks;
+    const isLoading = loadingBills || loadingPaychecks || loadingExpenses;
 
     return (
         <>
@@ -72,9 +74,11 @@ class App extends Component {
                 <div className="App">
                     <PaychecksProvider>
                         <BillsProvider>
-                            <ResponsiveAppBar />
-                            <AppContent />
-                            <BasicSpeedDial />
+                            <ExpensesProvider>
+                                <ResponsiveAppBar />
+                                <AppContent />
+                                <BasicSpeedDial />
+                            </ExpensesProvider>
                         </BillsProvider>
                     </PaychecksProvider>
                 </div>
