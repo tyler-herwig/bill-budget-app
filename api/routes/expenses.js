@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const expensesController = require('../controllers/expenses.controller');
 
-// Add a one-time expense
 router.post('/one-time', expensesController.addOneTimeExpense);
 router.post('/recurring', expensesController.addRecurringExpense);
 router.get('/', expensesController.getAllExpenses);

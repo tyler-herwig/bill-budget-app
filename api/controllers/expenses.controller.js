@@ -361,7 +361,7 @@ exports.updateRecurringExpense = async (req, res) => {
         // Remove instances that are after today
         await Expense.deleteMany({
             recurring_expense_id: id,
-            date_due: { $gt: new Date() }
+            date_due: { $gte: new Date() }
         });
 
         // Add new instances

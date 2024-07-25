@@ -121,7 +121,6 @@ const PaycheckSettingsMenu = ({ data }) => {
                     More
                 </MenuItem>
             </StyledMenu>
-            <PaycheckModal action={action} data={modalData} open={open} handleClose={handleCloseModal} />
         </div>
     );
 }

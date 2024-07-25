@@ -1,12 +1,12 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
-import { PaychecksContext } from './PaychecksContext';
+import { IncomeContext } from './IncomeContext';
 
 export const ExpensesContext = createContext();
 
 export const ExpensesProvider = ({ children }) => {
     const [expenses, setExpenses] = useState([]);
     const [loadingExpenses, setLoadingExpenses] = useState(true);
-    const { refreshPaychecks } = useContext(PaychecksContext);
+    const { refreshIncome } = useContext(IncomeContext);
 
     const API_URL = process.env.REACT_APP_API_URL;
 
@@ -35,14 +35,14 @@ export const ExpensesProvider = ({ children }) => {
             });
             if (response.ok) {
                 await refreshExpenses(); // Refresh data after successful addition
-                await refreshPaychecks(); // Refresh paychecks after adding bill
+                await refreshIncome(); // Refresh income after adding bill
             } else {
                 console.error('Failed to add expense:', response.statusText);
             }
         } catch (error) {
             console.error('Error adding expense:', error);
         }
-    }, [API_URL, refreshExpenses, refreshPaychecks]);
+    }, [API_URL, refreshExpenses, refreshIncome]);
 
     const addRecurringExpense = useCallback(async (expense) => {
         try {
@@ -56,14 +56,14 @@ export const ExpensesProvider = ({ children }) => {
             });
             if (response.ok) {
                 await refreshExpenses(); // Refresh data after successful addition
-                await refreshPaychecks(); // Refresh paychecks after adding bill
+                await refreshIncome(); // Refresh paychecks after adding bill
             } else {
                 console.error('Failed to add expense:', response.statusText);
             }
         } catch (error) {
             console.error('Error adding expense:', error);
         }
-    }, [API_URL, refreshExpenses, refreshPaychecks]);
+    }, [API_URL, refreshExpenses, refreshIncome]);
 
     const updateExpense = useCallback(async (expense) => {
         try {
@@ -76,7 +76,7 @@ export const ExpensesProvider = ({ children }) => {
             });
             if (response.ok) {
                 await refreshExpenses();
-                await refreshPaychecks();
+                await refreshIncome();
                 return await response.json();
             } else {
                 throw new Error('Failed to update expense');
@@ -85,7 +85,7 @@ export const ExpensesProvider = ({ children }) => {
             console.error('Error updating expense:', error);
             throw error;
         }
-    }, [API_URL, refreshExpenses, refreshPaychecks]);
+    }, [API_URL, refreshExpenses, refreshIncome]);
 
     const updateRecurringExpense = useCallback(async (expense) => {
         delete expense._id;
@@ -99,7 +99,7 @@ export const ExpensesProvider = ({ children }) => {
             });
             if (response.ok) {
                 await refreshExpenses();
-                await refreshPaychecks();
+                await refreshIncome();
                 return await response.json();
             } else {
                 throw new Error('Failed to update expense');
@@ -108,7 +108,7 @@ export const ExpensesProvider = ({ children }) => {
             console.error('Error updating expense:', error);
             throw error;
         }
-    }, [API_URL, refreshExpenses, refreshPaychecks]);
+    }, [API_URL, refreshExpenses, refreshIncome]);
 
     useEffect(() => {
         refreshExpenses();

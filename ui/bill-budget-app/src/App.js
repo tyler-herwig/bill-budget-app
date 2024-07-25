@@ -5,15 +5,14 @@ import { Box, Container, Grid, Paper } from '@mui/material';
 import { AccountBalance, Payments } from '@mui/icons-material';
 import ResponsiveAppBar from './components/ResponsiveAppBar';
 import Paychecks from './components/Paychecks';
-import { BillsProvider, BillsContext } from './components/BillsContext';
-import { PaychecksProvider, PaychecksContext } from './components/PaychecksContext';
-import { ExpensesProvider, ExpensesContext } from './components/ExpensesContext';
 import Bills from './components/Bills';
 import BasicSpeedDial from './components/BasicSpeedDial';
 import UserIntroSection from './components/UserIntroSection';
+import LoadingBackdrop from './components/LoadingBackdrop';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import LoadingBackdrop from './components/LoadingBackdrop';
+import { IncomeProvider, IncomeContext } from './components/IncomeContext';
+import { ExpensesProvider, ExpensesContext } from './components/ExpensesContext';
 
 const darkTheme = createTheme({
     palette: {
@@ -30,11 +29,10 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const AppContent = () => {
-    const { loadingBills } = useContext(BillsContext);
-    const { loadingPaychecks } = useContext(PaychecksContext);
+    const { loadingIncome } = useContext(IncomeContext);
     const { loadingExpenses } = useContext(ExpensesContext);
 
-    const isLoading = loadingBills || loadingPaychecks || loadingExpenses;
+    const isLoading = loadingIncome || loadingExpenses;
 
     return (
         <>
@@ -43,18 +41,18 @@ const AppContent = () => {
                 <Box sx={{ flexGrow: 1 }}>
                     <UserIntroSection />
                     <Grid container spacing={2}>
-                        <Grid item xs={12} lg={5}>
+                        <Grid item xs={12} lg={6}>
                             <Item>
                                 <h2 align="left">
-                                    <AccountBalance /> Paychecks
+                                    <AccountBalance /> Income
                                 </h2>
                                 <Paychecks />
                             </Item>
                         </Grid>
-                        <Grid item xs={12} lg={7}>
+                        <Grid item xs={12} lg={6}>
                             <Item>
                                 <h2 align="left">
-                                    <Payments /> Bills
+                                    <Payments /> Expenses
                                 </h2>
                                 <Bills />
                             </Item>
@@ -72,15 +70,13 @@ class App extends Component {
             <ThemeProvider theme={darkTheme}>
                 <CssBaseline />
                 <div className="App">
-                    <PaychecksProvider>
-                        <BillsProvider>
-                            <ExpensesProvider>
-                                <ResponsiveAppBar />
-                                <AppContent />
-                                <BasicSpeedDial />
-                            </ExpensesProvider>
-                        </BillsProvider>
-                    </PaychecksProvider>
+                    <IncomeProvider>
+                        <ExpensesProvider>
+                            <ResponsiveAppBar />
+                            <AppContent />
+                            <BasicSpeedDial />
+                        </ExpensesProvider>
+                    </IncomeProvider>
                 </div>
             </ThemeProvider>
         );

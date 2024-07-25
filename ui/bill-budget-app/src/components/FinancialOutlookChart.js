@@ -2,60 +2,60 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
 import moment from 'moment';
-import { PaychecksContext } from './PaychecksContext';
-import { BillsContext } from './BillsContext';
+import { IncomeContext } from './IncomeContext';
+import { ExpensesContext } from './ExpensesContext';
 
 export function FinancialOutlookChart() {
-    const { paychecks } = useContext(PaychecksContext);
-    const { bills } = useContext(BillsContext);
+    const { incomes } = useContext(IncomeContext);
+    const { expenses } = useContext(ExpensesContext);
 
-    const [chartData, setChartData] = useState({ labels: [], paychecks: [], bills: [] });
+    const [chartData, setChartData] = useState({ labels: [], incomes: [], expenses: [] });
 
     useEffect(() => {
         const labelsSet = new Set();
-        const paycheckTotalByMonth = {};
-        const billsChartData = [];
+        const incomesTotalByMonth = {};
+        const expensesChartData = [];
 
-        paychecks.forEach(paycheck => {
-            let paycheckMonth = moment.utc(paycheck.date).format('YYYY-MM');
-            labelsSet.add(moment.utc(paycheckMonth).format('MMM') + ', ' + moment.utc(paycheckMonth).format('YYYY'));
+        incomes.forEach(income => {
+            let incomeMonth = moment.utc(income.date_received).format('YYYY-MM');
+            labelsSet.add(moment.utc(incomeMonth).format('MMM') + ', ' + moment.utc(incomeMonth).format('YYYY'));
 
-            if (!paycheckTotalByMonth[paycheckMonth]) {
-                paycheckTotalByMonth[paycheckMonth] = 0;
+            if (!incomesTotalByMonth[incomeMonth]) {
+                incomesTotalByMonth[incomeMonth] = 0;
             }
-            paycheckTotalByMonth[paycheckMonth] += paycheck.amount;
+            incomesTotalByMonth[incomeMonth] += income.total_income;
         });
 
-        const paychecksChartData = Object.entries(paycheckTotalByMonth)
+        const incomesChartData = Object.entries(incomesTotalByMonth)
             .sort((a, b) => new Date(a[0]) - new Date(b[0]))
             .map(entry => entry[1]);
 
         const labels = Array.from(labelsSet);
 
-        bills.forEach(billYears => {
-            let totalBillsByMonth = billYears.months.map(month => month.totalAmount);
-            billsChartData.push(...totalBillsByMonth);
+        expenses.forEach(expenseMonthYear => {
+            let totalExpensesByMonth = expenseMonthYear.totalAmount;
+            expensesChartData.push(totalExpensesByMonth);
         });
 
         setChartData({
             labels: labels,
-            paychecks: paychecksChartData,
-            bills: billsChartData
+            incomes: incomesChartData,
+            expenses: expensesChartData
         });
-    }, [paychecks, bills]);
+    }, [incomes, expenses]);
 
     const dynamicChartData = {
         labels: chartData.labels,
         datasets: [
             {
-                label: 'Paychecks',
-                data: chartData.paychecks,
+                label: 'Income',
+                data: chartData.incomes,
                 borderColor: 'rgba(76, 175, 80, 1)',
                 backgroundColor: 'rgba(76, 175, 80, 0.2)'
             },
             {
-                label: 'Bills',
-                data: chartData.bills,
+                label: 'Expenses',
+                data: chartData.expenses,
                 borderColor: 'rgba(54, 162, 235, 1)',
                 backgroundColor: 'rgba(54, 162, 235, 0.2)'
             },

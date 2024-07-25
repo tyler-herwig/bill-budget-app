@@ -5,14 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Corrected upcoming bill date and refactored.">
-      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/OneTimeExpenseModal.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/RecurringExpenseModal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/controllers/income.controller.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/models/Income.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/models/RecurringIncome.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/routes/income.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/IncomeContext.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/controllers/expenses.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/controllers/expenses.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BasicSpeedDial.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BasicSpeedDial.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BillSettingsMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BillSettingsMenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/routes/expenses.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes/expenses.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BasicTabs.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BasicTabs.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Bills.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Bills.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ExpensesContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ExpensesContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/FinancialOutlookChart.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/FinancialOutlookChart.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaycheckSettingsMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaycheckSettingsMenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Paychecks.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Paychecks.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,22 +53,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "feature/income-expenses-conversion",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/tyler/IdeaProjects/bill-budget-app",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Users\\tyler\\AppData\\Local\\JetBrains\\IntelliJ IDEA 2024.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/income-expenses-conversion&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/tyler/IdeaProjects/bill-budget-app&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\tyler\\AppData\\Local\\JetBrains\\IntelliJ IDEA 2024.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\tyler\IdeaProjects\bill-budget-app\ui\bill-budget-app\src\components" />
@@ -91,7 +99,8 @@
       <workItem from="1721403334055" duration="986000" />
       <workItem from="1721404354655" duration="10647000" />
       <workItem from="1721745524743" duration="9188000" />
-      <workItem from="1721830833921" duration="20403000" />
+      <workItem from="1721830833921" duration="21303000" />
+      <workItem from="1721919190324" duration="14864000" />
     </task>
     <task id="LOCAL-00001" summary="Updated app name and description.">
       <option name="closed" value="true" />

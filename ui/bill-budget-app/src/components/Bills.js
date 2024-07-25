@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import {
     Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
     Card, CardHeader, CardContent, Checkbox, TextField, Dialog, DialogActions, DialogContent,
-    DialogTitle, Button, Chip
+    DialogTitle, Button, Tooltip
 } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 import { CalendarMonth, Loop } from '@mui/icons-material';
@@ -99,16 +99,11 @@ const Bills = () => {
                                                         <NumericFormat value={expense.amount.toFixed(2)} displayType="text" thousandSeparator={true} prefix="$" />
                                                     </TableCell>
                                                     <TableCell>
-                                                        {moment.utc(expense.date_due).format('MMMM Do, YYYY')}
+                                                        <small style={{ color: 'grey', fontSize: '10px' }}>{moment.utc(expense.date_due).format('MMMM Do, YYYY')}</small>
                                                         {expense.type === 'recurring' && (
-                                                            <Chip
-                                                                icon={<Loop />}
-                                                                label="Recurring"
-                                                                color="primary"
-                                                                variant="outlined"
-                                                                size="small"
-                                                                style={{ fontWeight: 100, fontSize: '10px', marginLeft: 5 }}
-                                                            />
+                                                            <Tooltip title="Recurring">
+                                                                <Loop fontSize='small' color='primary' style={{position: 'absolute', marginLeft: 2}}/>
+                                                            </Tooltip>
                                                         )}
                                                     </TableCell>
                                                     <TableCell align="center">
