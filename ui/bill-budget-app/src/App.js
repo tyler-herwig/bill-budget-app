@@ -4,8 +4,8 @@ import { styled } from '@mui/material/styles';
 import { Box, Container, Grid, Paper } from '@mui/material';
 import { AccountBalance, Payments } from '@mui/icons-material';
 import ResponsiveAppBar from './components/ResponsiveAppBar';
-import Paychecks from './components/Paychecks';
-import Bills from './components/Bills';
+import Income from './components/Income';
+import Expenses from './components/Expenses';
 import BasicSpeedDial from './components/BasicSpeedDial';
 import UserIntroSection from './components/UserIntroSection';
 import LoadingBackdrop from './components/LoadingBackdrop';
@@ -46,7 +46,7 @@ const AppContent = () => {
                                 <h2 align="left">
                                     <AccountBalance /> Income
                                 </h2>
-                                <Paychecks />
+                                <Income />
                             </Item>
                         </Grid>
                         <Grid item xs={12} lg={6}>
@@ -54,7 +54,7 @@ const AppContent = () => {
                                 <h2 align="left">
                                     <Payments /> Expenses
                                 </h2>
-                                <Bills />
+                                <Expenses />
                             </Item>
                         </Grid>
                     </Grid>

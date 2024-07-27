@@ -5,22 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Corrected upcoming bill date and refactored.">
-      <change afterPath="$PROJECT_DIR$/api/controllers/income.controller.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/models/Income.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/models/RecurringIncome.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/routes/income.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/IncomeContext.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/expenses.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/controllers/expenses.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/routes/expenses.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes/expenses.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/public/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BasicTabs.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BasicTabs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Bills.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Bills.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ExpensesContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ExpensesContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/FinancialOutlookChart.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/FinancialOutlookChart.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaycheckSettingsMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/PaycheckSettingsMenu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Paychecks.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Paychecks.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/BillSettingsMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ExpenseSettingsMenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Bills.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Expenses.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Paychecks.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Income.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ResponsiveAppBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ResponsiveAppBar.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +91,8 @@
       <workItem from="1721404354655" duration="10647000" />
       <workItem from="1721745524743" duration="9188000" />
       <workItem from="1721830833921" duration="21303000" />
-      <workItem from="1721919190324" duration="14864000" />
+      <workItem from="1721919190324" duration="15191000" />
+      <workItem from="1722091754542" duration="1581000" />
     </task>
     <task id="LOCAL-00001" summary="Updated app name and description.">
       <option name="closed" value="true" />

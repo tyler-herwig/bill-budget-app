@@ -50,7 +50,7 @@ const StyledMenu = styled((props) => (
     },
 }));
 
-const BillSettingsMenu = ({ data }) => {
+const ExpenseSettingsMenu = ({ data }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openSettings = Boolean(anchorEl);
     const [open, setOpen] = React.useState(false);
@@ -131,4 +131,4 @@ const BillSettingsMenu = ({ data }) => {
     );
 }
 
-export default BillSettingsMenu;
+export default ExpenseSettingsMenu;

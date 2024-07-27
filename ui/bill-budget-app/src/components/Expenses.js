@@ -8,10 +8,10 @@ import { NumericFormat } from 'react-number-format';
 import { CalendarMonth, Loop } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment from 'moment';
-import BillSettingsMenu from './BillSettingsMenu';
+import ExpenseSettingsMenu from './ExpenseSettingsMenu';
 import { ExpensesContext } from './ExpensesContext';
 
-const Bills = () => {
+const Expenses = () => {
     const { expenses, updateExpense } = useContext(ExpensesContext);
     const label = { inputProps: { 'aria-label': 'Expense paid checkbox' } };
 
@@ -110,7 +110,7 @@ const Bills = () => {
                                                         {handleDatePaid(expense, label)}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <BillSettingsMenu data={expense}/>
+                                                        <ExpenseSettingsMenu data={expense}/>
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
@@ -138,4 +138,4 @@ const Bills = () => {
     );
 };
 
-export default Bills;
+export default Expenses;
