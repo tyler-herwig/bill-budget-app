@@ -139,7 +139,7 @@ exports.getAllExpenses = async (req, res) => {
         const expenses = await Expense.aggregate([
             {
                 $lookup: {
-                    from: 'recurringexpenses', // The collection name for recurring expenses
+                    from: 'recurringexpenses',
                     localField: 'recurring_expense_id',
                     foreignField: '_id',
                     as: 'recurrenceInfo'
@@ -148,7 +148,7 @@ exports.getAllExpenses = async (req, res) => {
             {
                 $unwind: {
                     path: '$recurrenceInfo',
-                    preserveNullAndEmptyArrays: true // Ensures one-time expenses are still included
+                    preserveNullAndEmptyArrays: true
                 }
             },
             {
@@ -156,7 +156,7 @@ exports.getAllExpenses = async (req, res) => {
                     year: { $year: '$date_due' },
                     month: { $month: '$date_due' },
                     dateDueKey: {
-                        $dateToString: { format: "%Y-%m-%d", date: '$date_due' } // Create a sort key for date_due
+                        $dateToString: { format: "%Y-%m-%d", date: '$date_due' }
                     }
                 }
             },
@@ -177,7 +177,7 @@ exports.getAllExpenses = async (req, res) => {
                             recurrence: {
                                 $cond: [
                                     { $eq: ['$recurring_expense_id', null] },
-                                    '$$REMOVE', // Remove recurrence field for one-time expenses
+                                    '$$REMOVE',
                                     {
                                         frequency: '$recurrenceInfo.recurrence.frequency',
                                         start_date: '$recurrenceInfo.recurrence.start_date',
@@ -186,8 +186,7 @@ exports.getAllExpenses = async (req, res) => {
                                 ]
                             }
                         }
-                    },
-                    totalAmount: { $sum: '$amount' }
+                    }
                 }
             },
             {
@@ -215,13 +214,11 @@ exports.getAllExpenses = async (req, res) => {
                             '$_id.month'
                         ]
                     },
-                    expenses: 1,
-                    totalAmount: 1
+                    expenses: 1
                 }
             },
             {
                 $addFields: {
-                    // Sort expenses by the combined year, month, and date_due key
                     expenses: {
                         $map: {
                             input: { $filter: { input: '$expenses', as: 'expense', cond: { $ne: ['$$expense.date_due', null] } } },
@@ -246,13 +243,13 @@ exports.getAllExpenses = async (req, res) => {
                 $unwind: '$expenses'
             },
             {
-                $sort: { year: 1, month: 1, 'expenses.date_due': 1 } // Sort by year, month, and date_due within each group
+                $sort: { 'expenses.date_due': 1 } // Sort by date_due within each group
             },
             {
                 $group: {
                     _id: { year: '$year', month: '$month' },
                     expenses: { $push: '$expenses' },
-                    totalAmount: { $sum: '$totalAmount' }
+                    totalAmount: { $sum: '$expenses.amount' }
                 }
             },
             {
