@@ -3,7 +3,7 @@ import { Box, Typography, Grid, Paper } from '@mui/material';
 import { styled } from '@mui/system';
 import { QueryStats } from '@mui/icons-material';
 import { FinancialOutlookChart } from './FinancialOutlookChart';
-import { BasicTabs } from './BasicTabs';
+import { UserIntroTabs } from './UserIntroTabs';
 
 const InfoPaper = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(3),
@@ -24,7 +24,7 @@ const UserIntroSection = () => {
                         <Typography variant="body1" style={{ color: '#fff' }}>Here's a quick overview of your financial data.</Typography>
                     </Box>
                     <br/>
-                    <BasicTabs/>
+                    <UserIntroTabs/>
                 </InfoPaper>
             </Grid>
             <Grid item xs={12} md={6}>

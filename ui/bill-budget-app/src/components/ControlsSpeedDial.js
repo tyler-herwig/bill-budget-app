@@ -1,33 +1,50 @@
 import React from 'react';
 import { SpeedDial, SpeedDialIcon, SpeedDialAction, Dialog, DialogTitle, DialogContent, DialogActions, Button, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import { AccountBalance, Payments } from '@mui/icons-material';
-import PaycheckModal from './PaycheckModal';
+import OneTimeIncomeModal from './OneTimeIncomeModal';
+import RecurringIncomeModal from './RecurringIncomeModal';
 import OneTimeExpenseModal from './OneTimeExpenseModal';
 import RecurringExpenseModal from './RecurringExpenseModal';
 
 const actions = [
-    { icon: <AccountBalance />, name: 'Add Paycheck' },
+    { icon: <AccountBalance />, name: 'Add Income' },
     { icon: <Payments />, name: 'Add Expense' }
 ];
 
-export default function BasicSpeedDial() {
+export default function ControlsSpeedDial() {
     const [open, setOpen] = React.useState(false);
     const [modalContent, setModalContent] = React.useState('');
     const [expenseType, setExpenseType] = React.useState('one-time');
     const [expenseDialogOpen, setExpenseDialogOpen] = React.useState(false);
+    const [incomeType, setIncomeType] = React.useState('one-time');
+    const [incomeDialogOpen, setIncomeDialogOpen] = React.useState(false);
 
     const handleOpenModal = (content) => {
         if (content === 'Add Expense') {
             setExpenseDialogOpen(true);
         } else {
-            setModalContent(content);
-            setOpen(true);
+            setIncomeDialogOpen(true);
         }
     };
 
     const handleCloseModal = () => {
         setOpen(false);
         setModalContent('');
+    };
+
+    const handleIncomeDialogClose = () => {
+        setIncomeDialogOpen(false);
+        setIncomeType('one-time'); // Reset the selection
+    };
+
+    const handleIncomeTypeChange = (event) => {
+        setIncomeType(event.target.value);
+    };
+
+    const handleIncomeDialogConfirm = () => {
+        setModalContent(incomeType === 'one-time' ? 'Add One-Time Income' : 'Add Recurring Income');
+        setIncomeDialogOpen(false);
+        setOpen(true);
     };
 
     const handleExpenseDialogClose = () => {
@@ -62,8 +79,11 @@ export default function BasicSpeedDial() {
                 ))}
             </SpeedDial>
 
-            {modalContent === 'Add Paycheck' && (
-                <PaycheckModal action='add' open={open} handleClose={handleCloseModal} />
+            {modalContent === 'Add One-Time Income' && (
+                <OneTimeIncomeModal action='add' open={open} handleClose={handleCloseModal} />
+            )}
+            {modalContent === 'Add Recurring Income' && (
+                <RecurringIncomeModal action='add' open={open} handleClose={handleCloseModal} />
             )}
             {modalContent === 'Add One-Time Expense' && (
                 <OneTimeExpenseModal action='add' open={open} handleClose={handleCloseModal} />
@@ -71,6 +91,20 @@ export default function BasicSpeedDial() {
             {modalContent === 'Add Recurring Expense' && (
                 <RecurringExpenseModal action='add' open={open} handleClose={handleCloseModal} />
             )}
+
+            <Dialog open={incomeDialogOpen} onClose={handleIncomeDialogClose}>
+                <DialogTitle>Select Income Type</DialogTitle>
+                <DialogContent>
+                    <RadioGroup value={incomeType} onChange={handleIncomeTypeChange}>
+                        <FormControlLabel value="one-time" control={<Radio />} label="One-Time Income" />
+                        <FormControlLabel value="recurring" control={<Radio />} label="Recurring Income" />
+                    </RadioGroup>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleIncomeDialogClose}>Cancel</Button>
+                    <Button onClick={handleIncomeDialogConfirm}>Confirm</Button>
+                </DialogActions>
+            </Dialog>
 
             <Dialog open={expenseDialogOpen} onClose={handleExpenseDialogClose}>
                 <DialogTitle>Select Expense Type</DialogTitle>

@@ -6,7 +6,7 @@ import { NumericFormat } from 'react-number-format';
 import { Paid, CheckCircle, Error, Info, Loop } from '@mui/icons-material';
 import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
-import PaycheckSettingsMenu from './PaycheckSettingsMenu';
+import IncomeSettingsMenu from './IncomeSettingsMenu';
 
 const Income = () => {
     const { incomes } = useContext(IncomeContext);
@@ -81,7 +81,7 @@ const Income = () => {
                 <TableBody>
                     {incomes.map((income) => (
                         <React.Fragment key={income._id}>
-                            <TableRow>
+                            <TableRow style={{borderLeft: '5px solid #36A1EAFF'}}>
                                 <TableCell component="th" scope="row">
                                     <Chip
                                         icon={<Info />}
@@ -107,12 +107,12 @@ const Income = () => {
                                     {handleMoneyRemaining(income.money_remaining)}
                                 </TableCell>
                                 <TableCell>
-                                    <PaycheckSettingsMenu data={income} />
+                                    <IncomeSettingsMenu data={income} />
                                 </TableCell>
                             </TableRow>
                             {income.additional_income.length > 0 && (
-                                <TableRow>
-                                    <TableCell colSpan={6} style={{ paddingBottom: 0, paddingTop: 0 }}>
+                                <TableRow style={{borderLeft: '5px solid #66BA6AFF'}}>
+                                    <TableCell colSpan={7} style={{ paddingBottom: 0, paddingTop: 0 }}>
                                         <Box margin={1}>
                                             <Alert variant="outlined" severity="success">
                                                 Sweet! You have <b>{<NumericFormat value={(income.additional_income.reduce((sum, income) => sum + income.amount, 0)).toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</b> of additional income for this period.
@@ -124,6 +124,7 @@ const Income = () => {
                                                         <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
                                                         <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
                                                         <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
+                                                        <TableCell></TableCell>
                                                     </TableRow>
                                                 </TableHead>
                                                 <TableBody>
@@ -147,6 +148,9 @@ const Income = () => {
                                                             </TableCell>
                                                             <TableCell align="right">
                                                                 <NumericFormat value={additional.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <IncomeSettingsMenu data={additional} />
                                                             </TableCell>
                                                         </TableRow>
                                                     ))}

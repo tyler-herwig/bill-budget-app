@@ -6,7 +6,7 @@ import { AccountBalance, Payments } from '@mui/icons-material';
 import ResponsiveAppBar from './components/ResponsiveAppBar';
 import Income from './components/Income';
 import Expenses from './components/Expenses';
-import BasicSpeedDial from './components/BasicSpeedDial';
+import ControlsSpeedDial from './components/ControlsSpeedDial';
 import UserIntroSection from './components/UserIntroSection';
 import LoadingBackdrop from './components/LoadingBackdrop';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -74,7 +74,7 @@ class App extends Component {
                         <ExpensesProvider>
                             <ResponsiveAppBar />
                             <AppContent />
-                            <BasicSpeedDial />
+                            <ControlsSpeedDial />
                         </ExpensesProvider>
                     </IncomeProvider>
                 </div>

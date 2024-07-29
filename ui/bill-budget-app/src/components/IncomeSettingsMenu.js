@@ -6,7 +6,8 @@ import {
 import {
     Edit as EditIcon, Delete as DeleteIcon, FileCopy as FileCopyIcon, MoreHoriz as MoreHorizIcon
 } from '@mui/icons-material';
-import PaycheckModal from './PaycheckModal';
+import OneTimeIncomeModal from './OneTimeIncomeModal';
+import RecurringIncomeModal from './RecurringIncomeModal';
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -49,7 +50,7 @@ const StyledMenu = styled((props) => (
     },
 }));
 
-const PaycheckSettingsMenu = ({ data }) => {
+const IncomeSettingsMenu = ({ data }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openSettings = Boolean(anchorEl);
     const [open, setOpen] = React.useState(false);
@@ -79,13 +80,17 @@ const PaycheckSettingsMenu = ({ data }) => {
         setOpen(true);
     }
 
+    const ModalComponent = data.type === 'recurring'
+        ? RecurringIncomeModal
+        : OneTimeIncomeModal;
+
     return (
         <div>
             <IconButton
                 aria-label="edit"
                 color="primary"
-                id={`edit-paycheck-settings-${data._id}`}
-                aria-controls={openSettings ? 'paycheck-settings-menu' : undefined}
+                id={`edit-income-settings-${data._id}`}
+                aria-controls={openSettings ? 'income-settings-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={openSettings ? 'true' : undefined}
                 variant="contained"
@@ -95,9 +100,9 @@ const PaycheckSettingsMenu = ({ data }) => {
             </IconButton>
 
             <StyledMenu
-                id="paycheck-settings-menu"
+                id="income-settings-menu"
                 MenuListProps={{
-                    'aria-labelledby': `edit-paycheck-settings-${data._id}`,
+                    'aria-labelledby': `edit-income-settings-${data._id}`,
                 }}
                 anchorEl={anchorEl}
                 open={openSettings}
@@ -121,8 +126,9 @@ const PaycheckSettingsMenu = ({ data }) => {
                     More
                 </MenuItem>
             </StyledMenu>
+            <ModalComponent action={action} data={modalData} open={open} handleClose={handleCloseModal} />
         </div>
     );
 }
 
-export default PaycheckSettingsMenu;
+export default IncomeSettingsMenu;

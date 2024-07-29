@@ -54,7 +54,7 @@ function a11yProps(index) {
     };
 }
 
-export function BasicTabs() {
+export function UserIntroTabs() {
     const { incomes } = useContext(IncomeContext);
     const { expenses } = useContext(ExpensesContext);
 

@@ -60,8 +60,6 @@ const generateRecurringInstances = (recurringIncome) => {
                 currentDate.setUTCDate(0); // Move to last day of previous month
             }
             currentDate.setUTCDate(dayOfMonth);
-        } else if (frequency === 'weekly') {
-            currentDate.setUTCDate(currentDate.getUTCDate() + 7);
         } else if (frequency === 'daily') {
             currentDate.setUTCDate(currentDate.getUTCDate() + 1);
         } else if (frequency === 'yearly') {
@@ -131,9 +129,16 @@ exports.addRecurringIncome = async (req, res) => {
 
 exports.getAllIncome = async (req, res) => {
     try {
-        // Retrieve all income & expenses
+        // Retrieve all income, expenses, and recurring incomes
         const incomes = await Income.find().sort({ date_received: 1 });
         const expenses = await Expense.find().sort({ date_due: 1 });
+        const recurringIncomes = await RecurringIncome.find();
+
+        // Convert recurring incomes to a map for quick lookup
+        const recurringIncomeMap = new Map();
+        recurringIncomes.forEach(ri => {
+            recurringIncomeMap.set(ri._id.toString(), ri);
+        });
 
         const results = [];
 
@@ -172,8 +177,15 @@ exports.getAllIncome = async (req, res) => {
                     date_received: inc.date_received,
                     type: inc.type,
                     recurring_income_id: inc.recurring_income_id,
+                    recurrence: inc.recurring_income_id ? recurringIncomeMap.get(inc.recurring_income_id.toString()).recurrence : {},
                     amount: inc.amount
                 }));
+
+                // Look up recurrence details if recurring_income_id is set
+                let recurrence = null;
+                if (income.recurring_income_id) {
+                    recurrence = recurringIncomeMap.get(income.recurring_income_id.toString());
+                }
 
                 // Calculate total income
                 const totalIncomeAmount = income.amount + additionalIncomeAmount;
@@ -188,6 +200,7 @@ exports.getAllIncome = async (req, res) => {
                     date_received: income.date_received,
                     type: income.type,
                     recurring_income_id: income.recurring_income_id,
+                    recurrence: recurrence.recurrence,
                     amount: income.amount,
                     additional_income: additionalIncomeDetails,
                     total_income: totalIncomeAmount,
