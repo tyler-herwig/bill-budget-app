@@ -17,7 +17,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const Profile = () => {
     const [open, setOpen] = React.useState(false);
-    const [modalContent, setModalContent] = React.useState('');
 
     const handleOpenModal = (content) => {
         setOpen(true);
@@ -25,7 +24,6 @@ const Profile = () => {
 
     const handleCloseModal = () => {
         setOpen(false);
-        setModalContent('');
     };
 
     return (

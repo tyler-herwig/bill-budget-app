@@ -55,7 +55,7 @@ const RecurringIncomeModal = ({ action, data, open, handleClose, salary }) => {
                 }
             });
         }
-    }, [data]);
+    }, [data, salary]);
 
     const { addRecurringIncome, updateRecurringIncome } = useContext(IncomeContext);
 
