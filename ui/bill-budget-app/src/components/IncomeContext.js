@@ -1,10 +1,12 @@
-import React, { createContext, useState, useEffect, useCallback } from 'react';
+import React, {createContext, useState, useEffect, useCallback, useContext} from 'react';
+import { ProfileContext } from './ProfileContext';
 
 export const IncomeContext = createContext();
 
 export const IncomeProvider = ({ children }) => {
     const [incomes, setIncomes] = useState([]);
     const [loadingIncome, setLoadingIncome] = useState(true);
+    const { refreshProfile } = useContext(ProfileContext);
 
     const API_URL = process.env.REACT_APP_API_URL;
 
@@ -53,13 +55,14 @@ export const IncomeProvider = ({ children }) => {
             });
             if (response.ok) {
                 await refreshIncome(); // Refresh income after adding income
+                await refreshProfile();
             } else {
                 console.error('Failed to add income:', response.statusText);
             }
         } catch (error) {
             console.error('Error adding income:', error);
         }
-    }, [API_URL, refreshIncome]);
+    }, [API_URL, refreshIncome, refreshProfile]);
 
     const updateIncome = useCallback(async (income) => {
         try {
@@ -94,6 +97,7 @@ export const IncomeProvider = ({ children }) => {
             });
             if (response.ok) {
                 await refreshIncome();
+                await refreshProfile();
                 return await response.json();
             } else {
                 throw new Error('Failed to update income');
@@ -102,7 +106,7 @@ export const IncomeProvider = ({ children }) => {
             console.error('Error updating income:', error);
             throw error;
         }
-    }, [API_URL, refreshIncome]);
+    }, [API_URL, refreshIncome, refreshProfile]);
 
     useEffect(() => {
         refreshIncome();

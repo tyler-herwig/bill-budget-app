@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
     Container, Grid, Paper, Avatar, Typography, TextField, Box, Button, TableContainer, Table, TableHead,
     TableRow, TableCell, TableBody, IconButton
 } from '@mui/material';
+import { NumericFormat } from 'react-number-format';
 import {MoreHoriz as MoreHorizIcon, Loop} from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import RecurringIncomeModal from './RecurringIncomeModal';
+import { ProfileContext } from './ProfileContext';
+import moment from 'moment';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -16,6 +19,8 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Profile = () => {
+    const { profile } = useContext(ProfileContext);
+
     const [open, setOpen] = React.useState(false);
 
     const handleOpenModal = (content) => {
@@ -112,38 +117,28 @@ const Profile = () => {
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                <TableRow>
-                                                    <TableCell style={{ fontWeight: 'bold' }}>Unemployment</TableCell>
-                                                    <TableCell align="right">$526.00</TableCell>
-                                                    <TableCell>
-                                                        <Loop fontSize='small' color='primary' style={{ marginLeft: 4 }} /> Weekly <br/>
-                                                        <small style={{ color: 'grey', fontSize: '10px' }}>June 1st, 2024 to August 31st, 2024</small>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <IconButton
-                                                            aria-label="edit"
-                                                            color="primary"
-                                                        >
-                                                            <MoreHorizIcon />
-                                                        </IconButton>
-                                                    </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell style={{ fontWeight: 'bold' }}>Test Company</TableCell>
-                                                    <TableCell align="right">$555.00</TableCell>
-                                                    <TableCell>
-                                                        <Loop fontSize='small' color='primary' style={{ marginLeft: 4 }} /> Bi-Weekly <br/>
-                                                        <small style={{ color: 'grey', fontSize: '10px' }}>September 1st, 2024 to December 31st, 2024</small>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <IconButton
-                                                            aria-label="edit"
-                                                            color="primary"
-                                                        >
-                                                            <MoreHorizIcon />
-                                                        </IconButton>
-                                                    </TableCell>
-                                                </TableRow>
+                                                {profile.salaries.map((salary) => (
+                                                    <TableRow key={salary._id}>
+                                                        <TableCell style={{ fontWeight: 'bold' }}>{salary.description}</TableCell>
+                                                        <TableCell align="right">
+                                                            <NumericFormat value={salary.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <Loop fontSize='small' color='primary' style={{ marginLeft: 4 }} /> {salary.recurrence.frequency.charAt(0).toUpperCase() + salary.recurrence.frequency.slice(1)} <br/>
+                                                            <small style={{ color: 'grey', fontSize: '10px' }}>
+                                                                {moment.utc(salary.recurrence.start_date).format('MMMM Do, YYYY')} to {moment.utc(salary.recurrence.end_date).format('MMMM Do, YYYY')}
+                                                            </small>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            <IconButton
+                                                                aria-label="edit"
+                                                                color="primary"
+                                                            >
+                                                                <MoreHorizIcon />
+                                                            </IconButton>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
                                             </TableBody>
                                         </Table>
                                     </TableContainer>

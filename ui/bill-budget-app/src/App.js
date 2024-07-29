@@ -15,6 +15,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { IncomeProvider, IncomeContext } from './components/IncomeContext';
 import { ExpensesProvider, ExpensesContext } from './components/ExpensesContext';
+import { ProfileProvider, ProfileContext } from './components/ProfileContext';
 
 const darkTheme = createTheme({
     palette: {
@@ -33,8 +34,9 @@ const Item = styled(Paper)(({ theme }) => ({
 const AppContent = () => {
     const { loadingIncome } = useContext(IncomeContext);
     const { loadingExpenses } = useContext(ExpensesContext);
+    const { loadingProfile } = useContext(ProfileContext);
 
-    const isLoading = loadingIncome || loadingExpenses;
+    const isLoading = loadingIncome || loadingExpenses || loadingProfile;
 
     return (
         <>
@@ -77,18 +79,20 @@ class App extends Component {
             <ThemeProvider theme={darkTheme}>
                 <CssBaseline/>
                 <div className="App">
-                    <IncomeProvider>
-                        <ExpensesProvider>
-                            <Router>
-                                <ResponsiveAppBar/>
-                                <Routes>
-                                    <Route path="/" element={<AppContent/>}/>
-                                    <Route path="/profile" element={<Profile/>}/>
-                                </Routes>
-                                <ControlsSpeedDialWrapper />
-                            </Router>
-                        </ExpensesProvider>
-                    </IncomeProvider>
+                    <ProfileProvider>
+                        <IncomeProvider>
+                            <ExpensesProvider>
+                                <Router>
+                                    <ResponsiveAppBar/>
+                                    <Routes>
+                                        <Route path="/" element={<AppContent/>}/>
+                                        <Route path="/profile" element={<Profile/>}/>
+                                    </Routes>
+                                    <ControlsSpeedDialWrapper />
+                                </Router>
+                            </ExpensesProvider>
+                        </IncomeProvider>
+                    </ProfileProvider>
                 </div>
             </ThemeProvider>
     );
