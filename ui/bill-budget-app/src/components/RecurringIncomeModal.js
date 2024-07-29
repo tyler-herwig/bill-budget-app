@@ -8,10 +8,10 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
 
-const RecurringIncomeModal = ({ action, data, open, handleClose }) => {
+const RecurringIncomeModal = ({ action, data, open, handleClose, salary }) => {
     const [formData, setFormData] = useState({
         _id: '',
-        source: '',
+        source: salary ? 'salary' : '',
         description: '',
         amount: '',
         recurring_income_id: '',
@@ -44,7 +44,7 @@ const RecurringIncomeModal = ({ action, data, open, handleClose }) => {
         if (data) {
             setFormData({
                 _id: data._id || '',
-                source: data.source || '',
+                source: salary ? 'salary' : data.source || '',
                 description: data.description || '',
                 amount: data.amount || '',
                 recurring_income_id: data.recurring_income_id || '',
@@ -135,7 +135,7 @@ const RecurringIncomeModal = ({ action, data, open, handleClose }) => {
                         autoComplete="off"
                     >
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                            {formData.source !== 'salary' && (
+                            {formData.source !== 'salary' && !salary && (
                                 <FormControl>
                                     <InputLabel htmlFor="outlined-adornment-source">Income Source</InputLabel>
                                     <Select

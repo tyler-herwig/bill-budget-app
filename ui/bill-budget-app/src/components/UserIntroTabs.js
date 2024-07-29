@@ -157,6 +157,11 @@ export function UserIntroTabs() {
                         </IncomeBackgroundBox>
                         <Typography variant="h3">{<NumericFormat value={upcomingData.income.total_income.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
                         <Typography variant="caption">Next payment on {moment.utc(upcomingData.income.date_received).format('MMMM Do, YYYY')}</Typography>
+                        {upcomingData.income.additional_income.length > 0 && (
+                            <Tooltip title="Total reflects additional income">
+                                <Info fontSize='small' color='primary' style={{marginLeft: 4}}/>
+                            </Tooltip>
+                        )}
                     </Grid>
                     <Grid item xs={6}>
                         <ExpensesBackgroundBox>

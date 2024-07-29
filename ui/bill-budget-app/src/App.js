@@ -1,5 +1,6 @@
 import './App.css';
 import React, { Component, useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { Box, Container, Grid, Paper } from '@mui/material';
 import { AccountBalance, Payments } from '@mui/icons-material';
@@ -9,6 +10,7 @@ import Expenses from './components/Expenses';
 import ControlsSpeedDial from './components/ControlsSpeedDial';
 import UserIntroSection from './components/UserIntroSection';
 import LoadingBackdrop from './components/LoadingBackdrop';
+import Profile from './components/Profile';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { IncomeProvider, IncomeContext } from './components/IncomeContext';
@@ -64,23 +66,33 @@ const AppContent = () => {
     );
 };
 
+const ControlsSpeedDialWrapper = () => {
+    const location = useLocation();
+    return location.pathname === '/' ? <ControlsSpeedDial /> : null;
+};
+
 class App extends Component {
     render() {
         return (
             <ThemeProvider theme={darkTheme}>
-                <CssBaseline />
+                <CssBaseline/>
                 <div className="App">
                     <IncomeProvider>
                         <ExpensesProvider>
-                            <ResponsiveAppBar />
-                            <AppContent />
-                            <ControlsSpeedDial />
+                            <Router>
+                                <ResponsiveAppBar/>
+                                <Routes>
+                                    <Route path="/" element={<AppContent/>}/>
+                                    <Route path="/profile" element={<Profile/>}/>
+                                </Routes>
+                                <ControlsSpeedDialWrapper />
+                            </Router>
                         </ExpensesProvider>
                     </IncomeProvider>
                 </div>
             </ThemeProvider>
-        );
+    );
     }
-}
+    }
 
-export default App;
+    export default App;
