@@ -16,6 +16,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { IncomeProvider, IncomeContext } from './components/IncomeContext';
 import { ExpensesProvider, ExpensesContext } from './components/ExpensesContext';
 import { ProfileProvider, ProfileContext } from './components/ProfileContext';
+import { DateRangeProvider } from './components/DateRangeContext';
+import DateRangePickerComponent from './components/DateRangePickerComponent';
 
 const darkTheme = createTheme({
     palette: {
@@ -79,20 +81,23 @@ class App extends Component {
             <ThemeProvider theme={darkTheme}>
                 <CssBaseline/>
                 <div className="App">
-                    <ProfileProvider>
-                        <IncomeProvider>
-                            <ExpensesProvider>
-                                <Router>
-                                    <ResponsiveAppBar/>
-                                    <Routes>
-                                        <Route path="/" element={<AppContent/>}/>
-                                        <Route path="/profile" element={<Profile/>}/>
-                                    </Routes>
-                                    <ControlsSpeedDialWrapper />
-                                </Router>
-                            </ExpensesProvider>
-                        </IncomeProvider>
-                    </ProfileProvider>
+                    <DateRangeProvider>
+                        <ProfileProvider>
+                            <IncomeProvider>
+                                <ExpensesProvider>
+                                    <Router>
+                                        <ResponsiveAppBar/>
+                                        <DateRangePickerComponent/>
+                                        <Routes>
+                                            <Route path="/" element={<AppContent/>}/>
+                                            <Route path="/profile" element={<Profile/>}/>
+                                        </Routes>
+                                        <ControlsSpeedDialWrapper />
+                                    </Router>
+                                </ExpensesProvider>
+                            </IncomeProvider>
+                        </ProfileProvider>
+                    </DateRangeProvider>
                 </div>
             </ThemeProvider>
     );

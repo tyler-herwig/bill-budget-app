@@ -1,19 +1,27 @@
-import React, {createContext, useState, useEffect, useCallback, useContext} from 'react';
+import React, { createContext, useState, useEffect, useCallback, useContext } from 'react';
 import { ProfileContext } from './ProfileContext';
+import { DateRangeContext } from './DateRangeContext';
 
 export const IncomeContext = createContext();
 
 export const IncomeProvider = ({ children }) => {
     const [incomes, setIncomes] = useState([]);
     const [loadingIncome, setLoadingIncome] = useState(true);
-    const { refreshProfile } = useContext(ProfileContext);
 
+    const { dateRange } = useContext(DateRangeContext);
+    const { refreshProfile } = useContext(ProfileContext);
     const API_URL = process.env.REACT_APP_API_URL;
 
     const refreshIncome = useCallback(async () => {
+        if (!dateRange.startDate || !dateRange.endDate) return; // Ensure dateRange is valid
+
         setLoadingIncome(true);
         try {
-            const response = await fetch(`${API_URL}/income`);
+            const queryParams = new URLSearchParams({
+                start_date: dateRange.startDate.toISOString(),
+                end_date: dateRange.endDate.toISOString()
+            }).toString();
+            const response = await fetch(`${API_URL}/income?${queryParams}`);
             const data = await response.json();
             setIncomes(data);
         } catch (error) {
@@ -21,7 +29,7 @@ export const IncomeProvider = ({ children }) => {
         } finally {
             setLoadingIncome(false);
         }
-    }, [API_URL]);
+    }, [API_URL, dateRange]); // Include dateRange in dependencies
 
     const addIncome = useCallback(async (income) => {
         try {
@@ -34,7 +42,7 @@ export const IncomeProvider = ({ children }) => {
                 body: JSON.stringify(income),
             });
             if (response.ok) {
-                await refreshIncome(); // Refresh income after adding income
+                await refreshIncome();
             } else {
                 console.error('Failed to add income:', response.statusText);
             }
@@ -54,7 +62,7 @@ export const IncomeProvider = ({ children }) => {
                 body: JSON.stringify(income),
             });
             if (response.ok) {
-                await refreshIncome(); // Refresh income after adding income
+                await refreshIncome();
                 await refreshProfile();
             } else {
                 console.error('Failed to add income:', response.statusText);
@@ -110,7 +118,7 @@ export const IncomeProvider = ({ children }) => {
 
     useEffect(() => {
         refreshIncome();
-    }, [refreshIncome]);
+    }, [refreshIncome]); // Call refreshIncome when it changes
 
     return (
         <IncomeContext.Provider value={{ incomes, loadingIncome, refreshIncome, addIncome, addRecurringIncome, updateIncome, updateRecurringIncome }}>
