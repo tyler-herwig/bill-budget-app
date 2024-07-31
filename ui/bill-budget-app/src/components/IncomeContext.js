@@ -33,11 +33,15 @@ export const IncomeProvider = ({ children }) => {
                 end_date: dateRange.endDate.toISOString()
             }).toString();
             const response = await fetch(`${API_URL}/income?${queryParams}`);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to fetch income data');
+            }
             const data = await response.json();
             setIncomes(data);
         } catch (error) {
             console.error('Error fetching income:', error);
-            showNotification('Failed to fetch income data', 'error');
+            showNotification(error.message || 'Failed to fetch income data', 'error');
         } finally {
             setLoadingIncome(false);
         }
@@ -53,15 +57,15 @@ export const IncomeProvider = ({ children }) => {
                 },
                 body: JSON.stringify(income),
             });
-            if (response.ok) {
-                await refreshIncome();
-                showNotification('Income added successfully', 'success');
-            } else {
-                throw new Error('Failed to add income');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to add income');
             }
+            await refreshIncome();
+            showNotification('Income added successfully', 'success');
         } catch (error) {
             console.error('Error adding income:', error);
-            showNotification('Failed to add income', 'error');
+            showNotification(error.message || 'Failed to add income', 'error');
         }
     }, [API_URL, refreshIncome]);
 
@@ -75,16 +79,16 @@ export const IncomeProvider = ({ children }) => {
                 },
                 body: JSON.stringify(income),
             });
-            if (response.ok) {
-                await refreshIncome();
-                await refreshProfile();
-                showNotification('Recurring income added successfully', 'success');
-            } else {
-                throw new Error('Failed to add recurring income');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to add recurring income');
             }
+            await refreshIncome();
+            await refreshProfile();
+            showNotification('Recurring income added successfully', 'success');
         } catch (error) {
             console.error('Error adding recurring income:', error);
-            showNotification('Failed to add recurring income', 'error');
+            showNotification(error.message || 'Failed to add recurring income', 'error');
         }
     }, [API_URL, refreshIncome, refreshProfile]);
 
@@ -97,16 +101,16 @@ export const IncomeProvider = ({ children }) => {
                 },
                 body: JSON.stringify(income)
             });
-            if (response.ok) {
-                await refreshIncome();
-                showNotification('Income updated successfully', 'success');
-                return await response.json();
-            } else {
-                throw new Error('Failed to update income');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to update income');
             }
+            await refreshIncome();
+            showNotification('Income updated successfully', 'success');
+            return await response.json();
         } catch (error) {
             console.error('Error updating income:', error);
-            showNotification('Failed to update income', 'error');
+            showNotification(error.message || 'Failed to update income', 'error');
             throw error;
         }
     }, [API_URL, refreshIncome]);
@@ -121,17 +125,17 @@ export const IncomeProvider = ({ children }) => {
                 },
                 body: JSON.stringify(income)
             });
-            if (response.ok) {
-                await refreshIncome();
-                await refreshProfile();
-                showNotification('Recurring income updated successfully', 'success');
-                return await response.json();
-            } else {
-                throw new Error('Failed to update recurring income');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to update recurring income');
             }
+            await refreshIncome();
+            await refreshProfile();
+            showNotification('Recurring income updated successfully', 'success');
+            return await response.json();
         } catch (error) {
             console.error('Error updating recurring income:', error);
-            showNotification('Failed to update recurring income', 'error');
+            showNotification(error.message || 'Failed to update recurring income', 'error');
             throw error;
         }
     }, [API_URL, refreshIncome, refreshProfile]);

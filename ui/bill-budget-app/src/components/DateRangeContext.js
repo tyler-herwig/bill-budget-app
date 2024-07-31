@@ -17,7 +17,7 @@ export const DateRangeProvider = ({ children }) => {
     };
 
     const updateDateRange = useCallback((range) => {
-        if (range.rangeType == 'custom') {
+        if (range.rangeType === 'custom') {
             setDateRange({
                 startDate: range.startDate,
                 endDate: range.endDate,

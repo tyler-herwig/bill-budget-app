@@ -6,6 +6,16 @@ import reportWebVitals from './reportWebVitals';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
+if (process.env.NODE_ENV === 'local') {
+    const resizeObserverLoopErr = /ResizeObserver loop limit exceeded/;
+
+    window.addEventListener('error', (event) => {
+        if (resizeObserverLoopErr.test(event.message)) {
+            event.stopImmediatePropagation();
+        }
+    });
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

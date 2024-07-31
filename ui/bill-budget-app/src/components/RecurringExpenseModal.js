@@ -116,6 +116,12 @@ const RecurringExpenseModal = ({ action, data, open, handleClose }) => {
 
     const { title, helper, button } = actionVerbage[action] || {};
 
+    const startDate = new Date(formData.recurrence.start_date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const isStartDateInPast = startDate < today;
+
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="dialog-title" aria-describedby="dialog-description">
             <DialogTitle id="dialog-title">{title}</DialogTitle>
@@ -189,6 +195,7 @@ const RecurringExpenseModal = ({ action, data, open, handleClose }) => {
                                         value={formData.recurrence.start_date}
                                         onChange={handleDateChange('start_date')}
                                         renderInput={(params) => <OutlinedInput {...params} />}
+                                        disabled={action === 'edit' && isStartDateInPast}
                                     />
                                 </LocalizationProvider>
                                 <LocalizationProvider dateAdapter={AdapterMoment}>

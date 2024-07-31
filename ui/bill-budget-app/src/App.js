@@ -75,22 +75,27 @@ const ControlsSpeedDialWrapper = () => {
     return location.pathname === '/' ? <ControlsSpeedDial /> : null;
 };
 
+const DateRangePickerComponentWrapper = () => {
+    const location = useLocation();
+    return location.pathname === '/' ? <DateRangePickerComponent /> : null;
+}
+
 class App extends Component {
     render() {
         return (
             <ThemeProvider theme={darkTheme}>
-                <CssBaseline/>
+                <CssBaseline />
                 <div className="App">
                     <DateRangeProvider>
                         <ProfileProvider>
                             <IncomeProvider>
                                 <ExpensesProvider>
                                     <Router>
-                                        <ResponsiveAppBar/>
-                                        <DateRangePickerComponent/>
+                                        <ResponsiveAppBar />
+                                        <DateRangePickerComponentWrapper />
                                         <Routes>
-                                            <Route path="/" element={<AppContent/>}/>
-                                            <Route path="/profile" element={<Profile/>}/>
+                                            <Route path="/" element={<AppContent />} />
+                                            <Route path="/profile" element={<Profile />} />
                                         </Routes>
                                         <ControlsSpeedDialWrapper />
                                     </Router>
@@ -100,8 +105,8 @@ class App extends Component {
                     </DateRangeProvider>
                 </div>
             </ThemeProvider>
-    );
+        );
     }
-    }
+}
 
-    export default App;
+export default App;

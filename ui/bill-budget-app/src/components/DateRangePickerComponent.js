@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TextField, Box, AppBar, Container, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
@@ -6,7 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateRangeContext } from './DateRangeContext';
 
 const DateRangePickerComponent = () => {
-    const { dateRange, updateDateRange, setPredefinedDateRange } = useContext(DateRangeContext);
+    const { dateRange, updateDateRange } = useContext(DateRangeContext);
 
     return (
         <AppBar position="sticky" style={{ padding: 15 }} className='filter-bar'>

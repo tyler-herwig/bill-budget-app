@@ -2,7 +2,7 @@ const Expense = require('../models/Expense');
 const RecurringExpense = require('../models/RecurringExpense');
 
 // Utility function to generate recurring instances
-const generateRecurringInstances = (recurringExpense) => {
+const generateRecurringInstances = (recurringExpense, skipPastDates = false) => {
     const instances = [];
     const { name, description, amount, recurrence } = recurringExpense;
     const { frequency, start_date, end_date } = recurrence;
@@ -19,6 +19,31 @@ const generateRecurringInstances = (recurringExpense) => {
     // Handle the case where the start_date is later than the end_date
     if (finalDate && currentDate > finalDate) {
         throw new Error('Start date cannot be after the end date.');
+    }
+
+    if (skipPastDates) {
+        const today = new Date();
+        today.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
+
+        // Skip past dates based on the frequency
+        while (currentDate < today) {
+            if (frequency === 'monthly') {
+                currentDate.setUTCMonth(currentDate.getUTCMonth() + 1);
+            } else if (frequency === 'weekly') {
+                currentDate.setUTCDate(currentDate.getUTCDate() + 7);
+            } else if (frequency === 'daily') {
+                currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+            } else if (frequency === 'yearly') {
+                currentDate.setUTCFullYear(currentDate.getUTCFullYear() + 1);
+            } else {
+                throw new Error('Invalid frequency type');
+            }
+
+            // Avoid skipping beyond the end date
+            if (finalDate && currentDate > finalDate) {
+                return instances; // No instances to generate
+            }
+        }
     }
 
     // Generate recurring instances
@@ -105,19 +130,24 @@ exports.addOneTimeExpense = async (req, res) => {
 exports.addRecurringExpense = async (req, res) => {
     try {
         const { start_date } = req.body.recurrence;
+        const { end_date } = req.body.recurrence;
 
         // Ensure start_date is provided
         if (!start_date) {
             return res.status(400).json({ message: 'Start date is required for recurring expenses' });
         }
 
-        // Convert start_date to a Date object
-        const startDate = new Date(start_date);
-        const today = new Date();
+        // Ensure end_date is provided
+        if (!end_date) {
+            return res.status(400).json({ message: 'End date is required for recurring expenses' });
+        }
 
-        // Ensure start_date is today or in the future
-        if (startDate < today.setHours(0, 0, 0, 0)) {
-            return res.status(400).json({ message: 'Start date must be today or in the future' });
+        // Convert start_date & end_date to a Date object
+        const startDate = new Date(start_date);
+        const endDate = new Date(end_date);
+
+        if (endDate <= startDate) {
+            return res.status(400).json({ message: 'End date must be after start date' });
         }
 
         // Proceed with adding the recurring expense
@@ -348,15 +378,8 @@ exports.updateRecurringExpense = async (req, res) => {
             return res.status(400).json({ message: 'Expense ID is required' });
         }
 
-        // Validate that the start_date is today or in the future
-        if (updatedData.recurrence && updatedData.recurrence.start_date) {
-            const startDate = new Date(updatedData.recurrence.start_date);
-            const today = new Date();
-
-            // Ensure start_date is today or in the future
-            if (startDate < today.setHours(0, 0, 0, 0)) {
-                return res.status(400).json({ message: 'Start date must be today or in the future' });
-            }
+        if (updatedData.recurrence.end_date <= updatedData.recurrence.start_date) {
+            return res.status(400).json({ message: 'End date must be after start date' });
         }
 
         // Update the recurring expense document
@@ -367,7 +390,7 @@ exports.updateRecurringExpense = async (req, res) => {
         }
 
         // Generate new instances based on updated data
-        const newInstances = generateRecurringInstances(updatedRecurringExpense);
+        const newInstances = generateRecurringInstances(updatedRecurringExpense, true);
 
         // Remove instances that are after today
         await Expense.deleteMany({

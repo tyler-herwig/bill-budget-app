@@ -33,11 +33,15 @@ export const ExpensesProvider = ({ children }) => {
                 end_date: dateRange.endDate.toISOString()
             }).toString();
             const response = await fetch(`${API_URL}/expenses?${queryParams}`);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to fetch expenses');
+            }
             const data = await response.json();
             setExpenses(data);
         } catch (error) {
             console.error('Error fetching expenses:', error);
-            showNotification('Failed to fetch expenses data', 'error');
+            showNotification(error.message || 'Failed to fetch expenses data', 'error');
         } finally {
             setLoadingExpenses(false);
         }
@@ -53,16 +57,16 @@ export const ExpensesProvider = ({ children }) => {
                 },
                 body: JSON.stringify(expense),
             });
-            if (response.ok) {
-                await refreshExpenses();
-                await refreshIncome();
-                showNotification('Expense added successfully', 'success');
-            } else {
-                throw new Error('Failed to add expense');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to add expense');
             }
+            await refreshExpenses();
+            await refreshIncome();
+            showNotification('Expense added successfully', 'success');
         } catch (error) {
             console.error('Error adding expense:', error);
-            showNotification('Failed to add expense', 'error');
+            showNotification(error.message || 'Failed to add expense', 'error');
         }
     }, [API_URL, refreshExpenses, refreshIncome]);
 
@@ -76,16 +80,16 @@ export const ExpensesProvider = ({ children }) => {
                 },
                 body: JSON.stringify(expense),
             });
-            if (response.ok) {
-                await refreshExpenses();
-                await refreshIncome();
-                showNotification('Recurring expense added successfully', 'success');
-            } else {
-                throw new Error('Failed to add recurring expense');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to add recurring expense');
             }
+            await refreshExpenses();
+            await refreshIncome();
+            showNotification('Recurring expense added successfully', 'success');
         } catch (error) {
             console.error('Error adding recurring expense:', error);
-            showNotification('Failed to add recurring expense', 'error');
+            showNotification(error.message || 'Failed to add recurring expense', 'error');
         }
     }, [API_URL, refreshExpenses, refreshIncome]);
 
@@ -98,17 +102,17 @@ export const ExpensesProvider = ({ children }) => {
                 },
                 body: JSON.stringify(expense)
             });
-            if (response.ok) {
-                await refreshExpenses();
-                await refreshIncome();
-                showNotification('Expense updated successfully', 'success');
-                return await response.json();
-            } else {
-                throw new Error('Failed to update expense');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to update expense');
             }
+            await refreshExpenses();
+            await refreshIncome();
+            showNotification('Expense updated successfully', 'success');
+            return await response.json();
         } catch (error) {
             console.error('Error updating expense:', error);
-            showNotification('Failed to update expense', 'error');
+            showNotification(error.message || 'Failed to update expense', 'error');
             throw error;
         }
     }, [API_URL, refreshExpenses, refreshIncome]);
@@ -123,17 +127,17 @@ export const ExpensesProvider = ({ children }) => {
                 },
                 body: JSON.stringify(expense)
             });
-            if (response.ok) {
-                await refreshExpenses();
-                await refreshIncome();
-                showNotification('Recurring expense updated successfully', 'success');
-                return await response.json();
-            } else {
-                throw new Error('Failed to update recurring expense');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to update recurring expense');
             }
+            await refreshExpenses();
+            await refreshIncome();
+            showNotification('Recurring expense updated successfully', 'success');
+            return await response.json();
         } catch (error) {
             console.error('Error updating recurring expense:', error);
-            showNotification('Failed to update recurring expense', 'error');
+            showNotification(error.message || 'Failed to update recurring expense', 'error');
             throw error;
         }
     }, [API_URL, refreshExpenses, refreshIncome]);

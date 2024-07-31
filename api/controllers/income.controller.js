@@ -3,7 +3,7 @@ const RecurringIncome = require('../models/RecurringIncome');
 const Expense = require('../models/Expense');
 
 // Utility function to generate recurring instances
-const generateRecurringInstances = (recurringIncome) => {
+const generateRecurringInstances = (recurringIncome, skipPastDates = false) => {
     const instances = [];
     const { source, description, amount, recurrence } = recurringIncome;
     const { frequency, start_date, end_date } = recurrence;
@@ -20,6 +20,48 @@ const generateRecurringInstances = (recurringIncome) => {
     // Handle the case where the start_date is later than the end_date
     if (finalDate && currentDate > finalDate) {
         throw new Error('Start date cannot be after the end date.');
+    }
+
+    if (skipPastDates) {
+        const today = new Date();
+        today.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
+
+        // Skip past dates based on the frequency
+        while (currentDate < today) {
+            if (frequency === 'weekly') {
+                currentDate.setUTCDate(currentDate.getUTCDate() + 7);
+            } else if (frequency === 'bi-weekly') {
+                currentDate.setUTCDate(currentDate.getUTCDate() + 14);
+            } else if (frequency === 'semi-monthly') {
+                currentDate.setUTCMonth(currentDate.getUTCMonth() + 1);
+                const dayOfMonth = new Date(start_date).getUTCDate();
+                currentDate.setUTCDate(dayOfMonth);
+                // Alternate between the 1st and 15th of the month
+                if (currentDate.getUTCDate() === 1) {
+                    currentDate.setUTCDate(15);
+                } else {
+                    currentDate.setUTCDate(1);
+                }
+            } else if (frequency === 'monthly') {
+                currentDate.setUTCMonth(currentDate.getUTCMonth() + 1);
+                const dayOfMonth = new Date(start_date).getUTCDate();
+                if (currentDate.getUTCDate() < dayOfMonth) {
+                    currentDate.setUTCDate(0); // Move to last day of previous month
+                }
+                currentDate.setUTCDate(dayOfMonth);
+            } else if (frequency === 'daily') {
+                currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+            } else if (frequency === 'yearly') {
+                currentDate.setUTCFullYear(currentDate.getUTCFullYear() + 1);
+            } else {
+                throw new Error('Invalid frequency type');
+            }
+
+            // Avoid skipping beyond the end date
+            if (finalDate && currentDate > finalDate) {
+                return instances; // No instances to generate
+            }
+        }
     }
 
     // Generate recurring instances
@@ -64,7 +106,7 @@ const generateRecurringInstances = (recurringIncome) => {
             currentDate.setUTCDate(currentDate.getUTCDate() + 1);
         } else if (frequency === 'yearly') {
             currentDate.setUTCFullYear(currentDate.getUTCFullYear() + 1);
-        }else {
+        } else {
             throw new Error('Invalid frequency type');
         }
 
@@ -108,10 +150,24 @@ exports.addOneTimeIncome = async (req, res) => {
 exports.addRecurringIncome = async (req, res) => {
     try {
         const { start_date } = req.body.recurrence;
+        const { end_date } = req.body.recurrence;
 
         // Ensure start_date is provided
         if (!start_date) {
             return res.status(400).json({ message: 'Start date is required for recurring income.' });
+        }
+
+        // Ensure end_date is provided
+        if (!end_date) {
+            return res.status(400).json({ message: 'End date is required for recurring income.' });
+        }
+
+        // Convert start_date & end_date to a Date object
+        const startDate = new Date(start_date);
+        const endDate = new Date(end_date);
+
+        if (endDate <= startDate) {
+            return res.status(400).json({ message: 'End date must be after start date' });
         }
 
         // Proceed with adding the recurring income
@@ -275,6 +331,10 @@ exports.updateRecurringIncome = async (req, res) => {
             return res.status(400).json({ message: 'Income ID is required' });
         }
 
+        if (updatedData.recurrence.end_date <= updatedData.recurrence.start_date) {
+            return res.status(400).json({ message: 'End date must be after start date' });
+        }
+
         // Update the recurring income document
         const updatedRecurringIncome = await RecurringIncome.findByIdAndUpdate(id, updatedData, { new: true });
 
@@ -283,7 +343,7 @@ exports.updateRecurringIncome = async (req, res) => {
         }
 
         // Generate new instances based on updated data
-        const newInstances = generateRecurringInstances(updatedRecurringIncome);
+        const newInstances = generateRecurringInstances(updatedRecurringIncome, true);
 
         // Remove instances that are after today
         await Income.deleteMany({
