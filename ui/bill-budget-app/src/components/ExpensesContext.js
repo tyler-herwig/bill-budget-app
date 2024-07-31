@@ -1,19 +1,30 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { IncomeContext } from './IncomeContext';
 import { DateRangeContext } from './DateRangeContext';
+import { Snackbar } from '@mui/material';
+import Alert from '@mui/material/Alert';
 
 export const ExpensesContext = createContext();
 
 export const ExpensesProvider = ({ children }) => {
     const [expenses, setExpenses] = useState([]);
     const [loadingExpenses, setLoadingExpenses] = useState(true);
+    const [notification, setNotification] = useState(null); // Add notification state
 
     const { dateRange } = useContext(DateRangeContext);
     const { refreshIncome } = useContext(IncomeContext);
     const API_URL = process.env.REACT_APP_API_URL;
 
+    const showNotification = (message, type) => {
+        setNotification({ message, type });
+    };
+
+    const handleClose = () => {
+        setNotification(null);
+    };
+
     const refreshExpenses = useCallback(async () => {
-        if (!dateRange.startDate || !dateRange.endDate) return; // Ensure dateRange is valid
+        if (!dateRange.startDate || !dateRange.endDate) return;
 
         setLoadingExpenses(true);
         try {
@@ -26,6 +37,7 @@ export const ExpensesProvider = ({ children }) => {
             setExpenses(data);
         } catch (error) {
             console.error('Error fetching expenses:', error);
+            showNotification('Failed to fetch expenses data', 'error');
         } finally {
             setLoadingExpenses(false);
         }
@@ -42,13 +54,15 @@ export const ExpensesProvider = ({ children }) => {
                 body: JSON.stringify(expense),
             });
             if (response.ok) {
-                await refreshExpenses(); // Refresh data after successful addition
-                await refreshIncome(); // Refresh income after adding bill
+                await refreshExpenses();
+                await refreshIncome();
+                showNotification('Expense added successfully', 'success');
             } else {
-                console.error('Failed to add expense:', response.statusText);
+                throw new Error('Failed to add expense');
             }
         } catch (error) {
             console.error('Error adding expense:', error);
+            showNotification('Failed to add expense', 'error');
         }
     }, [API_URL, refreshExpenses, refreshIncome]);
 
@@ -63,13 +77,15 @@ export const ExpensesProvider = ({ children }) => {
                 body: JSON.stringify(expense),
             });
             if (response.ok) {
-                await refreshExpenses(); // Refresh data after successful addition
-                await refreshIncome(); // Refresh paychecks after adding bill
+                await refreshExpenses();
+                await refreshIncome();
+                showNotification('Recurring expense added successfully', 'success');
             } else {
-                console.error('Failed to add expense:', response.statusText);
+                throw new Error('Failed to add recurring expense');
             }
         } catch (error) {
-            console.error('Error adding expense:', error);
+            console.error('Error adding recurring expense:', error);
+            showNotification('Failed to add recurring expense', 'error');
         }
     }, [API_URL, refreshExpenses, refreshIncome]);
 
@@ -85,12 +101,14 @@ export const ExpensesProvider = ({ children }) => {
             if (response.ok) {
                 await refreshExpenses();
                 await refreshIncome();
+                showNotification('Expense updated successfully', 'success');
                 return await response.json();
             } else {
                 throw new Error('Failed to update expense');
             }
         } catch (error) {
             console.error('Error updating expense:', error);
+            showNotification('Failed to update expense', 'error');
             throw error;
         }
     }, [API_URL, refreshExpenses, refreshIncome]);
@@ -108,12 +126,14 @@ export const ExpensesProvider = ({ children }) => {
             if (response.ok) {
                 await refreshExpenses();
                 await refreshIncome();
+                showNotification('Recurring expense updated successfully', 'success');
                 return await response.json();
             } else {
-                throw new Error('Failed to update expense');
+                throw new Error('Failed to update recurring expense');
             }
         } catch (error) {
-            console.error('Error updating expense:', error);
+            console.error('Error updating recurring expense:', error);
+            showNotification('Failed to update recurring expense', 'error');
             throw error;
         }
     }, [API_URL, refreshExpenses, refreshIncome]);
@@ -125,6 +145,18 @@ export const ExpensesProvider = ({ children }) => {
     return (
         <ExpensesContext.Provider value={{ expenses, loadingExpenses, refreshExpenses, addExpense, addRecurringExpense, updateExpense, updateRecurringExpense }}>
             {children}
+            {notification && (
+                <Snackbar
+                    open={!!notification}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                >
+                    <Alert onClose={handleClose} severity={notification.type} sx={{ width: '100%' }}>
+                        {notification.message}
+                    </Alert>
+                </Snackbar>
+            )}
         </ExpensesContext.Provider>
     );
 };
