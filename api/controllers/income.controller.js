@@ -128,10 +128,22 @@ exports.addRecurringIncome = async (req, res) => {
 };
 
 exports.getAllIncome = async (req, res) => {
+    const { start_date, end_date } = req.query;
+
+    // Convert query parameters to JavaScript Date objects
+    const start = start_date ? new Date(start_date) : new Date(0); // Default to the earliest date if not provided
+    const end = end_date ? new Date(end_date) : new Date(); // Default to now if not provided
+
     try {
-        // Retrieve all income, expenses, and recurring incomes
-        const incomes = await Income.find().sort({ date_received: 1 });
-        const expenses = await Expense.find().sort({ date_due: 1 });
+        // Retrieve all income, expenses, and recurring incomes within the date range
+        const incomes = await Income.find({
+            date_received: { $gte: start, $lte: end }
+        }).sort({ date_received: 1 });
+
+        const expenses = await Expense.find({
+            date_due: { $gte: start, $lte: end }
+        }).sort({ date_due: 1 });
+
         const recurringIncomes = await RecurringIncome.find();
 
         // Convert recurring incomes to a map for quick lookup
@@ -200,7 +212,7 @@ exports.getAllIncome = async (req, res) => {
                     date_received: income.date_received,
                     type: income.type,
                     recurring_income_id: income.recurring_income_id,
-                    recurrence: recurrence.recurrence,
+                    recurrence: recurrence ? recurrence.recurrence : {},
                     amount: income.amount,
                     additional_income: additionalIncomeDetails,
                     total_income: totalIncomeAmount,
@@ -212,6 +224,7 @@ exports.getAllIncome = async (req, res) => {
 
         res.json(results);
     } catch (err) {
+        console.error('Error fetching income:', err);
         res.status(500).send('Server Error');
     }
 };
@@ -233,6 +246,21 @@ exports.updateOneTimeIncome = async (req, res) => {
         }
 
         res.status(200).json(updatedOneTimeIncome);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.getRecurringIncomes = async (req, res) => {
+    try {
+        const { source } = req.query;
+        const filter = {};
+        if (source) {
+            filter.source = source;
+        }
+        const recurringIncomes = await RecurringIncome.find(filter).sort({ 'recurrence.start_date': 1 });
+
+        res.status(200).json(recurringIncomes);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

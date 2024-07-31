@@ -135,8 +135,22 @@ exports.addRecurringExpense = async (req, res) => {
 
 // Get all expenses grouped by year and month
 exports.getAllExpenses = async (req, res) => {
+    const { start_date, end_date } = req.query;
+
+    // Convert query parameters to JavaScript Date objects
+    const start = start_date ? new Date(start_date) : new Date(0); // Default to the earliest date if not provided
+    const end = end_date ? new Date(end_date) : new Date(); // Default to now if not provided
+
     try {
         const expenses = await Expense.aggregate([
+            {
+                $match: {
+                    date_due: {
+                        $gte: start,
+                        $lte: end
+                    }
+                }
+            },
             {
                 $lookup: {
                     from: 'recurringexpenses',
