@@ -4,8 +4,8 @@ import moment from 'moment';
 export const DateRangeContext = createContext();
 
 export const DateRangeProvider = ({ children }) => {
-    const [dateRange, setDateRange] = useState(null); // Start with null
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [dateRange, setDateRange] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const getStoredDateRange = () => {
         const storedRange = localStorage.getItem('date_range');
@@ -17,32 +17,94 @@ export const DateRangeProvider = ({ children }) => {
     };
 
     const updateDateRange = useCallback((range) => {
-        setDateRange({
-            startDate: range.startDate,
-            endDate: range.endDate
-        });
+        if (range.rangeType == 'custom') {
+            setDateRange({
+                startDate: range.startDate,
+                endDate: range.endDate,
+                rangeType: range.rangeType
+            });
 
-        setStoredDateRange({
-            startDate: range.startDate.toISOString(),
-            endDate: range.endDate.toISOString()
-        });
-    }, []); // No dependencies for updateDateRange
+            setStoredDateRange({
+                startDate: range.startDate,
+                endDate: range.endDate,
+                rangeType: range.rangeType
+            });
+        } else {
+            let predefinedRange = setPredefinedDateRange(range.rangeType);
+            setDateRange({
+                startDate: predefinedRange.startDate,
+                endDate: predefinedRange.endDate,
+                rangeType: range.rangeType
+            });
+
+            setStoredDateRange({
+                startDate: predefinedRange.startDate.toISOString(),
+                endDate: predefinedRange.endDate.toISOString(),
+                rangeType: range.rangeType
+            });
+        }
+
+    }, []);
+
+    const setPredefinedDateRange = (rangeType) => {
+        let startDate, endDate;
+
+        switch (rangeType) {
+            case 'thisWeek':
+                startDate = moment().startOf('week');
+                endDate = moment().endOf('week');
+                break;
+            case 'lastWeek':
+                startDate = moment().subtract(1, 'week').startOf('week');
+                endDate = moment().subtract(1, 'week').endOf('week');
+                break;
+            case 'twoWeeks':
+                startDate = moment().subtract(1, 'week').startOf('week');
+                endDate = moment().endOf('week');
+                break;
+            case 'thisMonth':
+                startDate = moment().startOf('month');
+                endDate = moment().endOf('month');
+                break;
+            case 'lastMonth':
+                startDate = moment().subtract(1, 'month').startOf('month');
+                endDate = moment().subtract(1, 'month').endOf('month');
+                break;
+            case 'sixMonths':
+                startDate = moment().startOf('month');
+                endDate = moment().add(5, 'months').endOf('month');
+                break;
+            case 'currentYear':
+                startDate = moment().startOf('year');
+                endDate = moment().endOf('year');
+                break;
+            default:
+                return; // No action for custom or invalid range
+        }
+
+        return {
+            startDate: startDate,
+            endDate: endDate
+        };
+    };
 
     useEffect(() => {
         const storedRange = getStoredDateRange();
         if (storedRange) {
             setDateRange({
                 startDate: moment(storedRange.startDate),
-                endDate: moment(storedRange.endDate)
+                endDate: moment(storedRange.endDate),
+                rangeType: storedRange.rangeType
             });
         } else {
             // Set default range if no stored value
             updateDateRange({
                 startDate: moment().subtract(30, 'days'),
-                endDate: moment()
+                endDate: moment(),
+                rangeType: 'thisMonth'
             });
         }
-        setLoading(false); // Set loading to false after setting the range
+        setLoading(false);
     }, [updateDateRange]);
 
     if (loading) {
@@ -50,7 +112,7 @@ export const DateRangeProvider = ({ children }) => {
     }
 
     return (
-        <DateRangeContext.Provider value={{ dateRange, updateDateRange }}>
+        <DateRangeContext.Provider value={{ dateRange, updateDateRange, setPredefinedDateRange }}>
             {children}
         </DateRangeContext.Provider>
     );
