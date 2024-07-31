@@ -1,19 +1,27 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { IncomeContext } from './IncomeContext';
+import { DateRangeContext } from './DateRangeContext';
 
 export const ExpensesContext = createContext();
 
 export const ExpensesProvider = ({ children }) => {
     const [expenses, setExpenses] = useState([]);
     const [loadingExpenses, setLoadingExpenses] = useState(true);
-    const { refreshIncome } = useContext(IncomeContext);
 
+    const { dateRange } = useContext(DateRangeContext);
+    const { refreshIncome } = useContext(IncomeContext);
     const API_URL = process.env.REACT_APP_API_URL;
 
     const refreshExpenses = useCallback(async () => {
+        if (!dateRange.startDate || !dateRange.endDate) return; // Ensure dateRange is valid
+
         setLoadingExpenses(true);
         try {
-            const response = await fetch(`${API_URL}/expenses`);
+            const queryParams = new URLSearchParams({
+                start_date: dateRange.startDate.toISOString(),
+                end_date: dateRange.endDate.toISOString()
+            }).toString();
+            const response = await fetch(`${API_URL}/expenses?${queryParams}`);
             const data = await response.json();
             setExpenses(data);
         } catch (error) {
@@ -21,7 +29,7 @@ export const ExpensesProvider = ({ children }) => {
         } finally {
             setLoadingExpenses(false);
         }
-    }, [API_URL]);
+    }, [API_URL, dateRange]);
 
     const addExpense = useCallback(async (expense) => {
         try {

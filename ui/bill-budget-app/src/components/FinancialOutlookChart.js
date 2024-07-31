@@ -3,46 +3,48 @@ import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
 import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
-import { ExpensesContext } from './ExpensesContext';
 
 export function FinancialOutlookChart() {
     const { incomes } = useContext(IncomeContext);
-    const { expenses } = useContext(ExpensesContext);
 
     const [chartData, setChartData] = useState({ labels: [], incomes: [], expenses: [] });
 
     useEffect(() => {
         const labelsSet = new Set();
         const incomesTotalByMonth = {};
-        const expensesChartData = [];
+        const expensesTotalByMonth = {};
 
         incomes.forEach(income => {
-            let incomeMonth = moment.utc(income.date_received).format('YYYY-MM');
-            labelsSet.add(moment.utc(incomeMonth).format('MMM') + ', ' + moment.utc(incomeMonth).format('YYYY'));
+            let incomeMonth = moment.utc(income.date_received).format('MMM D, YYYY');
+            labelsSet.add(incomeMonth);
 
             if (!incomesTotalByMonth[incomeMonth]) {
                 incomesTotalByMonth[incomeMonth] = 0;
             }
             incomesTotalByMonth[incomeMonth] += income.total_income;
+
+            if (!expensesTotalByMonth[incomeMonth]) {
+                expensesTotalByMonth[incomeMonth] = 0;
+            }
+            expensesTotalByMonth[incomeMonth] += income.total_expenses;
         });
 
         const incomesChartData = Object.entries(incomesTotalByMonth)
             .sort((a, b) => new Date(a[0]) - new Date(b[0]))
             .map(entry => entry[1]);
 
-        const labels = Array.from(labelsSet);
+        const expensesChartData = Object.entries(expensesTotalByMonth)
+            .sort((a, b) => new Date(a[0]) - new Date(b[0]))
+            .map(entry => entry[1]);
 
-        expenses.forEach(expenseMonthYear => {
-            let totalExpensesByMonth = expenseMonthYear.totalAmount;
-            expensesChartData.push(totalExpensesByMonth);
-        });
+        const labels = Array.from(labelsSet);
 
         setChartData({
             labels: labels,
             incomes: incomesChartData,
             expenses: expensesChartData
         });
-    }, [incomes, expenses]);
+    }, [incomes]);
 
     const dynamicChartData = {
         labels: chartData.labels,

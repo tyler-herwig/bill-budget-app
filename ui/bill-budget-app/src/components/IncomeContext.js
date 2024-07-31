@@ -29,7 +29,7 @@ export const IncomeProvider = ({ children }) => {
         } finally {
             setLoadingIncome(false);
         }
-    }, [API_URL, dateRange]); // Include dateRange in dependencies
+    }, [API_URL, dateRange]);
 
     const addIncome = useCallback(async (income) => {
         try {
@@ -118,7 +118,7 @@ export const IncomeProvider = ({ children }) => {
 
     useEffect(() => {
         refreshIncome();
-    }, [refreshIncome]); // Call refreshIncome when it changes
+    }, [refreshIncome]);
 
     return (
         <IncomeContext.Provider value={{ incomes, loadingIncome, refreshIncome, addIncome, addRecurringIncome, updateIncome, updateRecurringIncome }}>

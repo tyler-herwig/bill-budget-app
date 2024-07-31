@@ -128,7 +128,7 @@ export function UserIntroTabs() {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <IncomeBackgroundBox>
-                            <Typography variant="h6" style={{fontWeight: 'bold'}}><AccountBalance /> Current Income</Typography>
+                            <Typography variant="h6" style={{fontWeight: 'bold'}}><AccountBalance /> Income</Typography>
                         </IncomeBackgroundBox>
                         <Typography variant="h3">{<NumericFormat value={currentData.income.total_income.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
                         <Typography variant="caption">You got paid on {moment.utc(currentData.income.date_received).format('MMMM Do, YYYY')}</Typography>
@@ -140,7 +140,7 @@ export function UserIntroTabs() {
                     </Grid>
                     <Grid item xs={6}>
                         <ExpensesBackgroundBox>
-                            <Typography variant="h6" style={{fontWeight: 'bold'}}><Payments /> Current Expenses</Typography>
+                            <Typography variant="h6" style={{fontWeight: 'bold'}}><Payments /> Expenses</Typography>
                         </ExpensesBackgroundBox>
                         <Typography variant="h3">{<NumericFormat value={currentData.income.total_expenses?.toFixed(2) || '0.00'} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
                         <Typography variant="caption">{moment.utc(currentData.income.date_received).format('MMMM Do, YYYY')} to {moment.utc(currentData.expense.date_received).format('MMMM Do, YYYY')}</Typography>
@@ -153,7 +153,7 @@ export function UserIntroTabs() {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <IncomeBackgroundBox>
-                            <Typography variant="h6" style={{fontWeight: 'bold'}}><AccountBalance /> Upcoming Income</Typography>
+                            <Typography variant="h6" style={{fontWeight: 'bold'}}><AccountBalance /> Income</Typography>
                         </IncomeBackgroundBox>
                         <Typography variant="h3">{<NumericFormat value={upcomingData.income.total_income.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
                         <Typography variant="caption">Next payment on {moment.utc(upcomingData.income.date_received).format('MMMM Do, YYYY')}</Typography>
@@ -165,7 +165,7 @@ export function UserIntroTabs() {
                     </Grid>
                     <Grid item xs={6}>
                         <ExpensesBackgroundBox>
-                            <Typography variant="h6" style={{fontWeight: 'bold'}}><Payments /> Upcoming Expenses</Typography>
+                            <Typography variant="h6" style={{fontWeight: 'bold'}}><Payments /> Expenses</Typography>
                         </ExpensesBackgroundBox>
                         <Typography variant="h3">{<NumericFormat value={upcomingData.income.total_expenses?.toFixed(2) || '0.00'} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
                         <Typography variant="caption">{moment.utc(upcomingData.income.date_received).format('MMMM Do, YYYY')} to {moment.utc(upcomingData.expense.date_received).format('MMMM Do, YYYY')}</Typography>

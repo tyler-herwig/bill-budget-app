@@ -17,7 +17,7 @@ const InfoPaper = styled(Paper)(({ theme }) => ({
 const UserIntroSection = () => {
     return (
         <Grid container spacing={2} style={{ marginBottom: '15px' }}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={5}>
                 <InfoPaper style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
                     <Box>
                         <Typography variant="h3" style={{ color: '#fff' }}>Welcome, Tyler!</Typography>
@@ -27,7 +27,7 @@ const UserIntroSection = () => {
                     <UserIntroTabs/>
                 </InfoPaper>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={7}>
                 <InfoPaper style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
                     <Box>
                         <Typography variant="h6" style={{fontWeight: 'bold'}}><QueryStats /> Your Financial Outlook</Typography>
