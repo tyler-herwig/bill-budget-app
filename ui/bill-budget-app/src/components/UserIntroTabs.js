@@ -7,6 +7,7 @@ import { NumericFormat } from 'react-number-format';
 import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
 import { ExpensesContext } from './ExpensesContext';
+import NoDataMessage from './NoDataMessage';
 
 const BackgroundBox = styled(Box)(({ theme }) => ({
     padding: theme.spacing(2),
@@ -113,7 +114,7 @@ export function UserIntroTabs() {
     }
 
     if (!upcomingData || !currentData) {
-        return null;
+        return <NoDataMessage title='Insufficient Data' message='The data available is not sufficient for this widget. Please adjust your filters and try again.'/>;
     }
 
     return (

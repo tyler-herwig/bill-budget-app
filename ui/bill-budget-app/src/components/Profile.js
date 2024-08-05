@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import RecurringIncomeModal from './RecurringIncomeModal';
 import { ProfileContext } from './ProfileContext';
 import moment from 'moment';
+import NoDataMessage from './NoDataMessage';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -90,7 +91,7 @@ const Profile = () => {
                                 </Item>
                             </Grid>
                             <Grid item xs={12} md={7}>
-                                <Item>
+                                <Item style={{paddingBottom: 20}}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
                                         <Typography variant="h4" component="h2" align="left">
                                             Salary
@@ -106,6 +107,9 @@ const Profile = () => {
                                             Add Salary
                                         </Button>
                                     </Grid>
+                                    {(!profile.salaries.length) ? (
+                                        <NoDataMessage title='Get Started' message='Get started by adding your first salary using the button above.'/>
+                                    ) : (
                                     <TableContainer component={Paper}>
                                         <Table aria-label="Income table" size="medium">
                                             <TableHead>
@@ -142,6 +146,7 @@ const Profile = () => {
                                             </TableBody>
                                         </Table>
                                     </TableContainer>
+                                    )}
                                 </Item>
                             </Grid>
                         </Grid>

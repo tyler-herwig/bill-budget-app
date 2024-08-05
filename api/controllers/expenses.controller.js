@@ -392,10 +392,13 @@ exports.updateRecurringExpense = async (req, res) => {
         // Generate new instances based on updated data
         const newInstances = generateRecurringInstances(updatedRecurringExpense, true);
 
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
+
         // Remove instances that are after today
         await Expense.deleteMany({
             recurring_expense_id: id,
-            date_due: { $gte: new Date() }
+            date_due: { $gte: startOfToday }
         });
 
         // Add new instances

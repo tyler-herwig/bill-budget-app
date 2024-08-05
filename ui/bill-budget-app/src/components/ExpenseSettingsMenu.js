@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import {
-    Menu, MenuItem, Divider, IconButton
+    Menu, MenuItem, Divider, IconButton, ListSubheader
 } from '@mui/material';
 import {
-    Edit as EditIcon, Delete as DeleteIcon, FileCopy as FileCopyIcon, MoreHoriz as MoreHorizIcon
+    Edit as EditIcon, Delete as DeleteIcon, MoreHoriz as MoreHorizIcon,
+    AppRegistration as EditRecurringIcon, DeleteSweep as DeleteRecurringIcon
 } from '@mui/icons-material';
 import RecurringExpenseModal from './RecurringExpenseModal';
 import OneTimeExpenseModal from './OneTimeExpenseModal';
@@ -55,6 +56,7 @@ const ExpenseSettingsMenu = ({ data }) => {
     const openSettings = Boolean(anchorEl);
     const [open, setOpen] = React.useState(false);
     const [action, setAction] = React.useState('');
+    const [expenseType, setExpenseType] = React.useState('');
     const [modalData, setModalData] = React.useState({});
 
     const handleCloseModal = () => setOpen(false);
@@ -66,21 +68,23 @@ const ExpenseSettingsMenu = ({ data }) => {
         setAnchorEl(null);
     };
 
-    const handleEditClick = () => {
+    const handleEditClick = (type) => {
         handleCloseSettings();
         setModalData(data);
         setAction('edit');
+        setExpenseType(type);
         setOpen(true);
     };
 
-    const handleDeleteClick = () => {
+    const handleDeleteClick = (type) => {
         handleCloseSettings();
         setModalData(data);
         setAction('delete');
+        setExpenseType(type);
         setOpen(true);
     };
 
-    const ModalComponent = data.type === 'recurring'
+    const ModalComponent = expenseType === 'recurring'
         ? RecurringExpenseModal
         : OneTimeExpenseModal;
 
@@ -108,22 +112,26 @@ const ExpenseSettingsMenu = ({ data }) => {
                 open={openSettings}
                 onClose={handleCloseSettings}
             >
-                <MenuItem onClick={handleEditClick} disableRipple>
+                {data.type === 'recurring' && [
+                    <ListSubheader key="recurrence-header">Recurrence</ListSubheader>,
+                    <MenuItem key="edit-recurring" onClick={() => handleEditClick('recurring')} disableRipple>
+                        <EditRecurringIcon />
+                        Edit
+                    </MenuItem>,
+                    <MenuItem key="delete-recurring" onClick={() => handleDeleteClick('recurring')} disableRipple>
+                        <DeleteRecurringIcon />
+                        Delete
+                    </MenuItem>,
+                    <Divider key="divider" sx={{ my: 0.5 }} />,
+                ]}
+                <ListSubheader>One-Time</ListSubheader>
+                <MenuItem onClick={() => handleEditClick('one-time')} disableRipple>
                     <EditIcon />
                     Edit
                 </MenuItem>
-                <MenuItem onClick={handleCloseSettings} disableRipple disabled={true}>
-                    <FileCopyIcon />
-                    Duplicate
-                </MenuItem>
-                <Divider sx={{ my: 0.5 }} />
-                <MenuItem onClick={handleDeleteClick}>
+                <MenuItem onClick={() => handleDeleteClick('one-time')} disableRipple>
                     <DeleteIcon />
                     Delete
-                </MenuItem>
-                <MenuItem onClick={handleCloseSettings} disableRipple disabled={true}>
-                    <MoreHorizIcon />
-                    More
                 </MenuItem>
             </StyledMenu>
             <ModalComponent action={action} data={modalData} open={open} handleClose={handleCloseModal} />

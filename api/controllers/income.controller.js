@@ -345,10 +345,13 @@ exports.updateRecurringIncome = async (req, res) => {
         // Generate new instances based on updated data
         const newInstances = generateRecurringInstances(updatedRecurringIncome, true);
 
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
+
         // Remove instances that are after today
         await Income.deleteMany({
             recurring_income_id: id,
-            date_received: { $gte: new Date() }
+            date_received: { $gte: startOfToday }
         });
 
         // Add new instances

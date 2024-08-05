@@ -111,33 +111,35 @@ const OneTimeIncomeModal = ({ action, data, open, handleClose }) => {
                         noValidate
                         autoComplete="off"
                     >
-                        <FormControl>
-                            <InputLabel htmlFor="outlined-adornment-source">Income Source</InputLabel>
-                            <Select
-                                id="outlined-adornment-source"
-                                value={formData.source}
-                                onChange={handleSourceChange}
-                                label="Source"
-                            >
-                                <MenuItem value="investment">Investment</MenuItem>
-                                <MenuItem value="freelance">Freelance</MenuItem>
-                                <MenuItem value="rental">Rental</MenuItem>
-                                <MenuItem value="business">Business</MenuItem>
-                                <MenuItem value="bonus">Bonus</MenuItem>
-                                <MenuItem value="dividend">Dividend</MenuItem>
-                                <MenuItem value="interest">Interest</MenuItem>
-                                <MenuItem value="royalty">Royalty</MenuItem>
-                                <MenuItem value="gift">Gift</MenuItem>
-                                <MenuItem value="pension">Pension</MenuItem>
-                                <MenuItem value="social_security">Social Security</MenuItem>
-                                <MenuItem value="alimony">Alimony</MenuItem>
-                                <MenuItem value="child_support">Child Support</MenuItem>
-                                <MenuItem value="grant">Grant</MenuItem>
-                                <MenuItem value="award">Award</MenuItem>
-                                <MenuItem value="cash_windfall">Cash Windfall</MenuItem>
-                                <MenuItem value="miscellaneous">Miscellaneous</MenuItem>
-                            </Select>
-                        </FormControl>
+                        {formData.source !== 'salary' && (
+                            <FormControl>
+                                <InputLabel htmlFor="outlined-adornment-source">Income Source</InputLabel>
+                                <Select
+                                    id="outlined-adornment-source"
+                                    value={formData.source}
+                                    onChange={handleSourceChange}
+                                    label="Source"
+                                >
+                                    <MenuItem value="investment">Investment</MenuItem>
+                                    <MenuItem value="freelance">Freelance</MenuItem>
+                                    <MenuItem value="rental">Rental</MenuItem>
+                                    <MenuItem value="business">Business</MenuItem>
+                                    <MenuItem value="bonus">Bonus</MenuItem>
+                                    <MenuItem value="dividend">Dividend</MenuItem>
+                                    <MenuItem value="interest">Interest</MenuItem>
+                                    <MenuItem value="royalty">Royalty</MenuItem>
+                                    <MenuItem value="gift">Gift</MenuItem>
+                                    <MenuItem value="pension">Pension</MenuItem>
+                                    <MenuItem value="social_security">Social Security</MenuItem>
+                                    <MenuItem value="alimony">Alimony</MenuItem>
+                                    <MenuItem value="child_support">Child Support</MenuItem>
+                                    <MenuItem value="grant">Grant</MenuItem>
+                                    <MenuItem value="award">Award</MenuItem>
+                                    <MenuItem value="cash_windfall">Cash Windfall</MenuItem>
+                                    <MenuItem value="miscellaneous">Miscellaneous</MenuItem>
+                                </Select>
+                            </FormControl>
+                        )}
                         <FormControl>
                             <InputLabel htmlFor="outlined-adornment-description">Income Description</InputLabel>
                             <OutlinedInput

@@ -1,14 +1,14 @@
 import React from 'react';
 import { Box, Alert, AlertTitle, Divider } from '@mui/material';
 
-const NoDataMessage = () => {
+const NoDataMessage = ({ title, message }) => {
     return (
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-        <Alert variant="outlined" severity="info" >
-            <AlertTitle>Insufficient Data</AlertTitle>
-            <Divider style={{marginBottom: 10}}/>
-            The data available is not sufficient for this widget. Please adjust your filters and try again.
-        </Alert>
+            <Alert variant="outlined" severity="info">
+                <AlertTitle>{title}</AlertTitle>
+                <Divider style={{ marginBottom: 10 }} />
+                {message}
+            </Alert>
         </Box>
     );
 };

@@ -10,6 +10,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment from 'moment';
 import ExpenseSettingsMenu from './ExpenseSettingsMenu';
 import { ExpensesContext } from './ExpensesContext';
+import NoDataMessage from './NoDataMessage';
 
 const Expenses = () => {
     const { expenses, updateExpense } = useContext(ExpensesContext);
@@ -58,6 +59,10 @@ const Expenses = () => {
             )}
         </>
     );
+
+    if (!expenses.length) {
+        return <NoDataMessage title='Insufficient Data' message='The data available is not sufficient for this widget. Please add an expense or adjust your filters and try again.'/>;
+    }
 
     return (
         <>

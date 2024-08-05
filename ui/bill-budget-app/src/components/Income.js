@@ -7,6 +7,7 @@ import { Paid, CheckCircle, Error, Info, Loop } from '@mui/icons-material';
 import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
 import IncomeSettingsMenu from './IncomeSettingsMenu';
+import NoDataMessage from './NoDataMessage';
 
 const Income = () => {
     const { incomes } = useContext(IncomeContext);
@@ -64,6 +65,10 @@ const Income = () => {
             );
         }
     };
+
+    if (!incomes.length) {
+        return <NoDataMessage title='Insufficient Data' message='The data available is not sufficient for this widget. Please adjust your filters and try again.'/>;
+    }
 
     return (
         <TableContainer component={Paper}>

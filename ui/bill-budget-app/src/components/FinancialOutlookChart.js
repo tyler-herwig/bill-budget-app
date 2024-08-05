@@ -3,6 +3,7 @@ import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
 import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
+import NoDataMessage from './NoDataMessage';
 
 export function FinancialOutlookChart() {
     const { incomes } = useContext(IncomeContext);
@@ -45,6 +46,10 @@ export function FinancialOutlookChart() {
             expenses: expensesChartData
         });
     }, [incomes]);
+
+    if (chartData.incomes.length < 2) {
+        return <NoDataMessage title='Insufficient Data' message='The data available is not sufficient for this widget. Please adjust your filters and try again.'/>;
+    }
 
     const dynamicChartData = {
         labels: chartData.labels,
