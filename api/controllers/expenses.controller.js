@@ -105,15 +105,6 @@ exports.addOneTimeExpense = async (req, res) => {
             return res.status(400).json({ message: 'Due date is required for one-time expenses' });
         }
 
-        // Convert date_due to a Date object
-        const dueDate = new Date(date_due);
-        const today = new Date();
-
-        // Ensure date_due is today or in the future
-        if (dueDate < today.setHours(0, 0, 0, 0)) {
-            return res.status(400).json({ message: 'Due date must be today or in the future' });
-        }
-
         // Proceed with adding the one-time expense
         const expense = await Expense.create({
             ...req.body,
@@ -343,17 +334,6 @@ exports.updateOneTimeExpense = async (req, res) => {
 
         if (!id) {
             return res.status(400).json({ message: 'Expense ID is required' });
-        }
-
-        // Check if date_due is being updated
-        if (updatedData.date_due) {
-            const dueDate = new Date(updatedData.date_due);
-            const today = new Date();
-
-            // Ensure date_due is today or in the future
-            if (dueDate < today.setHours(0, 0, 0, 0)) {
-                return res.status(400).json({ message: 'Due date must be today or in the future' });
-            }
         }
 
         // Update the one-time expense document
