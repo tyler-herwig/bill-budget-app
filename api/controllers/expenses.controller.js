@@ -1,160 +1,11 @@
 const Expense = require('../models/Expense');
 const RecurringExpense = require('../models/RecurringExpense');
 
-// Utility function to generate recurring instances
-const generateRecurringInstances = (recurringExpense, skipPastDates = false) => {
-    const instances = [];
-    const { name, description, amount, recurrence } = recurringExpense;
-    const { frequency, start_date, end_date } = recurrence;
+/* ------------------ General Expenses ------------------ */
 
-    // Convert start_date and end_date to Date objects in UTC
-    let currentDate = new Date(start_date);
-    currentDate.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
-    const finalDate = end_date ? new Date(end_date) : null;
-
-    if (finalDate) {
-        finalDate.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
-    }
-
-    // Handle the case where the start_date is later than the end_date
-    if (finalDate && currentDate > finalDate) {
-        throw new Error('Start date cannot be after the end date.');
-    }
-
-    if (skipPastDates) {
-        const today = new Date();
-        today.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
-
-        // Skip past dates based on the frequency
-        while (currentDate < today) {
-            if (frequency === 'monthly') {
-                currentDate.setUTCMonth(currentDate.getUTCMonth() + 1);
-            } else if (frequency === 'weekly') {
-                currentDate.setUTCDate(currentDate.getUTCDate() + 7);
-            } else if (frequency === 'daily') {
-                currentDate.setUTCDate(currentDate.getUTCDate() + 1);
-            } else if (frequency === 'yearly') {
-                currentDate.setUTCFullYear(currentDate.getUTCFullYear() + 1);
-            } else {
-                throw new Error('Invalid frequency type');
-            }
-
-            // Avoid skipping beyond the end date
-            if (finalDate && currentDate > finalDate) {
-                return instances; // No instances to generate
-            }
-        }
-    }
-
-    // Generate recurring instances
-    while (!finalDate || currentDate <= finalDate) {
-        // Create a copy of the date to avoid modifying the original date
-        const dueDate = new Date(currentDate);
-
-        instances.push({
-            name,
-            description,
-            amount,
-            type: 'recurring',
-            date_due: dueDate.toISOString(), // Store date as ISO string
-            status: 'unpaid',
-            recurring_expense_id: recurringExpense._id,
-            createdAt: new Date().toISOString(), // Store creation date as ISO string
-            updatedAt: new Date().toISOString()  // Store update date as ISO string
-        });
-
-        // Increment the date based on the frequency
-        if (frequency === 'monthly') {
-            currentDate.setUTCMonth(currentDate.getUTCMonth() + 1);
-            const dayOfMonth = new Date(start_date).getUTCDate();
-            if (currentDate.getUTCDate() < dayOfMonth) {
-                currentDate.setUTCDate(0); // Move to last day of previous month
-            }
-            currentDate.setUTCDate(dayOfMonth);
-        } else if (frequency === 'weekly') {
-            currentDate.setUTCDate(currentDate.getUTCDate() + 7);
-        } else if (frequency === 'daily') {
-            currentDate.setUTCDate(currentDate.getUTCDate() + 1);
-        } else if (frequency === 'yearly') {
-            currentDate.setUTCFullYear(currentDate.getUTCFullYear() + 1);
-        } else {
-            throw new Error('Invalid frequency type');
-        }
-
-        // Avoid creating instances beyond the end date
-        if (finalDate && currentDate > finalDate) {
-            break;
-        }
-
-        // Limit the number of generated instances to avoid excessive memory use
-        if (instances.length > 1000) {
-            throw new Error('Too many instances generated. Consider adjusting the date range or frequency.');
-        }
-    }
-
-    return instances;
-};
-
-// Add a one-time expense
-exports.addOneTimeExpense = async (req, res) => {
-    try {
-        const { date_due } = req.body;
-
-        // Ensure date_due is provided
-        if (!date_due) {
-            return res.status(400).json({ message: 'Due date is required for one-time expenses' });
-        }
-
-        // Proceed with adding the one-time expense
-        const expense = await Expense.create({
-            ...req.body,
-            type: 'one-time'
-        });
-
-        res.status(200).json(expense);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-// Add a recurring expense
-exports.addRecurringExpense = async (req, res) => {
-    try {
-        const { start_date } = req.body.recurrence;
-        const { end_date } = req.body.recurrence;
-
-        // Ensure start_date is provided
-        if (!start_date) {
-            return res.status(400).json({ message: 'Start date is required for recurring expenses' });
-        }
-
-        // Ensure end_date is provided
-        if (!end_date) {
-            return res.status(400).json({ message: 'End date is required for recurring expenses' });
-        }
-
-        // Convert start_date & end_date to a Date object
-        const startDate = new Date(start_date);
-        const endDate = new Date(end_date);
-
-        if (endDate <= startDate) {
-            return res.status(400).json({ message: 'End date must be after start date' });
-        }
-
-        // Proceed with adding the recurring expense
-        const recurringExpense = await RecurringExpense.create(req.body);
-
-        // Generate and add new instances
-        const newInstances = generateRecurringInstances(recurringExpense);
-        await Expense.insertMany(newInstances);
-
-        res.status(200).json({ recurringExpense, instances: newInstances });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-// Get all expenses grouped by year and month
+/*
+    Get all expenses grouped by year and month
+*/
 exports.getAllExpenses = async (req, res) => {
     const { start_date, end_date } = req.query;
 
@@ -327,6 +178,35 @@ exports.getAllExpenses = async (req, res) => {
     }
 };
 
+/* ------------------ One-Time Expenses ------------------ */
+
+/*
+    Add a one-time expense
+*/
+exports.addOneTimeExpense = async (req, res) => {
+    try {
+        const { date_due } = req.body;
+
+        // Ensure date_due is provided
+        if (!date_due) {
+            return res.status(400).json({ message: 'Due date is required for one-time expenses' });
+        }
+
+        // Proceed with adding the one-time expense
+        const expense = await Expense.create({
+            ...req.body,
+            type: 'one-time'
+        });
+
+        res.status(200).json(expense);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+/*
+    Update one-time expense by ID
+*/
 exports.updateOneTimeExpense = async (req, res) => {
     try {
         const { id } = req.params;
@@ -349,6 +229,68 @@ exports.updateOneTimeExpense = async (req, res) => {
     }
 };
 
+/*
+    Delete one-time expense
+*/
+exports.deleteOneTimeExpense = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const expense = await Expense.findByIdAndDelete(id);
+
+        // Cannot find expense in database
+        if (!expense) {
+            res.status(404).json({message: 'Cannot find expense'});
+        }
+        res.status(200).json({message: 'Expense successfully deleted'});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+};
+
+/* ------------------ Recurring Expenses ------------------ */
+
+/*
+    Add a recurring expense
+*/
+exports.addRecurringExpense = async (req, res) => {
+    try {
+        const { start_date } = req.body.recurrence;
+        const { end_date } = req.body.recurrence;
+
+        // Ensure start_date is provided
+        if (!start_date) {
+            return res.status(400).json({ message: 'Start date is required for recurring expenses' });
+        }
+
+        // Ensure end_date is provided
+        if (!end_date) {
+            return res.status(400).json({ message: 'End date is required for recurring expenses' });
+        }
+
+        // Convert start_date & end_date to a Date object
+        const startDate = new Date(start_date);
+        const endDate = new Date(end_date);
+
+        if (endDate <= startDate) {
+            return res.status(400).json({ message: 'End date must be after start date' });
+        }
+
+        // Proceed with adding the recurring expense
+        const recurringExpense = await RecurringExpense.create(req.body);
+
+        // Generate and add new instances
+        const newInstances = generateRecurringInstances(recurringExpense);
+        await Expense.insertMany(newInstances);
+
+        res.status(200).json({ recurringExpense, instances: newInstances });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+/*
+    Update recurring expense by ID
+*/
 exports.updateRecurringExpense = async (req, res) => {
     try {
         const { id } = req.params;
@@ -388,4 +330,126 @@ exports.updateRecurringExpense = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
+};
+
+/*
+    Delete recurring expense
+*/
+exports.deleteRecurringExpense = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Find and delete the recurring expense instance
+        const recurringExpense = await RecurringExpense.findByIdAndDelete(id);
+
+        // Cannot find recurring expense in database
+        if (!recurringExpense) {
+            return res.status(404).json({ message: 'Cannot find recurring expense' });
+        }
+
+        // Delete all related records in the Expense collection
+        await Expense.deleteMany({ recurring_expense_id: id });
+
+        res.status(200).json({ message: 'Recurring expense and related expenses successfully deleted' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+/* ------------------ Utilities ------------------ */
+
+/*
+     Utility function to generate recurring instances
+*/
+const generateRecurringInstances = (recurringExpense, skipPastDates = false) => {
+    const instances = [];
+    const { name, description, amount, recurrence } = recurringExpense;
+    const { frequency, start_date, end_date } = recurrence;
+
+    // Convert start_date and end_date to Date objects in UTC
+    let currentDate = new Date(start_date);
+    currentDate.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
+    const finalDate = end_date ? new Date(end_date) : null;
+
+    if (finalDate) {
+        finalDate.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
+    }
+
+    // Handle the case where the start_date is later than the end_date
+    if (finalDate && currentDate > finalDate) {
+        throw new Error('Start date cannot be after the end date.');
+    }
+
+    if (skipPastDates) {
+        const today = new Date();
+        today.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
+
+        // Skip past dates based on the frequency
+        while (currentDate < today) {
+            if (frequency === 'monthly') {
+                currentDate.setUTCMonth(currentDate.getUTCMonth() + 1);
+            } else if (frequency === 'weekly') {
+                currentDate.setUTCDate(currentDate.getUTCDate() + 7);
+            } else if (frequency === 'daily') {
+                currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+            } else if (frequency === 'yearly') {
+                currentDate.setUTCFullYear(currentDate.getUTCFullYear() + 1);
+            } else {
+                throw new Error('Invalid frequency type');
+            }
+
+            // Avoid skipping beyond the end date
+            if (finalDate && currentDate > finalDate) {
+                return instances; // No instances to generate
+            }
+        }
+    }
+
+    // Generate recurring instances
+    while (!finalDate || currentDate <= finalDate) {
+        // Create a copy of the date to avoid modifying the original date
+        const dueDate = new Date(currentDate);
+
+        instances.push({
+            name,
+            description,
+            amount,
+            type: 'recurring',
+            date_due: dueDate.toISOString(), // Store date as ISO string
+            status: 'unpaid',
+            recurring_expense_id: recurringExpense._id,
+            createdAt: new Date().toISOString(), // Store creation date as ISO string
+            updatedAt: new Date().toISOString()  // Store update date as ISO string
+        });
+
+        // Increment the date based on the frequency
+        if (frequency === 'monthly') {
+            currentDate.setUTCMonth(currentDate.getUTCMonth() + 1);
+            const dayOfMonth = new Date(start_date).getUTCDate();
+            if (currentDate.getUTCDate() < dayOfMonth) {
+                currentDate.setUTCDate(0); // Move to last day of previous month
+            }
+            currentDate.setUTCDate(dayOfMonth);
+        } else if (frequency === 'weekly') {
+            currentDate.setUTCDate(currentDate.getUTCDate() + 7);
+        } else if (frequency === 'daily') {
+            currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+        } else if (frequency === 'yearly') {
+            currentDate.setUTCFullYear(currentDate.getUTCFullYear() + 1);
+        } else {
+            throw new Error('Invalid frequency type');
+        }
+
+        // Avoid creating instances beyond the end date
+        if (finalDate && currentDate > finalDate) {
+            break;
+        }
+
+        // Limit the number of generated instances to avoid excessive memory use
+        if (instances.length > 1000) {
+            throw new Error('Too many instances generated. Consider adjusting the date range or frequency.');
+        }
+    }
+
+    return instances;
 };

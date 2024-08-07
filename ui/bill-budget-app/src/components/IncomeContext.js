@@ -23,6 +23,8 @@ export const IncomeProvider = ({ children }) => {
         setNotification(null);
     };
 
+    /* ------------------ General Income ------------------ */
+
     const refreshIncome = useCallback(async () => {
         if (!dateRange.startDate || !dateRange.endDate) return;
 
@@ -47,6 +49,8 @@ export const IncomeProvider = ({ children }) => {
         }
     }, [API_URL, dateRange]);
 
+    /* ------------------ One-Time Income ------------------ */
+
     const addIncome = useCallback(async (income) => {
         try {
             delete income._id;
@@ -68,29 +72,6 @@ export const IncomeProvider = ({ children }) => {
             showNotification(error.message || 'Failed to add income', 'error');
         }
     }, [API_URL, refreshIncome]);
-
-    const addRecurringIncome = useCallback(async (income) => {
-        try {
-            delete income._id;
-            const response = await fetch(`${API_URL}/income/recurring`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(income),
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to add recurring income');
-            }
-            await refreshIncome();
-            await refreshProfile();
-            showNotification('Recurring income added successfully', 'success');
-        } catch (error) {
-            console.error('Error adding recurring income:', error);
-            showNotification(error.message || 'Failed to add recurring income', 'error');
-        }
-    }, [API_URL, refreshIncome, refreshProfile]);
 
     const updateIncome = useCallback(async (income) => {
         try {
@@ -114,6 +95,53 @@ export const IncomeProvider = ({ children }) => {
             throw error;
         }
     }, [API_URL, refreshIncome]);
+
+    const deleteIncome = useCallback(async (incomeId) => {
+        try {
+            const response = await fetch(`${API_URL}/income/one-time/${incomeId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to delete income');
+            }
+            await refreshIncome();
+            showNotification('Income deleted successfully', 'success');
+            return await response.json();
+        } catch (error) {
+            console.error('Error deleting income:', error);
+            showNotification(error.message || 'Failed to delete income', 'error');
+            throw error;
+        }
+    }, [API_URL, refreshIncome]);
+
+    /* ------------------ Recurring Income ------------------ */
+
+    const addRecurringIncome = useCallback(async (income) => {
+        try {
+            delete income._id;
+            const response = await fetch(`${API_URL}/income/recurring`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(income),
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to add recurring income');
+            }
+            await refreshIncome();
+            await refreshProfile();
+            showNotification('Recurring income added successfully', 'success');
+        } catch (error) {
+            console.error('Error adding recurring income:', error);
+            showNotification(error.message || 'Failed to add recurring income', 'error');
+        }
+    }, [API_URL, refreshIncome, refreshProfile]);
 
     const updateRecurringIncome = useCallback(async (income) => {
         delete income._id;
@@ -140,12 +168,44 @@ export const IncomeProvider = ({ children }) => {
         }
     }, [API_URL, refreshIncome, refreshProfile]);
 
+    const deleteRecurringIncome = useCallback(async (recurringIncomeId) => {
+        try {
+            const response = await fetch(`${API_URL}/income/recurring/${recurringIncomeId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to delete recurring income');
+            }
+            await refreshIncome();
+            showNotification('Recurring income deleted successfully', 'success');
+            return await response.json();
+        } catch (error) {
+            console.error('Error deleting recurring income:', error);
+            showNotification(error.message || 'Failed to delete recurring income', 'error');
+            throw error;
+        }
+    }, [API_URL, refreshIncome]);
+
     useEffect(() => {
         refreshIncome();
     }, [refreshIncome]);
 
     return (
-        <IncomeContext.Provider value={{ incomes, loadingIncome, refreshIncome, addIncome, addRecurringIncome, updateIncome, updateRecurringIncome }}>
+        <IncomeContext.Provider value={{
+            incomes,
+            loadingIncome,
+            refreshIncome,
+            addIncome,
+            addRecurringIncome,
+            updateIncome,
+            updateRecurringIncome,
+            deleteIncome,
+            deleteRecurringIncome
+        }}>
             {children}
             {notification && (
                 <Snackbar

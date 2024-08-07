@@ -57,7 +57,7 @@ const RecurringExpenseModal = ({ action, data, open, handleClose }) => {
         }
     }, [data]);
 
-    const { addRecurringExpense, updateRecurringExpense } = useContext(ExpensesContext);
+    const { addRecurringExpense, updateRecurringExpense, deleteRecurringExpense } = useContext(ExpensesContext);
 
     const handleChange = (field) => (event) => {
         const value = event.target.value;
@@ -106,11 +106,22 @@ const RecurringExpenseModal = ({ action, data, open, handleClose }) => {
         }
     };
 
+    const handleDelete = async () => {
+        try {
+            await deleteRecurringExpense(formData.recurring_expense_id);
+            handleClose(); // Close the dialog on successful deletion
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     const handleAction = () => {
         if (action === 'add') {
             handleSubmit();
         } else if (action === 'edit') {
             handleUpdate();
+        } else if (action === 'delete') {
+            handleDelete();
         }
     };
 

@@ -49,7 +49,7 @@ const OneTimeIncomeModal = ({ action, data, open, handleClose }) => {
         }
     }, [data]);
 
-    const { addIncome, updateIncome } = useContext(IncomeContext);
+    const { addIncome, updateIncome, deleteIncome } = useContext(IncomeContext);
 
     const handleSourceChange = (event) => {
         setFormData((prevState) => ({ ...prevState, source: event.target.value }));
@@ -85,11 +85,22 @@ const OneTimeIncomeModal = ({ action, data, open, handleClose }) => {
         }
     };
 
+    const handleDelete = async () => {
+        try {
+            await deleteIncome(formData._id);
+            handleClose(); // Close the dialog on successful deletion
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
     const handleAction = () => {
         if (action === 'add') {
             handleSubmit();
         } else if (action === 'edit') {
             handleUpdate();
+        } else if (action === 'delete') {
+            handleDelete();
         }
     };
 

@@ -48,7 +48,7 @@ const OneTimeExpenseModal = ({ action, data, open, handleClose }) => {
         }
     }, [data]);
 
-    const { addExpense, updateExpense } = useContext(ExpensesContext);
+    const { addExpense, updateExpense, deleteExpense } = useContext(ExpensesContext);
 
     const handleNameChange = (event) => {
         setFormData((prevState) => ({ ...prevState, name: event.target.value }));
@@ -84,11 +84,22 @@ const OneTimeExpenseModal = ({ action, data, open, handleClose }) => {
         }
     };
 
+    const handleDelete = async () => {
+        try {
+            await deleteExpense(formData._id);
+            handleClose(); // Close the dialog on successful deletion
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     const handleAction = () => {
         if (action === 'add') {
             handleSubmit();
         } else if (action === 'edit') {
             handleUpdate();
+        } else if (action === 'delete') {
+            handleDelete();
         }
     };
 

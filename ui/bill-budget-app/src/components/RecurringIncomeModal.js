@@ -57,7 +57,7 @@ const RecurringIncomeModal = ({ action, data, open, handleClose, salary }) => {
         }
     }, [data, salary]);
 
-    const { addRecurringIncome, updateRecurringIncome } = useContext(IncomeContext);
+    const { addRecurringIncome, updateRecurringIncome, deleteRecurringIncome } = useContext(IncomeContext);
 
     const handleChange = (field) => (event) => {
         const value = event.target.value;
@@ -106,11 +106,22 @@ const RecurringIncomeModal = ({ action, data, open, handleClose, salary }) => {
         }
     };
 
+    const handleDelete = async () => {
+        try {
+            await deleteRecurringIncome(formData.recurring_income_id);
+            handleClose(); // Close the dialog on successful deletion
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     const handleAction = () => {
         if (action === 'add') {
             handleSubmit();
         } else if (action === 'edit') {
             handleUpdate();
+        } else if (action === 'delete') {
+            handleDelete();
         }
     };
 
