@@ -10,7 +10,6 @@ import RecurringIncomeModal from './RecurringIncomeModal';
 import { ProfileContext } from './ProfileContext';
 import moment from 'moment';
 import NoDataMessage from './NoDataMessage';
-import { useTellerConnect } from 'teller-connect-react';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -23,14 +22,6 @@ const Item = styled(Paper)(({ theme }) => ({
 const Profile = () => {
     const { profile } = useContext(ProfileContext);
     const [modalOpen, setModalOpen] = React.useState(false);
-
-    const { open, ready } = useTellerConnect({
-        applicationId: "app_p29q4uqm69jtuv6a7c000",
-        environment: "development",
-        onSuccess: (authorization) => {
-            console.log(authorization);
-        },
-    });
 
     const handleOpenModal = (content) => {
         setModalOpen(true);
@@ -109,15 +100,6 @@ const Profile = () => {
                                         <Button
                                             variant="contained"
                                             color="primary"
-                                            style={{marginBottom: 20, marginRight: 20}}
-                                            onClick={() => open()}
-                                            disabled={!ready}
-                                        >
-                                            Connect Account
-                                        </Button>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
                                             style={{marginBottom: 20}}
                                             onClick={() => handleOpenModal('Add Income')}
                                         >
@@ -170,7 +152,7 @@ const Profile = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <RecurringIncomeModal action='add' open={modalOpen} handleClose={handleCloseModal} salary={true} />
+            <RecurringIncomeModal action='add' data={{}} open={modalOpen} handleClose={handleCloseModal} salary={true} />
         </Container>
     );
 };

@@ -1,26 +1,30 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useMemo } from 'react';
 import {
     Box, Button, FormControl, InputLabel, InputAdornment, OutlinedInput, Select, MenuItem,
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography
 } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
+import useRecurringIncome from '../hooks/useRecurringIncome';
 
 const RecurringIncomeModal = ({ action, data, open, handleClose, salary }) => {
-    const [formData, setFormData] = useState({
-        _id: '',
-        source: salary ? 'salary' : '',
-        description: '',
-        amount: '',
-        recurring_income_id: '',
-        recurrence: {
-            frequency: '',
-            start_date: moment(new Date()),
-            end_date: moment(new Date())
+    const incomeContext = useContext(IncomeContext);
+
+    const memoizedData = useMemo(() => {
+        if (salary) {
+            return { ...data, source: 'salary' };
         }
-    });
+        return data;
+    }, [data, salary]);
+
+    const {
+        formData,
+        handleChange,
+        handleRecurrenceChange,
+        handleDateChange,
+        handleAction
+    } = useRecurringIncome({ context: incomeContext, data: memoizedData });
 
     const actionVerbage = {
         add: {
@@ -40,91 +44,6 @@ const RecurringIncomeModal = ({ action, data, open, handleClose, salary }) => {
         }
     };
 
-    useEffect(() => {
-        if (data) {
-            setFormData({
-                _id: data._id || '',
-                source: salary ? 'salary' : data.source || '',
-                description: data.description || '',
-                amount: data.amount || '',
-                recurring_income_id: data.recurring_income_id || '',
-                recurrence: {
-                    frequency: data.recurrence?.frequency || '',
-                    start_date: moment.utc(data.recurrence?.start_date || new Date()),
-                    end_date: moment.utc(data.recurrence?.end_date || new Date())
-                }
-            });
-        }
-    }, [data, salary]);
-
-    const { addRecurringIncome, updateRecurringIncome, deleteRecurringIncome } = useContext(IncomeContext);
-
-    const handleChange = (field) => (event) => {
-        const value = event.target.value;
-        setFormData((prevState) => ({
-            ...prevState,
-            [field]: value
-        }));
-    };
-
-    const handleRecurrenceChange = (field) => (event) => {
-        const value = event.target.value;
-        setFormData((prevState) => ({
-            ...prevState,
-            recurrence: {
-                ...prevState.recurrence,
-                [field]: value
-            }
-        }));
-    };
-
-    const handleDateChange = (field) => (newValue) => {
-        setFormData((prevState) => ({
-            ...prevState,
-            recurrence: {
-                ...prevState.recurrence,
-                [field]: newValue
-            }
-        }));
-    };
-
-    const handleSubmit = async () => {
-        try {
-            await addRecurringIncome(formData);
-            handleClose(); // Close the dialog on successful submission
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    const handleUpdate = async () => {
-        try {
-            await updateRecurringIncome(formData);
-            handleClose(); // Close the dialog on successful update
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    const handleDelete = async () => {
-        try {
-            await deleteRecurringIncome(formData.recurring_income_id);
-            handleClose(); // Close the dialog on successful deletion
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    const handleAction = () => {
-        if (action === 'add') {
-            handleSubmit();
-        } else if (action === 'edit') {
-            handleUpdate();
-        } else if (action === 'delete') {
-            handleDelete();
-        }
-    };
-
     const { title, helper, button } = actionVerbage[action] || {};
 
     const startDate = new Date(formData.recurrence.start_date);
@@ -137,7 +56,7 @@ const RecurringIncomeModal = ({ action, data, open, handleClose, salary }) => {
         <Dialog open={open} onClose={handleClose} aria-labelledby="dialog-title" aria-describedby="dialog-description">
             <DialogTitle id="dialog-title">{title}</DialogTitle>
             <DialogContent>
-                <DialogContentText id="dialog-description" style={{marginBottom: 15}}>
+                <DialogContentText id="dialog-description" style={{ marginBottom: 15 }}>
                     {helper}
                 </DialogContentText>
                 {action !== 'delete' && (
@@ -161,6 +80,7 @@ const RecurringIncomeModal = ({ action, data, open, handleClose, salary }) => {
                                         onChange={handleChange('source')}
                                         label="Source"
                                     >
+                                        {/* Add your MenuItem options here */}
                                         <MenuItem value="investment">Investment</MenuItem>
                                         <MenuItem value="freelance">Freelance</MenuItem>
                                         <MenuItem value="rental">Rental</MenuItem>
@@ -246,7 +166,16 @@ const RecurringIncomeModal = ({ action, data, open, handleClose, salary }) => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleAction}>{button}</Button>
+                <Button
+                    onClick={async () => {
+                        const success = await handleAction(action);
+                        if (success) {
+                            handleClose();
+                        }
+                    }}
+                >
+                    {button}
+                </Button>
             </DialogActions>
         </Dialog>
     );

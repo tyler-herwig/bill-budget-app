@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect, useMemo} from 'react';
 import {
     Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput,
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
@@ -8,16 +8,18 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
+import useOneTimeIncome from '../hooks/useOneTimeIncome';
 
 const OneTimeIncomeModal = ({ action, data, open, handleClose }) => {
+    const incomeContext = useContext(IncomeContext);
+    const memoizedData = useMemo(() => data, [data]);
 
-    const [formData, setFormData] = useState({
-        _id: '',
-        source: '',
-        description: '',
-        amount: '',
-        date_received: moment(new Date())
-    });
+    const {
+        formData,
+        handleChange,
+        handleDateChange,
+        handleAction
+    } = useOneTimeIncome({ context: incomeContext, data: memoizedData });
 
     const actionVerbage = {
         add: {
@@ -34,73 +36,6 @@ const OneTimeIncomeModal = ({ action, data, open, handleClose }) => {
             title: 'DELETE ONE-TIME INCOME',
             helper: `Are you sure you wish to delete one-time income for ${data ? data.description + ' on ' + moment.utc(data.date_received).format('MMMM Do, YYYY') : ''}?`,
             button: 'Delete'
-        }
-    };
-
-    useEffect(() => {
-        if (data) {
-            setFormData({
-                _id: data._id || '',
-                source: data.source || '',
-                description: data.description || '',
-                amount: data.amount || '',
-                date_received: moment.utc(data.date_received || new Date())
-            });
-        }
-    }, [data]);
-
-    const { addIncome, updateIncome, deleteIncome } = useContext(IncomeContext);
-
-    const handleSourceChange = (event) => {
-        setFormData((prevState) => ({ ...prevState, source: event.target.value }));
-    };
-
-    const handleDescriptionChange = (event) => {
-        setFormData((prevState) => ({ ...prevState, description: event.target.value }));
-    };
-
-    const handleAmountChange = (event) => {
-        setFormData((prevState) => ({ ...prevState, amount: event.target.value }));
-    };
-
-    const handleDateChange = (newValue) => {
-        setFormData((prevState) => ({ ...prevState, date_received: newValue }));
-    };
-
-    const handleSubmit = async () => {
-        try {
-            await addIncome(formData);
-            handleClose(); // Close the dialog on successful submission
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    const handleUpdate = async () => {
-        try {
-            await updateIncome(formData);
-            handleClose(); // Close the dialog on successful update
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    const handleDelete = async () => {
-        try {
-            await deleteIncome(formData._id);
-            handleClose(); // Close the dialog on successful deletion
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-
-    const handleAction = () => {
-        if (action === 'add') {
-            handleSubmit();
-        } else if (action === 'edit') {
-            handleUpdate();
-        } else if (action === 'delete') {
-            handleDelete();
         }
     };
 
@@ -128,7 +63,7 @@ const OneTimeIncomeModal = ({ action, data, open, handleClose }) => {
                                 <Select
                                     id="outlined-adornment-source"
                                     value={formData.source}
-                                    onChange={handleSourceChange}
+                                    onChange={handleChange('source')}
                                     label="Source"
                                 >
                                     <MenuItem value="investment">Investment</MenuItem>
@@ -156,7 +91,7 @@ const OneTimeIncomeModal = ({ action, data, open, handleClose }) => {
                             <OutlinedInput
                                 id="outlined-adornment-description"
                                 value={formData.description}
-                                onChange={handleDescriptionChange}
+                                onChange={handleChange('description')}
                                 label="Description"
                             />
                         </FormControl>
@@ -165,7 +100,7 @@ const OneTimeIncomeModal = ({ action, data, open, handleClose }) => {
                             <OutlinedInput
                                 id="outlined-adornment-amount"
                                 value={formData.amount}
-                                onChange={handleAmountChange}
+                                onChange={handleChange('amount')}
                                 startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                 label="Amount"
                             />
@@ -183,7 +118,16 @@ const OneTimeIncomeModal = ({ action, data, open, handleClose }) => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleAction}>{button}</Button>
+                <Button
+                    onClick={async () => {
+                        const success = await handleAction(action);
+                        if (success) {
+                            handleClose();
+                        }
+                    }}
+                >
+                    {button}
+                </Button>
             </DialogActions>
         </Dialog>
     );

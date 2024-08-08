@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect, useMemo} from 'react';
 import {
     Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput,
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
@@ -7,16 +7,18 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import { ExpensesContext } from './ExpensesContext';
+import useOneTimeExpense from '../hooks/useOneTimeExpense';
 
 const OneTimeExpenseModal = ({ action, data, open, handleClose }) => {
+    const expensesContext = useContext(ExpensesContext);
+    const memoizedData = useMemo(() => data, [data]);
 
-    const [formData, setFormData] = useState({
-        _id: '',
-        name: '',
-        description: '',
-        amount: '',
-        date_due: moment(new Date())
-    });
+    const {
+        formData,
+        handleChange,
+        handleDateChange,
+        handleAction
+    } = useOneTimeExpense({ context: expensesContext, data: memoizedData });
 
     const actionVerbage = {
         add: {
@@ -33,73 +35,6 @@ const OneTimeExpenseModal = ({ action, data, open, handleClose }) => {
             title: 'DELETE ONE-TIME EXPENSE',
             helper: `Are you sure you wish to delete one-time expense for ${data ? data.name + ' on ' + moment.utc(data.date_due).format('MMMM Do, YYYY') : ''}?`,
             button: 'Delete'
-        }
-    };
-
-    useEffect(() => {
-        if (data) {
-            setFormData({
-                _id: data._id || '',
-                name: data.name || '',
-                description: data.description || '',
-                amount: data.amount || '',
-                date_due: moment.utc(data.date_due || new Date())
-            });
-        }
-    }, [data]);
-
-    const { addExpense, updateExpense, deleteExpense } = useContext(ExpensesContext);
-
-    const handleNameChange = (event) => {
-        setFormData((prevState) => ({ ...prevState, name: event.target.value }));
-    };
-
-    const handleDescriptionChange = (event) => {
-        setFormData((prevState) => ({ ...prevState, description: event.target.value }));
-    };
-
-    const handleAmountChange = (event) => {
-        setFormData((prevState) => ({ ...prevState, amount: event.target.value }));
-    };
-
-    const handleDateChange = (newValue) => {
-        setFormData((prevState) => ({ ...prevState, date_due: newValue }));
-    };
-
-    const handleSubmit = async () => {
-        try {
-            await addExpense(formData);
-            handleClose(); // Close the dialog on successful submission
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    const handleUpdate = async () => {
-        try {
-            await updateExpense(formData);
-            handleClose(); // Close the dialog on successful update
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    const handleDelete = async () => {
-        try {
-            await deleteExpense(formData._id);
-            handleClose(); // Close the dialog on successful deletion
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    const handleAction = () => {
-        if (action === 'add') {
-            handleSubmit();
-        } else if (action === 'edit') {
-            handleUpdate();
-        } else if (action === 'delete') {
-            handleDelete();
         }
     };
 
@@ -126,7 +61,7 @@ const OneTimeExpenseModal = ({ action, data, open, handleClose }) => {
                             <OutlinedInput
                                 id="outlined-adornment-name"
                                 value={formData.name}
-                                onChange={handleNameChange}
+                                onChange={handleChange('name')}
                                 label="Name"
                             />
                         </FormControl>
@@ -135,7 +70,7 @@ const OneTimeExpenseModal = ({ action, data, open, handleClose }) => {
                             <OutlinedInput
                                 id="outlined-adornment-description"
                                 value={formData.description}
-                                onChange={handleDescriptionChange}
+                                onChange={handleChange('description')}
                                 label="Description"
                             />
                         </FormControl>
@@ -144,7 +79,7 @@ const OneTimeExpenseModal = ({ action, data, open, handleClose }) => {
                             <OutlinedInput
                                 id="outlined-adornment-amount"
                                 value={formData.amount}
-                                onChange={handleAmountChange}
+                                onChange={handleChange('amount')}
                                 startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                 label="Amount"
                             />
@@ -162,7 +97,16 @@ const OneTimeExpenseModal = ({ action, data, open, handleClose }) => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleAction}>{button}</Button>
+                <Button
+                    onClick={async () => {
+                        const success = await handleAction(action);
+                        if (success) {
+                            handleClose();
+                        }
+                    }}
+                >
+                    {button}
+                </Button>
             </DialogActions>
         </Dialog>
     );

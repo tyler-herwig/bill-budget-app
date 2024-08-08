@@ -80,16 +80,16 @@ export default function ControlsSpeedDial() {
             </SpeedDial>
 
             {modalContent === 'Add One-Time Income' && (
-                <OneTimeIncomeModal action='add' open={open} handleClose={handleCloseModal} />
+                <OneTimeIncomeModal action='add' data={{}} open={open} handleClose={handleCloseModal} />
             )}
             {modalContent === 'Add Recurring Income' && (
-                <RecurringIncomeModal action='add' open={open} handleClose={handleCloseModal} />
+                <RecurringIncomeModal action='add' data={{}} open={open} handleClose={handleCloseModal} />
             )}
             {modalContent === 'Add One-Time Expense' && (
-                <OneTimeExpenseModal action='add' open={open} handleClose={handleCloseModal} />
+                <OneTimeExpenseModal action='add' data={{}} open={open} handleClose={handleCloseModal} />
             )}
             {modalContent === 'Add Recurring Expense' && (
-                <RecurringExpenseModal action='add' open={open} handleClose={handleCloseModal} />
+                <RecurringExpenseModal action='add' data={{}} open={open} handleClose={handleCloseModal} />
             )}
 
             <Dialog open={incomeDialogOpen} onClose={handleIncomeDialogClose}>

@@ -4,19 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Removed checking if date is old.">
-      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/hooks/useRecurringForm.js" afterDir="false" />
+    <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Added delete functionality for income and expenses. Refactored and commented code across the board and implemented new delete endpoints.">
+      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/hooks/useOneTimeExpense.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/hooks/useOneTimeIncome.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/hooks/useRecurringExpense.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/hooks/useRecurringIncome.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/expenses.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/controllers/expenses.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/income.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/controllers/income.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/api/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/api/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/routes/expenses.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes/expenses.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/routes/income.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes/income.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ExpensesContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ExpensesContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/IncomeContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/IncomeContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ControlsSpeedDial.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ControlsSpeedDial.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/OneTimeExpenseModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/OneTimeExpenseModal.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/OneTimeIncomeModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/OneTimeIncomeModal.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Profile.js" afterDir="false" />
@@ -54,22 +48,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/tyler/IdeaProjects/bill-budget-app/ui/bill-budget-app/src/components/income",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Users\\tyler\\AppData\\Local\\JetBrains\\IntelliJ IDEA 2024.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/tyler/IdeaProjects/bill-budget-app/ui/bill-budget-app/src/components/income&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\tyler\\AppData\\Local\\JetBrains\\IntelliJ IDEA 2024.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\tyler\IdeaProjects\bill-budget-app\ui\bill-budget-app\src\components" />
@@ -112,7 +106,8 @@
       <workItem from="1722520444393" duration="4190000" />
       <workItem from="1722870004737" duration="12050000" />
       <workItem from="1722952553501" duration="1964000" />
-      <workItem from="1723043742272" duration="5506000" />
+      <workItem from="1723043742272" duration="9069000" />
+      <workItem from="1723142562173" duration="10191000" />
     </task>
     <task id="LOCAL-00001" summary="Updated app name and description.">
       <option name="closed" value="true" />
@@ -162,7 +157,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722952596154</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Added delete functionality for income and expenses. Refactored and commented code across the board and implemented new delete endpoints.">
+      <option name="closed" value="true" />
+      <created>1723049812317</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1723049812317</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,6 +200,7 @@
     <MESSAGE value="API updates." />
     <MESSAGE value="Updated APIs with validation and fixed some logic issues with updating recurring instances... in addition, I've opted to return error messages from API responses going forward. Hoping to perform validation on the server side." />
     <MESSAGE value="Removed checking if date is old." />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed checking if date is old." />
+    <MESSAGE value="Added delete functionality for income and expenses. Refactored and commented code across the board and implemented new delete endpoints." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added delete functionality for income and expenses. Refactored and commented code across the board and implemented new delete endpoints." />
   </component>
 </project>

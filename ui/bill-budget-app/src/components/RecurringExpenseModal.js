@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {useState, useContext, useEffect, useMemo} from 'react';
 import {
     Box, Button, FormControl, InputLabel, InputAdornment, OutlinedInput, Select, MenuItem,
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography
@@ -7,20 +7,20 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import { ExpensesContext } from './ExpensesContext';
+import useRecurringExpense from '../hooks/useRecurringExpense';
 
 const RecurringExpenseModal = ({ action, data, open, handleClose }) => {
-    const [formData, setFormData] = useState({
-        _id: '',
-        name: '',
-        description: '',
-        amount: '',
-        recurring_expense_id: '',
-        recurrence: {
-            frequency: '',
-            start_date: moment(new Date()),
-            end_date: moment(new Date())
-        }
-    });
+    const expensesContext = useContext(ExpensesContext);
+
+    const memoizedData = useMemo(() => data, [data]);
+
+    const {
+        formData,
+        handleChange,
+        handleRecurrenceChange,
+        handleDateChange,
+        handleAction
+    } = useRecurringExpense({ context: expensesContext, data: memoizedData });
 
     const actionVerbage = {
         add: {
@@ -37,91 +37,6 @@ const RecurringExpenseModal = ({ action, data, open, handleClose }) => {
             title: 'DELETE RECURRING EXPENSE',
             helper: `Are you sure you wish to delete recurring expense for ${data ? data.name : ''}?`,
             button: 'Delete'
-        }
-    };
-
-    useEffect(() => {
-        if (data) {
-            setFormData({
-                _id: data._id || '',
-                name: data.name || '',
-                description: data.description || '',
-                amount: data.amount || '',
-                recurring_expense_id: data.recurring_expense_id || '',
-                recurrence: {
-                    frequency: data.recurrence?.frequency || '',
-                    start_date: moment.utc(data.recurrence?.start_date || new Date()),
-                    end_date: moment.utc(data.recurrence?.end_date || new Date())
-                }
-            });
-        }
-    }, [data]);
-
-    const { addRecurringExpense, updateRecurringExpense, deleteRecurringExpense } = useContext(ExpensesContext);
-
-    const handleChange = (field) => (event) => {
-        const value = event.target.value;
-        setFormData((prevState) => ({
-            ...prevState,
-            [field]: value
-        }));
-    };
-
-    const handleRecurrenceChange = (field) => (event) => {
-        const value = event.target.value;
-        setFormData((prevState) => ({
-            ...prevState,
-            recurrence: {
-                ...prevState.recurrence,
-                [field]: value
-            }
-        }));
-    };
-
-    const handleDateChange = (field) => (newValue) => {
-        setFormData((prevState) => ({
-            ...prevState,
-            recurrence: {
-                ...prevState.recurrence,
-                [field]: newValue
-            }
-        }));
-    };
-
-    const handleSubmit = async () => {
-        try {
-            await addRecurringExpense(formData);
-            handleClose(); // Close the dialog on successful submission
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    const handleUpdate = async () => {
-        try {
-            await updateRecurringExpense(formData);
-            handleClose(); // Close the dialog on successful update
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    const handleDelete = async () => {
-        try {
-            await deleteRecurringExpense(formData.recurring_expense_id);
-            handleClose(); // Close the dialog on successful deletion
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    const handleAction = () => {
-        if (action === 'add') {
-            handleSubmit();
-        } else if (action === 'edit') {
-            handleUpdate();
-        } else if (action === 'delete') {
-            handleDelete();
         }
     };
 
@@ -224,7 +139,16 @@ const RecurringExpenseModal = ({ action, data, open, handleClose }) => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleAction}>{button}</Button>
+                <Button
+                    onClick={async () => {
+                        const success = await handleAction(action);
+                        if (success) {
+                            handleClose();
+                        }
+                    }}
+                >
+                    {button}
+                </Button>
             </DialogActions>
         </Dialog>
     );
