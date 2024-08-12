@@ -20,6 +20,17 @@ const Expenses = () => {
     const [selectedExpense, setSelectedExpense] = useState(null);
     const [selectedDate, setSelectedDate] = useState(null);
 
+    const handleCardStyling = (monthData) => {
+        const currentMonth = moment.utc().month() + 1;
+        const currentYear = moment.utc().year();
+
+        if (currentMonth === monthData.month && currentYear === monthData.year) {
+            return '5px #66BA6AFF solid';
+        } else {
+            return '5px #36A1EAFF solid';
+        }
+    }
+
     const handleDatePaidChange = (expense) => {
         if (expense.date_paid) {
             updateExpense({
@@ -93,7 +104,10 @@ const Expenses = () => {
     return (
         <>
             {expenses.map((monthData) => (
-                <Card key={monthData.fullMonthName + monthData.year} style={{ marginBottom: '15px' }}>
+                <Card
+                    key={monthData.fullMonthName + monthData.year}
+                    style={{ marginBottom: '15px', borderLeft: handleCardStyling(monthData) }}
+                >
                             <CardHeader
                                 title={
                                     <Box display="flex" alignItems="center">

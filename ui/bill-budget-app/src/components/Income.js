@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import {
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, Tooltip, Box, Alert
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, Tooltip, Box, Alert,
+    Card, CardHeader, CardContent, Typography, Grid, Divider
 } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
-import { Paid, CheckCircle, Error, Info, Loop } from '@mui/icons-material';
+import { Paid, CheckCircle, Error, Info, Loop, Payments, AccountBalance } from '@mui/icons-material';
 import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
 import IncomeSettingsMenu from './IncomeSettingsMenu';
@@ -17,7 +18,7 @@ const Income = () => {
         const date = moment.utc(incomeDate).startOf('day');
 
         return date.isSameOrBefore(today) ? (
-            <small style={{ color: 'grey', fontSize: '10px', display: 'flex', alignItems: 'center' }}>
+            <span style={{ color: 'grey', fontSize: '12px'}}>
                 {moment.utc(incomeDate).format('MMMM Do, YYYY')}
                 {incomeType === 'recurring' && (
                     <Tooltip title="Recurring">
@@ -27,9 +28,9 @@ const Income = () => {
                 <Tooltip title="Received">
                     <Paid fontSize='small' color='success' style={{ marginLeft: 4 }} />
                 </Tooltip>
-            </small>
+            </span>
         ) : (
-            <small style={{ color: 'grey', fontSize: '10px' }}>
+            <small style={{ color: 'grey', fontSize: '12px' }}>
                 {moment.utc(incomeDate).format('MMMM Do, YYYY')}
                 {incomeType === 'recurring' && (
                     <Tooltip title="Recurring">
@@ -48,8 +49,6 @@ const Income = () => {
                     label={<NumericFormat value={moneyRemaining.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}
                     color="success"
                     variant="outlined"
-                    size="small"
-                    style={{ fontWeight: 100, fontSize: '10px' }}
                 />
             );
         } else {
@@ -59,117 +58,164 @@ const Income = () => {
                     label={<NumericFormat value={moneyRemaining.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}
                     color="error"
                     variant="outlined"
-                    size="small"
-                    style={{ fontWeight: 100, fontSize: '10px' }}
                 />
             );
         }
     };
+
+    const handleAdditionalIncome = (income) => {
+        return (
+            <Alert
+                variant="outlined"
+                severity="success"
+                iconMapping={{
+                    success: <Paid fontSize="inherit" />,
+                }}
+            >
+                Sweet! You have <b>{<NumericFormat value={(income.additional_income.reduce((sum, income) => sum + income.amount, 0)).toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</b> of additional income for this period
+            </Alert>
+        )
+    }
 
     if (!incomes.length) {
         return <NoDataMessage title='Insufficient Data' message='The data available is not sufficient for this widget. Please adjust your filters and try again.'/>;
     }
 
     return (
-        <TableContainer component={Paper}>
-            <Table aria-label="Income table" size="medium">
-                <TableHead>
-                    <TableRow>
-                        <TableCell style={{ fontWeight: 'bold' }}>Source</TableCell>
-                        <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
-                        <TableCell style={{ fontWeight: 'bold' }} align="right">Total Income</TableCell>
-                        <TableCell style={{ fontWeight: 'bold' }} align="right">Expenses</TableCell>
-                        <TableCell style={{ fontWeight: 'bold' }} align="right">Money Remaining</TableCell>
-                        <TableCell></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {incomes.map((income) => (
-                        <React.Fragment key={income._id}>
-                            <TableRow style={{borderLeft: '5px solid #36A1EAFF'}}>
-                                <TableCell component="th" scope="row">
-                                    <Chip
-                                        icon={<Info />}
-                                        label={income.source.charAt(0).toUpperCase() + income.source.slice(1) + ': ' + income.description}
-                                        color="primary"
-                                        variant="outlined"
-                                        size="small"
-                                        style={{ fontWeight: 100, fontSize: '10px', marginBottom: 2 }}
+        <>
+            {incomes.map((income) => (
+                <Card
+                    key={income._id}
+                    style={{ marginBottom: '15px', borderLeft: '5px solid #36A1EAFF' }}
+                >
+                    <CardHeader
+                        title={
+                            <Box display="flex" alignItems="center" justifyContent="space-between">
+                                <Box display="flex" alignItems="center">
+                                    <Paid sx={{ mr: 1 }} />
+                                    <Typography variant="h6">
+                                        {income.description} {handleIncomeDate(income.date_received, income.type)}
+                                    </Typography>
+                                </Box>
+                                <IncomeSettingsMenu data={income} />
+                            </Box>
+                        }
+                        align="left"
+                        className="month-header"
+                    />
+                    <CardContent>
+                        <Grid container spacing={2}>
+                            <Grid item lg={3}>
+                                <Card>
+                                    <CardHeader
+                                        title= {
+                                            <small style={{ fontSize: '12px', fontWeight: 'bold' }}>Amount</small>
+                                        }
+                                        style={{borderTop: '5px solid #36A1EAFF'}}
                                     />
-                                    <br />
-                                    {handleIncomeDate(income.date_received, income.type)}
-                                </TableCell>
-                                <TableCell align="right">
-                                    <NumericFormat value={income.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-                                </TableCell>
-                                <TableCell align="right">
-                                    <NumericFormat value={income.total_income.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-                                </TableCell>
-                                <TableCell align="right">
-                                    <NumericFormat value={income.total_expenses.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-                                </TableCell>
-                                <TableCell align="right">
-                                    {handleMoneyRemaining(income.money_remaining)}
-                                </TableCell>
-                                <TableCell>
-                                    <IncomeSettingsMenu data={income} />
-                                </TableCell>
-                            </TableRow>
-                            {income.additional_income.length > 0 && (
-                                <TableRow style={{borderLeft: '5px solid #66BA6AFF'}}>
-                                    <TableCell colSpan={7} style={{ paddingBottom: 0, paddingTop: 0 }}>
-                                        <Box margin={1}>
-                                            <Alert variant="outlined" severity="success">
-                                                Sweet! You have <b>{<NumericFormat value={(income.additional_income.reduce((sum, income) => sum + income.amount, 0)).toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</b> of additional income for this period.
-                                            </Alert>
-                                            <Table size="small" aria-label="additional income">
-                                                <TableHead>
-                                                    <TableRow>
-                                                        <TableCell style={{ fontWeight: 'bold' }}>Source</TableCell>
-                                                        <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
-                                                        <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
-                                                        <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
-                                                        <TableCell></TableCell>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {income.additional_income.map((additional) => (
-                                                        <TableRow key={additional._id}>
-                                                            <TableCell>
-                                                                <Chip
-                                                                    icon={<Info />}
-                                                                    label={additional.source.charAt(0).toUpperCase() + additional.source.slice(1)}
-                                                                    color="primary"
-                                                                    variant="outlined"
-                                                                    size="small"
-                                                                    style={{ fontWeight: 100, fontSize: '10px', marginRight: 5 }}
-                                                                />
-                                                            </TableCell>
-                                                            <TableCell>{additional.description}</TableCell>
-                                                            <TableCell>
-                                                                <small style={{ color: 'grey', fontSize: '10px' }}>
-                                                                    {handleIncomeDate(additional.date_received, additional.type)}
-                                                                </small>
-                                                            </TableCell>
-                                                            <TableCell align="right">
-                                                                <NumericFormat value={additional.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <IncomeSettingsMenu data={additional} />
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        </Box>
-                                    </TableCell>
-                                </TableRow>
-                            )}
-                        </React.Fragment>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                                    <CardContent>
+                                        <Typography variant='h6'>
+                                            <Chip icon={<Paid />} label={<NumericFormat value={income.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />} variant="outlined" />
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item lg={3}>
+                                <Card>
+                                    <CardHeader
+                                        title= {
+                                            <small style={{ fontSize: '12px', fontWeight: 'bold' }}>Total Income</small>
+                                        }
+                                        style={{borderTop: '5px solid #36A1EAFF'}}
+                                    />
+                                    <CardContent>
+                                        <Typography variant='h6'>
+                                            <Chip icon={<AccountBalance />} label={<NumericFormat value={income.total_income.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />} variant="outlined" />
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item lg={3}>
+                                <Card>
+                                    <CardHeader
+                                        title= {
+                                            <small style={{ fontSize: '12px', fontWeight: 'bold' }}>Expenses</small>
+                                        }
+                                        style={{borderTop: '5px solid #36A1EAFF'}}
+                                    />
+                                    <CardContent>
+                                        <Typography variant='h6'>
+                                            <Chip icon={<Payments />} label={<NumericFormat value={income.total_expenses.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />} variant="outlined" />
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item lg={3}>
+                                <Card>
+                                    <CardHeader
+                                        title={
+                                            <small style={{ fontSize: '12px', fontWeight: 'bold' }}>Money Remaining</small>
+                                        }
+                                        style={{
+                                            borderTop: `5px solid ${income.money_remaining < 0 ? '#F44336' : '#4CAF50'}`
+                                        }}
+                                    />
+                                    <CardContent>
+                                        <Typography variant='h6'>
+                                            {handleMoneyRemaining(income.money_remaining)}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        </Grid>
+                        {income.additional_income.length > 0 && (
+                            <TableContainer style={{marginTop: 15}}>
+                                {handleAdditionalIncome(income)}
+                                <Table size="small" aria-label="additional income">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell style={{ fontWeight: 'bold' }}>Source</TableCell>
+                                            <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
+                                            <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
+                                            <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
+                                            <TableCell></TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {income.additional_income.map((additional) => (
+                                            <TableRow key={additional._id}>
+                                                <TableCell>
+                                                    <Chip
+                                                        icon={<Info />}
+                                                        label={additional.source.charAt(0).toUpperCase() + additional.source.slice(1)}
+                                                        color="primary"
+                                                        variant="outlined"
+                                                        size="small"
+                                                        style={{ fontWeight: 100, fontSize: '10px', marginRight: 5 }}
+                                                    />
+                                                </TableCell>
+                                                <TableCell>{additional.description}</TableCell>
+                                                <TableCell>
+                                                    <small style={{ color: 'grey', fontSize: '10px' }}>
+                                                        {handleIncomeDate(additional.date_received, additional.type)}
+                                                    </small>
+                                                </TableCell>
+                                                <TableCell align="right">
+                                                    <NumericFormat value={additional.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                                                </TableCell>
+                                                <TableCell>
+                                                    <IncomeSettingsMenu data={additional} />
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        )}
+                    </CardContent>
+                </Card>
+            ))}
+        </>
     );
 };
 

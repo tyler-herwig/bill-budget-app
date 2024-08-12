@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Work in progress of converting CRUD functionality over to use custom hooks.">
+    <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Bug fix for desktop display of user intro tabs.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/bill.controller.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/expenses.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/controllers/expenses.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/income.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/controllers/income.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/paycheck.controller.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/models/bill.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/models/paycheck.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/routes/bill.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/routes/paycheck.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/DateRangeContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/DateRangeContext.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Expenses.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Expenses.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Income.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Income.js" afterDir="false" />
     </list>
@@ -33,7 +26,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="feature/teller-integration" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -52,7 +45,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/hook-conversion&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/tyler/IdeaProjects/bill-budget-app/ui/bill-budget-app/src/components/income&quot;,
@@ -107,9 +100,7 @@
       <workItem from="1722520444393" duration="4190000" />
       <workItem from="1722870004737" duration="12050000" />
       <workItem from="1722952553501" duration="1964000" />
-      <workItem from="1723043742272" duration="9069000" />
-      <workItem from="1723142562173" duration="13575000" />
-      <workItem from="1723468130144" duration="3360000" />
+      <workItem from="1723043742272" duration="5506000" />
     </task>
     <task id="LOCAL-00001" summary="Updated app name and description.">
       <option name="closed" value="true" />
@@ -159,23 +150,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722952596154</updated>
     </task>
-    <task id="LOCAL-00007" summary="Added delete functionality for income and expenses. Refactored and commented code across the board and implemented new delete endpoints.">
+    <task id="LOCAL-00007" summary="Bug fix for desktop display of user intro tabs.">
       <option name="closed" value="true" />
-      <created>1723049812317</created>
+      <created>1723472224744</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1723049812317</updated>
+      <updated>1723472224744</updated>
     </task>
-    <task id="LOCAL-00008" summary="Work in progress of converting CRUD functionality over to use custom hooks.">
-      <option name="closed" value="true" />
-      <created>1723153280562</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1723153280562</updated>
-    </task>
-    <option name="localTasksCounter" value="9" />
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -210,8 +193,7 @@
     <MESSAGE value="API updates." />
     <MESSAGE value="Updated APIs with validation and fixed some logic issues with updating recurring instances... in addition, I've opted to return error messages from API responses going forward. Hoping to perform validation on the server side." />
     <MESSAGE value="Removed checking if date is old." />
-    <MESSAGE value="Added delete functionality for income and expenses. Refactored and commented code across the board and implemented new delete endpoints." />
-    <MESSAGE value="Work in progress of converting CRUD functionality over to use custom hooks." />
-    <option name="LAST_COMMIT_MESSAGE" value="Work in progress of converting CRUD functionality over to use custom hooks." />
+    <MESSAGE value="Bug fix for desktop display of user intro tabs." />
+    <option name="LAST_COMMIT_MESSAGE" value="Bug fix for desktop display of user intro tabs." />
   </component>
 </project>
