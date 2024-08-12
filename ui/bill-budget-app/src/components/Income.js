@@ -13,7 +13,7 @@ const Income = () => {
     const { incomes } = useContext(IncomeContext);
 
     const handleIncomeDate = (incomeDate, incomeType) => {
-        const today = moment().startOf('day');
+        const today = moment.utc().startOf('day');
         const date = moment.utc(incomeDate).startOf('day');
 
         return date.isSameOrBefore(today) ? (

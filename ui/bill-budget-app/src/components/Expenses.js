@@ -5,7 +5,7 @@ import {
     DialogTitle, Button, Tooltip
 } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
-import { CalendarMonth, Loop } from '@mui/icons-material';
+import { CalendarMonth, Loop, WarningAmber } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment from 'moment';
 import ExpenseSettingsMenu from './ExpenseSettingsMenu';
@@ -44,6 +44,32 @@ const Expenses = () => {
         setOpen(false);
         setSelectedExpense(null);
         setSelectedDate(null);
+    };
+
+    const handleDateDue = (expense) => {
+        const today = moment.utc().startOf('day');
+        const date = moment.utc(expense.date_due).startOf('day');
+
+        return (
+            <small style={{ color: 'grey', fontSize: '10px', display: 'flex', alignItems: 'center' }}>
+                {moment.utc(expense.date_due).format('MMMM Do, YYYY')}
+                {expense.type === 'recurring' && (
+                    <Tooltip title="Recurring">
+                        <Loop fontSize='small' color='primary' style={{marginLeft: 4}}/>
+                    </Tooltip>
+                )}
+                {date.isBefore(today) && !expense.date_paid ? (
+                    <Tooltip title="Expense is showing not paid. Have you paid this yet?">
+                        <WarningAmber fontSize='small' color='error' style={{marginLeft: 4}}/>
+                    </Tooltip>
+                ) : '' }
+                {date.isSame(today) && !expense.date_paid ? (
+                    <Tooltip title="Expense is due today!">
+                        <WarningAmber fontSize='small' color='warning' style={{marginLeft: 4}}/>
+                    </Tooltip>
+                ) : '' }
+            </small>
+        );
     };
 
     const handleDatePaid = (expense, label) => (
@@ -104,12 +130,7 @@ const Expenses = () => {
                                                         <NumericFormat value={expense.amount.toFixed(2)} displayType="text" thousandSeparator={true} prefix="$" />
                                                     </TableCell>
                                                     <TableCell>
-                                                        <small style={{ color: 'grey', fontSize: '10px' }}>{moment.utc(expense.date_due).format('MMMM Do, YYYY')}</small>
-                                                        {expense.type === 'recurring' && (
-                                                            <Tooltip title="Recurring">
-                                                                <Loop fontSize='small' color='primary' style={{position: 'absolute', marginLeft: 2}}/>
-                                                            </Tooltip>
-                                                        )}
+                                                        {handleDateDue(expense)}
                                                     </TableCell>
                                                     <TableCell align="center">
                                                         {handleDatePaid(expense, label)}

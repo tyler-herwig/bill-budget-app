@@ -315,7 +315,7 @@ exports.updateRecurringExpense = async (req, res) => {
         const newInstances = generateRecurringInstances(updatedRecurringExpense, true);
 
         const startOfToday = new Date();
-        startOfToday.setHours(0, 0, 0, 0);
+        startOfToday.setUTCHours(0, 0, 0, 0);
 
         // Remove instances that are after today
         await Expense.deleteMany({
