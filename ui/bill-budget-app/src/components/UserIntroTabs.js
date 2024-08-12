@@ -127,7 +127,7 @@ export function UserIntroTabs() {
             </Box>
             <CustomTabPanel value={value} index={0}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} m={6}>
+                    <Grid item xs={12} lg={6}>
                         <IncomeBackgroundBox>
                             <Typography variant="h6" style={{fontWeight: 'bold'}}><AccountBalance /> Income</Typography>
                         </IncomeBackgroundBox>
@@ -139,7 +139,7 @@ export function UserIntroTabs() {
                             </Tooltip>
                         )}
                     </Grid>
-                    <Grid item xs={12} m={6}>
+                    <Grid item xs={12} lg={6}>
                         <ExpensesBackgroundBox>
                             <Typography variant="h6" style={{fontWeight: 'bold'}}><Payments /> Expenses</Typography>
                         </ExpensesBackgroundBox>
@@ -152,7 +152,7 @@ export function UserIntroTabs() {
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} m={6}>
+                    <Grid item xs={12} lg={6}>
                         <IncomeBackgroundBox>
                             <Typography variant="h6" style={{fontWeight: 'bold'}}><AccountBalance /> Income</Typography>
                         </IncomeBackgroundBox>
@@ -164,7 +164,7 @@ export function UserIntroTabs() {
                             </Tooltip>
                         )}
                     </Grid>
-                    <Grid item xs={12} m={6}>
+                    <Grid item xs={12} lg={6}>
                         <ExpensesBackgroundBox>
                             <Typography variant="h6" style={{fontWeight: 'bold'}}><Payments /> Expenses</Typography>
                         </ExpensesBackgroundBox>
