@@ -51,32 +51,32 @@ export const DateRangeProvider = ({ children }) => {
 
         switch (rangeType) {
             case 'thisWeek':
-                startDate = moment().startOf('week');
-                endDate = moment().endOf('week');
+                startDate = moment.utc().startOf('week');
+                endDate = moment.utc().endOf('week');
                 break;
             case 'lastWeek':
-                startDate = moment().subtract(1, 'week').startOf('week');
-                endDate = moment().subtract(1, 'week').endOf('week');
+                startDate = moment.utc().subtract(1, 'week').startOf('week');
+                endDate = moment.utc().subtract(1, 'week').endOf('week');
                 break;
             case 'twoWeeks':
-                startDate = moment().subtract(1, 'week').startOf('week');
-                endDate = moment().endOf('week');
+                startDate = moment.utc().subtract(1, 'week').startOf('week');
+                endDate = moment.utc().endOf('week');
                 break;
             case 'thisMonth':
-                startDate = moment().startOf('month');
-                endDate = moment().endOf('month');
+                startDate = moment.utc().startOf('month');
+                endDate = moment.utc().endOf('month');
                 break;
             case 'lastMonth':
-                startDate = moment().subtract(1, 'month').startOf('month');
-                endDate = moment().subtract(1, 'month').endOf('month');
+                startDate = moment.utc().subtract(1, 'month').startOf('month');
+                endDate = moment.utc().subtract(1, 'month').endOf('month');
                 break;
             case 'sixMonths':
-                startDate = moment().startOf('month');
-                endDate = moment().add(5, 'months').endOf('month');
+                startDate = moment.utc().startOf('month');
+                endDate = moment.utc().add(5, 'months').endOf('month');
                 break;
             case 'currentYear':
-                startDate = moment().startOf('year');
-                endDate = moment().endOf('year');
+                startDate = moment.utc().startOf('year');
+                endDate = moment.utc().endOf('year');
                 break;
             default:
                 return; // No action for custom or invalid range
@@ -92,15 +92,15 @@ export const DateRangeProvider = ({ children }) => {
         const storedRange = getStoredDateRange();
         if (storedRange) {
             setDateRange({
-                startDate: moment(storedRange.startDate),
-                endDate: moment(storedRange.endDate),
+                startDate: moment.utc(storedRange.startDate),
+                endDate: moment.utc(storedRange.endDate),
                 rangeType: storedRange.rangeType
             });
         } else {
             // Set default range if no stored value
             updateDateRange({
-                startDate: moment().subtract(30, 'days'),
-                endDate: moment(),
+                startDate: moment.utc().subtract(30, 'days'),
+                endDate: moment.utc(),
                 rangeType: 'thisMonth'
             });
         }
