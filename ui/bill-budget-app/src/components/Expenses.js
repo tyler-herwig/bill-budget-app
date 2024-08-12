@@ -5,7 +5,7 @@ import {
     DialogTitle, Button, Tooltip
 } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
-import { CalendarMonth, Loop, WarningAmber } from '@mui/icons-material';
+import { CalendarMonth, Loop, Error } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment from 'moment';
 import ExpenseSettingsMenu from './ExpenseSettingsMenu';
@@ -71,12 +71,12 @@ const Expenses = () => {
                 )}
                 {date.isBefore(today) && !expense.date_paid ? (
                     <Tooltip title="Expense is showing not paid. Have you paid this yet?">
-                        <WarningAmber fontSize='small' color='error' style={{marginLeft: 4}}/>
+                        <Error fontSize='small' color='error' style={{marginLeft: 4}}/>
                     </Tooltip>
                 ) : '' }
                 {date.isSame(today) && !expense.date_paid ? (
                     <Tooltip title="Expense is due today!">
-                        <WarningAmber fontSize='small' color='warning' style={{marginLeft: 4}}/>
+                        <Error fontSize='small' color='warning' style={{marginLeft: 4}}/>
                     </Tooltip>
                 ) : '' }
             </small>
