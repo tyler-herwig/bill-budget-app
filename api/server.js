@@ -2,8 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
-const billRoutes = require('./routes/bill');
-const paycheckRoutes = require('./routes/paycheck');
 const expenseRoutes = require('./routes/expenses');
 const incomeRoutes = require('./routes/income');
 
@@ -17,8 +15,6 @@ app.use(express.urlencoded({
 }));
 
 // Routes
-app.use('/api/', billRoutes);
-app.use('/api/', paycheckRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/income', incomeRoutes);
 
