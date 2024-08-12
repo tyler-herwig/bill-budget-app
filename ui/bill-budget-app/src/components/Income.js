@@ -106,10 +106,14 @@ const Income = () => {
                     <CardContent>
                         <Grid container spacing={2}>
                             <Grid item lg={3}>
-                                <Card>
+                                <Card
+                                    sx={{
+                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.75)',
+                                    }}
+                                >
                                     <CardHeader
                                         title= {
-                                            <small style={{ fontSize: '12px', fontWeight: 'bold' }}>Amount</small>
+                                            <small style={{ fontSize: '14px', fontWeight: 'bold' }}>Amount</small>
                                         }
                                         style={{borderTop: '5px solid #36A1EAFF'}}
                                     />
@@ -121,10 +125,14 @@ const Income = () => {
                                 </Card>
                             </Grid>
                             <Grid item lg={3}>
-                                <Card>
+                                <Card
+                                    sx={{
+                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.75)',
+                                    }}
+                                >
                                     <CardHeader
                                         title= {
-                                            <small style={{ fontSize: '12px', fontWeight: 'bold' }}>Total Income</small>
+                                            <small style={{ fontSize: '14px', fontWeight: 'bold' }}>Total Income</small>
                                         }
                                         style={{borderTop: '5px solid #36A1EAFF'}}
                                     />
@@ -136,10 +144,14 @@ const Income = () => {
                                 </Card>
                             </Grid>
                             <Grid item lg={3}>
-                                <Card>
+                                <Card
+                                    sx={{
+                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.75)',
+                                    }}
+                                >
                                     <CardHeader
                                         title= {
-                                            <small style={{ fontSize: '12px', fontWeight: 'bold' }}>Expenses</small>
+                                            <small style={{ fontSize: '14px', fontWeight: 'bold' }}>Expenses</small>
                                         }
                                         style={{borderTop: '5px solid #36A1EAFF'}}
                                     />
@@ -151,10 +163,14 @@ const Income = () => {
                                 </Card>
                             </Grid>
                             <Grid item lg={3}>
-                                <Card>
+                                <Card
+                                    sx={{
+                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.75)',
+                                    }}
+                                >
                                     <CardHeader
                                         title={
-                                            <small style={{ fontSize: '12px', fontWeight: 'bold' }}>Money Remaining</small>
+                                            <small style={{ fontSize: '14px', fontWeight: 'bold' }}>Money Remaining</small>
                                         }
                                         style={{
                                             borderTop: `5px solid ${income.money_remaining < 0 ? '#F44336' : '#4CAF50'}`
@@ -169,48 +185,50 @@ const Income = () => {
                             </Grid>
                         </Grid>
                         {income.additional_income.length > 0 && (
-                            <TableContainer style={{marginTop: 15}}>
+                            <div style={{marginTop: 15}}>
                                 {handleAdditionalIncome(income)}
-                                <Table size="small" aria-label="additional income">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell style={{ fontWeight: 'bold' }}>Source</TableCell>
-                                            <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
-                                            <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
-                                            <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
-                                            <TableCell></TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {income.additional_income.map((additional) => (
-                                            <TableRow key={additional._id}>
-                                                <TableCell>
-                                                    <Chip
-                                                        icon={<Info />}
-                                                        label={additional.source.charAt(0).toUpperCase() + additional.source.slice(1)}
-                                                        color="primary"
-                                                        variant="outlined"
-                                                        size="small"
-                                                        style={{ fontWeight: 100, fontSize: '10px', marginRight: 5 }}
-                                                    />
-                                                </TableCell>
-                                                <TableCell>{additional.description}</TableCell>
-                                                <TableCell>
-                                                    <small style={{ color: 'grey', fontSize: '10px' }}>
-                                                        {handleIncomeDate(additional.date_received, additional.type)}
-                                                    </small>
-                                                </TableCell>
-                                                <TableCell align="right">
-                                                    <NumericFormat value={additional.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-                                                </TableCell>
-                                                <TableCell>
-                                                    <IncomeSettingsMenu data={additional} />
-                                                </TableCell>
+                                <TableContainer>
+                                    <Table size="small" aria-label="additional income">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell style={{ fontWeight: 'bold' }}>Source</TableCell>
+                                                <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
+                                                <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
+                                                <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
+                                                <TableCell></TableCell>
                                             </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+                                        </TableHead>
+                                        <TableBody>
+                                            {income.additional_income.map((additional) => (
+                                                <TableRow key={additional._id}>
+                                                    <TableCell>
+                                                        <Chip
+                                                            icon={<Info />}
+                                                            label={additional.source.charAt(0).toUpperCase() + additional.source.slice(1)}
+                                                            color="primary"
+                                                            variant="outlined"
+                                                            size="small"
+                                                            style={{ fontWeight: 100, fontSize: '10px', marginRight: 5 }}
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell>{additional.description}</TableCell>
+                                                    <TableCell>
+                                                        <small style={{ color: 'grey', fontSize: '10px' }}>
+                                                            {handleIncomeDate(additional.date_received, additional.type)}
+                                                        </small>
+                                                    </TableCell>
+                                                    <TableCell align="right">
+                                                        <NumericFormat value={additional.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <IncomeSettingsMenu data={additional} />
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </div>
                         )}
                     </CardContent>
                 </Card>
