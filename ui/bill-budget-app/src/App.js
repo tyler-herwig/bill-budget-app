@@ -16,8 +16,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { IncomeProvider, IncomeContext } from './components/IncomeContext';
 import { ExpensesProvider, ExpensesContext } from './components/ExpensesContext';
 import { ProfileProvider, ProfileContext } from './components/ProfileContext';
+import { AuthProvider } from './components/AuthContext';
 import { DateRangeProvider } from './components/DateRangeContext';
 import DateRangePickerComponent from './components/DateRangePickerComponent';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import Authentication from './components/Authentication';
 
 const darkTheme = createTheme({
     palette: {
@@ -83,28 +86,33 @@ const DateRangePickerComponentWrapper = () => {
 class App extends Component {
     render() {
         return (
-            <ThemeProvider theme={darkTheme}>
-                <CssBaseline />
-                <div className="App">
-                    <DateRangeProvider>
-                        <ProfileProvider>
-                            <IncomeProvider>
-                                <ExpensesProvider>
-                                    <Router>
-                                        <ResponsiveAppBar />
-                                        <DateRangePickerComponentWrapper />
-                                        <Routes>
-                                            <Route path="/" element={<AppContent />} />
-                                            <Route path="/profile" element={<Profile />} />
-                                        </Routes>
-                                        <ControlsSpeedDialWrapper />
-                                    </Router>
-                                </ExpensesProvider>
-                            </IncomeProvider>
-                        </ProfileProvider>
-                    </DateRangeProvider>
-                </div>
-            </ThemeProvider>
+            <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+                <ThemeProvider theme={darkTheme}>
+                    <CssBaseline />
+                    <div className="App">
+                        <DateRangeProvider>
+                            <ProfileProvider>
+                                <IncomeProvider>
+                                    <ExpensesProvider>
+                                        <Router>
+                                            <AuthProvider>
+                                                <ResponsiveAppBar />
+                                                <DateRangePickerComponentWrapper />
+                                                <Routes>
+                                                    <Route path="/" element={<AppContent />} />
+                                                    <Route path="/profile" element={<Profile />} />
+                                                    <Route path="/authentication" element={<Authentication/>} />
+                                                </Routes>
+                                                <ControlsSpeedDialWrapper />
+                                            </AuthProvider>
+                                        </Router>
+                                    </ExpensesProvider>
+                                </IncomeProvider>
+                            </ProfileProvider>
+                        </DateRangeProvider>
+                    </div>
+                </ThemeProvider>
+            </GoogleOAuthProvider>
         );
     }
 }

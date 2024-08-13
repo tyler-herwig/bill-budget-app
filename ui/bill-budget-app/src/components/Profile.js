@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
     Container, Grid, Paper, Avatar, Typography, TextField, Box, Button, TableContainer, Table, TableHead,
     TableRow, TableCell, TableBody, IconButton
@@ -7,9 +7,9 @@ import { NumericFormat } from 'react-number-format';
 import {MoreHoriz as MoreHorizIcon, Loop} from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import RecurringIncomeModal from './RecurringIncomeModal';
-import { ProfileContext } from './ProfileContext';
 import moment from 'moment';
 import NoDataMessage from './NoDataMessage';
+import { useAuth } from './AuthContext';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -20,8 +20,9 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Profile = () => {
-    const { profile } = useContext(ProfileContext);
     const [modalOpen, setModalOpen] = React.useState(false);
+
+    const { profile, logOut } = useAuth();
 
     const handleOpenModal = (content) => {
         setModalOpen(true);
@@ -36,20 +37,18 @@ const Profile = () => {
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Item>
-                            <Avatar
-                                alt="Profile Picture"
-                                sx={{ width: 100, height: 100, margin: 'auto', bgcolor: '#0072ff', backgroundImage: 'linear-gradient(to right, #00c6ff, #0072ff)' }}
-                            >
-                                T
-                            </Avatar>
-                            <Typography variant="h3" component="h1" style={{ marginTop: 10 }}>
-                                Tyler Herwig
-                            </Typography>
-                            <Button variant="outlined" color="primary" style={{ marginTop: 10 }}>
-                                Edit Profile Picture
-                            </Button>
-                        </Item>
+                        { Object.keys(profile.data).length ? (
+                            <Item>
+                                <Avatar
+                                    alt={profile.data.name}
+                                    src={profile.data.picture}
+                                    sx={{ width: 100, height: 100, margin: 'auto' }}
+                                />
+                                <Typography variant="h3" component="h1" style={{ marginTop: 10 }}>
+                                    {profile.data.name}
+                                </Typography>
+                            </Item>
+                        ): '' }
                     </Grid>
                     <Grid item xs={12}>
                         <Grid container spacing={2}>
@@ -60,31 +59,35 @@ const Profile = () => {
                                             Profile
                                         </Typography>
                                     </Box>
-                                    <TextField
-                                        fullWidth
-                                        label="Name"
-                                        defaultValue="Tyler Herwig"
-                                        variant="outlined"
-                                        margin="normal"
-                                    />
-                                    <TextField
-                                        fullWidth
-                                        label="Email"
-                                        defaultValue="tyler.herwig@example.com"
-                                        variant="outlined"
-                                        margin="normal"
-                                    />
-                                    <TextField
-                                        fullWidth
-                                        label="Password"
-                                        type="password"
-                                        defaultValue="********"
-                                        variant="outlined"
-                                        margin="normal"
-                                    />
+                                    <small>This info is from your Google account. You cannot edit it within this application.</small>
+                                    { Object.keys(profile.data).length ? (
+                                        <TextField
+                                            fullWidth
+                                            label="Name"
+                                            value={profile.data.name}
+                                            variant="outlined"
+                                            margin="normal"
+                                            disabled
+                                        />
+                                    ): '' }
+                                    { Object.keys(profile.data).length ? (
+                                        <TextField
+                                            fullWidth
+                                            label="Email"
+                                            value={profile.data.email}
+                                            variant="outlined"
+                                            margin="normal"
+                                            disabled
+                                        />
+                                    ): '' }
                                     <Grid item xs={12} display="flex" justifyContent="flex-end">
-                                        <Button variant="contained" color="primary" style={{marginTop: 20}}>
-                                            Save Changes
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            style={{marginTop: 20}}
+                                            onClick={logOut}
+                                        >
+                                            Log Out
                                         </Button>
                                     </Grid>
                                 </Item>

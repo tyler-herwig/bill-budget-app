@@ -105,7 +105,7 @@ const Income = () => {
                     />
                     <CardContent>
                         <Grid container spacing={2}>
-                            <Grid item lg={3}>
+                            <Grid item xs={12} lg={3}>
                                 <Card
                                     sx={{
                                         boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.75)',
@@ -124,7 +124,7 @@ const Income = () => {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            <Grid item lg={3}>
+                            <Grid item xs={12} lg={3}>
                                 <Card
                                     sx={{
                                         boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.75)',
@@ -143,7 +143,7 @@ const Income = () => {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            <Grid item lg={3}>
+                            <Grid item xs={12} lg={3}>
                                 <Card
                                     sx={{
                                         boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.75)',
@@ -162,7 +162,7 @@ const Income = () => {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            <Grid item lg={3}>
+                            <Grid item xs={12} lg={3}>
                                 <Card
                                     sx={{
                                         boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.75)',

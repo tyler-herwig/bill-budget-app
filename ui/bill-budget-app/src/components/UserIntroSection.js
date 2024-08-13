@@ -4,6 +4,7 @@ import { styled } from '@mui/system';
 import { QueryStats } from '@mui/icons-material';
 import { FinancialOutlookChart } from './FinancialOutlookChart';
 import { UserIntroTabs } from './UserIntroTabs';
+import { useAuth } from './AuthContext';
 
 const InfoPaper = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(3),
@@ -15,12 +16,16 @@ const InfoPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const UserIntroSection = () => {
+    const { profile } = useAuth();
+
     return (
         <Grid container spacing={2} style={{ marginBottom: '15px' }}>
             <Grid item xs={12} md={5}>
                 <InfoPaper style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
                     <Box>
-                        <Typography variant="h3" style={{ color: '#fff' }}>Welcome, Tyler!</Typography>
+                        { Object.keys(profile.data).length ? (
+                            <Typography variant="h3" style={{ color: '#fff' }}>Welcome, {profile.data.name}!</Typography>
+                        ) : '' }
                         <Typography variant="body1" style={{ color: '#fff' }}>Here's a quick overview of your financial data.</Typography>
                     </Box>
                     <br/>

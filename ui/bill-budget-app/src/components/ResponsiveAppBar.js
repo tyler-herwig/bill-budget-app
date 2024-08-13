@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import { Menu as MenuIcon, InsertChart, AddBox } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 const pages = [];
 const settings = [
@@ -26,6 +27,8 @@ function ResponsiveAppBar() {
     const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
     const handleCloseNavMenu = () => setAnchorElNav(null);
     const handleCloseUserMenu = () => setAnchorElUser(null);
+
+    const { profile } = useAuth();
 
     return (
         <AppBar position="static">
@@ -120,8 +123,8 @@ function ResponsiveAppBar() {
 
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar sx={{ bgcolor: '#0072ff', backgroundImage: 'linear-gradient(to right, #00c6ff, #0072ff)' }}>T</Avatar>
+                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                                { Object.keys(profile.data).length ? <Avatar alt={profile.data.name} src={profile.data.picture} /> : '' }
                             </IconButton>
                         </Tooltip>
                         <Menu
