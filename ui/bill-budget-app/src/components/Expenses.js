@@ -32,6 +32,7 @@ const Expenses = () => {
     }
 
     const handleDatePaidChange = (expense) => {
+        setSelectedDate(moment.utc(expense.date_due));
         if (expense.date_paid) {
             updateExpense({
                 _id: expense._id,
