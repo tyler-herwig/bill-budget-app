@@ -21,6 +21,7 @@ import { DateRangeProvider } from './components/DateRangeContext';
 import DateRangePickerComponent from './components/DateRangePickerComponent';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Authentication from './components/Authentication';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const darkTheme = createTheme({
     palette: {
@@ -99,9 +100,9 @@ class App extends Component {
                                                 <ResponsiveAppBar />
                                                 <DateRangePickerComponentWrapper />
                                                 <Routes>
-                                                    <Route path="/" element={<AppContent />} />
-                                                    <Route path="/profile" element={<Profile />} />
-                                                    <Route path="/authentication" element={<Authentication/>} />
+                                                    <Route path="/authentication" element={<Authentication />} />
+                                                    <Route path="/" element={<ProtectedRoute element={<AppContent />} />} />
+                                                    <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
                                                 </Routes>
                                                 <ControlsSpeedDialWrapper />
                                             </AuthProvider>

@@ -7,7 +7,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [profile, setProfile] = useState({ data: {}, salaries: [] });
-    const [loadingAuth, setLoadingAuth] = useState(false);
+    const [loadingAuth, setLoadingAuth] = useState(true);
     const navigate = useNavigate();
 
     const API_URL = process.env.REACT_APP_API_URL;
@@ -27,6 +27,13 @@ export const AuthProvider = ({ children }) => {
         gapi.load('auth2', () => {
             gapi.auth2.init({ client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID });
         });
+
+        // Check for saved profile in localStorage
+        const savedProfile = localStorage.getItem('profile');
+        if (savedProfile) {
+            setProfile(JSON.parse(savedProfile));
+        }
+        setLoadingAuth(false);
     }, []);
 
     const responseMessage = async (response) => {
@@ -42,15 +49,18 @@ export const AuthProvider = ({ children }) => {
                     Accept: 'application/json',
                 },
             });
-            const userInfo = await userInfoResponse.json();
 
-            // Await the result of fetchSalaries
+            const userInfo = await userInfoResponse.json();
             const salaries = await fetchSalaries();
 
-            setProfile({
+            const profileData = {
                 data: userInfo,
                 salaries: salaries
-            });
+            };
+
+            // Save profile data to localStorage
+            localStorage.setItem('profile', JSON.stringify(profileData));
+            setProfile(profileData);
 
             navigate('/profile');
         } catch (error) {
@@ -66,6 +76,7 @@ export const AuthProvider = ({ children }) => {
 
     const logOut = () => {
         googleLogout();
+        localStorage.removeItem('profile');
         setProfile({ data: {}, salaries: [] });
         navigate('/authentication');
     };
