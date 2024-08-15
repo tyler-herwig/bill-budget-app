@@ -11,9 +11,10 @@ import moment from 'moment';
 import ExpenseSettingsMenu from './ExpenseSettingsMenu';
 import { ExpensesContext } from './ExpensesContext';
 import NoDataMessage from './NoDataMessage';
+import LoadingBackdrop from './LoadingBackdrop';
 
 const Expenses = () => {
-    const { expenses, updateExpense } = useContext(ExpensesContext);
+    const { expenses, updateExpense, loadingExpenses } = useContext(ExpensesContext);
     const label = { inputProps: { 'aria-label': 'Expense paid checkbox' } };
 
     const [open, setOpen] = useState(false);
@@ -97,6 +98,10 @@ const Expenses = () => {
             )}
         </>
     );
+
+    if (loadingExpenses) {
+        return <LoadingBackdrop open={loadingExpenses} />;
+    }
 
     if (!expenses.length) {
         return <NoDataMessage title='Insufficient Data' message='The data available is not sufficient for this widget. Please add an expense or adjust your filters and try again.'/>;

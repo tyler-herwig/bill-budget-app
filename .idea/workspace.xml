@@ -4,12 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Bug fix for desktop display of user intro tabs.">
+    <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Persisting credentials in local storage... need to work on JWT or some method to store token and tie this data to income and expenses...">
+      <change afterPath="$PROJECT_DIR$/api/controllers/auth.controller.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/middleware/authenticate.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/models/User.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/routes/auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/DateRangeContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/DateRangeContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/controllers/income.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/controllers/income.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/models/Income.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/models/Income.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/models/RecurringIncome.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/models/RecurringIncome.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/api/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/api/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/routes/income.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes/income.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/AuthContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/AuthContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Authentication.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Authentication.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Expenses.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Expenses.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Income.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Income.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/IncomeContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/IncomeContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ProtectedRoute.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ResponsiveAppBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ResponsiveAppBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/UserIntroSection.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/UserIntroSection.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +44,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/teller-integration" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -45,7 +63,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/google-signin-integration&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/tyler/IdeaProjects/bill-budget-app/ui/bill-budget-app/src/components/income&quot;,
@@ -101,6 +119,8 @@
       <workItem from="1722870004737" duration="12050000" />
       <workItem from="1722952553501" duration="1964000" />
       <workItem from="1723043742272" duration="5506000" />
+      <workItem from="1723557417209" duration="41001000" />
+      <workItem from="1723740944863" duration="2032000" />
     </task>
     <task id="LOCAL-00001" summary="Updated app name and description.">
       <option name="closed" value="true" />
@@ -158,7 +178,71 @@
       <option name="project" value="LOCAL" />
       <updated>1723472224744</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="UTC fixes">
+      <option name="closed" value="true" />
+      <created>1723480668334</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1723480668335</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Styling updates, and converted income to cards instead of table.">
+      <option name="closed" value="true" />
+      <created>1723480687319</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1723480687319</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Removed .env file from API stack :)">
+      <option name="closed" value="true" />
+      <created>1723492320054</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1723492320055</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Added .env to gitignore">
+      <option name="closed" value="true" />
+      <created>1723492375604</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1723492375604</updated>
+    </task>
+    <task id="LOCAL-00012" summary="UI tweaks and cleanup.">
+      <option name="closed" value="true" />
+      <created>1723493236697</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1723493236697</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Pre-fill date paid with date due by setting state.">
+      <option name="closed" value="true" />
+      <created>1723560680579</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1723560680580</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Work in progress for implementing Google Authentication and sign in for user accounts. Next steps will entail updating APIs to account for user accounts and finding a way to perhaps use the Google ID to tie data to their account...">
+      <option name="closed" value="true" />
+      <created>1723587873230</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1723587873230</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Persisting credentials in local storage... need to work on JWT or some method to store token and tie this data to income and expenses...">
+      <option name="closed" value="true" />
+      <created>1723596027430</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1723596027430</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -194,6 +278,14 @@
     <MESSAGE value="Updated APIs with validation and fixed some logic issues with updating recurring instances... in addition, I've opted to return error messages from API responses going forward. Hoping to perform validation on the server side." />
     <MESSAGE value="Removed checking if date is old." />
     <MESSAGE value="Bug fix for desktop display of user intro tabs." />
-    <option name="LAST_COMMIT_MESSAGE" value="Bug fix for desktop display of user intro tabs." />
+    <MESSAGE value="UTC fixes" />
+    <MESSAGE value="Styling updates, and converted income to cards instead of table." />
+    <MESSAGE value="Removed .env file from API stack :)" />
+    <MESSAGE value="Added .env to gitignore" />
+    <MESSAGE value="UI tweaks and cleanup." />
+    <MESSAGE value="Pre-fill date paid with date due by setting state." />
+    <MESSAGE value="Work in progress for implementing Google Authentication and sign in for user accounts. Next steps will entail updating APIs to account for user accounts and finding a way to perhaps use the Google ID to tie data to their account..." />
+    <MESSAGE value="Persisting credentials in local storage... need to work on JWT or some method to store token and tie this data to income and expenses..." />
+    <option name="LAST_COMMIT_MESSAGE" value="Persisting credentials in local storage... need to work on JWT or some method to store token and tie this data to income and expenses..." />
   </component>
 </project>

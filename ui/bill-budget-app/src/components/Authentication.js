@@ -4,7 +4,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from './AuthContext';
 
 const Authentication = () => {
-    const { loadingAuth, responseMessage, errorMessage } = useAuth();
+    const { loadingAuth, onLoginSuccess, onLoginFailure } = useAuth();
 
     return (
         <Container
@@ -32,8 +32,9 @@ const Authentication = () => {
                         <CircularProgress />
                     ) : (
                         <GoogleLogin
-                            onSuccess={responseMessage}
-                            onError={errorMessage}
+                            onSuccess={onLoginSuccess}
+                            onError={onLoginFailure}
+                            cookiePolicy='single_host_origin'
                         />
                     )}
                 </CardContent>

@@ -23,8 +23,8 @@ const UserIntroSection = () => {
             <Grid item xs={12} md={5}>
                 <InfoPaper style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
                     <Box>
-                        { Object.keys(profile.data).length ? (
-                            <Typography variant="h3" style={{ color: '#fff' }}>Welcome, {profile.data.name}!</Typography>
+                        { Object.keys(profile).length ? (
+                            <Typography variant="h3" style={{ color: '#fff' }}>Welcome, {profile.name}!</Typography>
                         ) : '' }
                         <Typography variant="body1" style={{ color: '#fff' }}>Here's a quick overview of your financial data.</Typography>
                     </Box>

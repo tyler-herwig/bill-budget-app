@@ -9,6 +9,7 @@ const Expense = require('../models/Expense');
 */
 exports.getAllIncome = async (req, res) => {
     const { start_date, end_date } = req.query;
+    const userId = req.user.sub;
 
     // Convert query parameters to JavaScript Date objects
     const start = start_date ? new Date(start_date) : new Date(0); // Default to the earliest date if not provided
@@ -17,14 +18,17 @@ exports.getAllIncome = async (req, res) => {
     try {
         // Retrieve all income, expenses, and recurring incomes within the date range
         const incomes = await Income.find({
-            date_received: { $gte: start, $lte: end }
+            date_received: { $gte: start, $lte: end },
+            user_id: userId
         }).sort({ date_received: 1 });
 
         const expenses = await Expense.find({
             date_due: { $gte: start, $lte: end }
         }).sort({ date_due: 1 });
 
-        const recurringIncomes = await RecurringIncome.find();
+        const recurringIncomes = await RecurringIncome.find({
+            user_id: userId
+        });
 
         // Convert recurring incomes to a map for quick lookup
         const recurringIncomeMap = new Map();
@@ -117,8 +121,9 @@ exports.getAllIncome = async (req, res) => {
 exports.addOneTimeIncome = async (req, res) => {
     try {
         const { date_received } = req.body;
+        const userId = req.user.sub;
 
-        // Ensure date_due is provided
+        // Ensure date_received is provided
         if (!date_received) {
             return res.status(400).json({ message: 'Received date is required for one-time income.' });
         }
@@ -126,7 +131,8 @@ exports.addOneTimeIncome = async (req, res) => {
         // Proceed with adding the one-time income
         const income = await Income.create({
             ...req.body,
-            type: 'one-time'
+            type: 'one-time',
+            user_id: userId
         });
 
         res.status(200).json(income);
@@ -187,6 +193,7 @@ exports.addRecurringIncome = async (req, res) => {
     try {
         const { start_date } = req.body.recurrence;
         const { end_date } = req.body.recurrence;
+        const userId = req.user.sub;
 
         // Ensure start_date is provided
         if (!start_date) {
@@ -207,7 +214,10 @@ exports.addRecurringIncome = async (req, res) => {
         }
 
         // Proceed with adding the recurring income
-        const recurringIncome = await RecurringIncome.create(req.body);
+        const recurringIncome = await RecurringIncome.create({
+            ...req.body,
+            user_id: userId
+        });
 
         // Generate and add new instances
         const newInstances = generateRecurringInstances(recurringIncome);
@@ -225,9 +235,11 @@ exports.addRecurringIncome = async (req, res) => {
 exports.getRecurringIncomes = async (req, res) => {
     try {
         const { source } = req.query;
+        const userId = req.user.sub;
         const filter = {};
-        if (source) {
+        if (source && userId) {
             filter.source = source;
+            filter.user_id = userId;
         }
         const recurringIncomes = await RecurringIncome.find(filter).sort({ 'recurrence.start_date': 1 });
 
@@ -312,7 +324,7 @@ exports.deleteRecurringIncome = async (req, res) => {
 */
 const generateRecurringInstances = (recurringIncome, skipPastDates = false) => {
     const instances = [];
-    const { source, description, amount, recurrence } = recurringIncome;
+    const { user_id, source, description, amount, recurrence } = recurringIncome;
     const { frequency, start_date, end_date } = recurrence;
 
     // Convert start_date and end_date to Date objects in UTC
@@ -377,6 +389,7 @@ const generateRecurringInstances = (recurringIncome, skipPastDates = false) => {
         const dateReceived = new Date(currentDate);
 
         instances.push({
+            user_id,
             source,
             description,
             amount,

@@ -37,15 +37,15 @@ const Profile = () => {
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        { Object.keys(profile.data).length ? (
+                        { Object.keys(profile).length ? (
                             <Item>
                                 <Avatar
-                                    alt={profile.data.name}
-                                    src={profile.data.picture}
+                                    alt={profile.name}
+                                    src={profile.picture}
                                     sx={{ width: 100, height: 100, margin: 'auto' }}
                                 />
                                 <Typography variant="h3" component="h1" style={{ marginTop: 10 }}>
-                                    {profile.data.name}
+                                    {profile.name}
                                 </Typography>
                             </Item>
                         ): '' }
@@ -60,21 +60,21 @@ const Profile = () => {
                                         </Typography>
                                     </Box>
                                     <small>This info is from your Google account. You cannot edit it within this application.</small>
-                                    { Object.keys(profile.data).length ? (
+                                    { Object.keys(profile).length ? (
                                         <TextField
                                             fullWidth
                                             label="Name"
-                                            value={profile.data.name}
+                                            value={profile.name}
                                             variant="outlined"
                                             margin="normal"
                                             disabled
                                         />
                                     ): '' }
-                                    { Object.keys(profile.data).length ? (
+                                    { Object.keys(profile).length ? (
                                         <TextField
                                             fullWidth
                                             label="Email"
-                                            value={profile.data.email}
+                                            value={profile.email}
                                             variant="outlined"
                                             margin="normal"
                                             disabled
@@ -109,46 +109,6 @@ const Profile = () => {
                                             Add Salary
                                         </Button>
                                     </Grid>
-                                    {(!profile.salaries.length) ? (
-                                        <NoDataMessage title='Get Started' message='Get started by adding your first salary using the button above.'/>
-                                    ) : (
-                                    <TableContainer component={Paper}>
-                                        <Table aria-label="Income table" size="medium">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
-                                                    <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
-                                                    <TableCell style={{ fontWeight: 'bold' }}>Recurrence</TableCell>
-                                                    <TableCell></TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                {profile.salaries.map((salary) => (
-                                                    <TableRow key={salary._id}>
-                                                        <TableCell style={{ fontWeight: 'bold' }}>{salary.description}</TableCell>
-                                                        <TableCell align="right">
-                                                            <NumericFormat value={salary.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <Loop fontSize='small' color='primary' style={{ marginLeft: 4 }} /> {salary.recurrence.frequency.charAt(0).toUpperCase() + salary.recurrence.frequency.slice(1)} <br/>
-                                                            <small style={{ color: 'grey', fontSize: '10px' }}>
-                                                                {moment.utc(salary.recurrence.start_date).format('MMMM Do, YYYY')} to {moment.utc(salary.recurrence.end_date).format('MMMM Do, YYYY')}
-                                                            </small>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <IconButton
-                                                                aria-label="edit"
-                                                                color="primary"
-                                                            >
-                                                                <MoreHorizIcon />
-                                                            </IconButton>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
-                                    )}
                                 </Item>
                             </Grid>
                         </Grid>

@@ -1,88 +1,61 @@
-import React, { createContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useState } from 'react';
 import { googleLogout } from '@react-oauth/google';
-import { gapi } from 'gapi-script';
 import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [profile, setProfile] = useState({ data: {}, salaries: [] });
-    const [loadingAuth, setLoadingAuth] = useState(true);
+    const [profile, setProfile] = useState({});
+    const [loadingAuth, setLoadingAuth] = useState(false);
     const navigate = useNavigate();
 
     const API_URL = process.env.REACT_APP_API_URL;
 
-    const fetchSalaries = useCallback(async () => {
-        try {
-            const response = await fetch(`${API_URL}/income/recurring?source=salary`);
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error('Error fetching salaries:', error);
-            return [];
-        }
-    }, [API_URL]);
-
-    useEffect(() => {
-        gapi.load('auth2', () => {
-            gapi.auth2.init({ client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID });
-        });
-
-        // Check for saved profile in localStorage
-        const savedProfile = localStorage.getItem('profile');
-        if (savedProfile) {
-            setProfile(JSON.parse(savedProfile));
-        }
-        setLoadingAuth(false);
-    }, []);
-
-    const responseMessage = async (response) => {
+    const onLoginSuccess = async (response) => {
         setLoadingAuth(true);
         try {
-            const authResponse = await gapi.auth2.getAuthInstance().currentUser.get().reloadAuthResponse();
-            const accessToken = authResponse.access_token;
+            const { credential } = response;
 
-            const userInfoResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-                method: 'GET',
+            const res = await fetch(`${API_URL}/auth/google`, {
+                method: 'POST',
                 headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${credential}` // Token in Authorization header
                 },
+                credentials: 'include'
             });
 
-            const userInfo = await userInfoResponse.json();
-            const salaries = await fetchSalaries();
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-            const profileData = {
-                data: userInfo,
-                salaries: salaries
-            };
+            const data = await res.json();
 
-            // Save profile data to localStorage
-            localStorage.setItem('profile', JSON.stringify(profileData));
-            setProfile(profileData);
-
-            navigate('/profile');
+            if (data.user) {
+                setProfile(data.user);
+                navigate('/profile');
+            } else {
+                console.error('User data not found:', data);
+            }
         } catch (error) {
-            console.log('Fetch Error:', error);
+            console.error('Error during authentication:', error);
         } finally {
             setLoadingAuth(false);
         }
     };
 
-    const errorMessage = (error) => {
-        console.log('Login Failed:', error);
+    const onLoginFailure = (response) => {
+        console.log('Login Failed:', response);
     };
 
     const logOut = () => {
         googleLogout();
-        localStorage.removeItem('profile');
-        setProfile({ data: {}, salaries: [] });
+        setProfile({});
         navigate('/authentication');
     };
 
     return (
-        <AuthContext.Provider value={{ profile, loadingAuth, responseMessage, errorMessage, logOut }}>
+        <AuthContext.Provider value={{ profile, loadingAuth, onLoginSuccess, onLoginFailure, logOut }}>
             {children}
         </AuthContext.Provider>
     );

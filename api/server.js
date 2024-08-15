@@ -4,19 +4,23 @@ const mongoose = require('mongoose');
 const app = express();
 const expenseRoutes = require('./routes/expenses');
 const incomeRoutes = require('./routes/income');
+const authRoutes = require('./routes/auth');
+const cookieParser = require('cookie-parser');
 
 require('dotenv').config();
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
+app.use(cookieParser());
 
 // Routes
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/income', incomeRoutes);
+app.use('/api/auth', authRoutes);
 
 mongoose.set("strictQuery", false)
 mongoose

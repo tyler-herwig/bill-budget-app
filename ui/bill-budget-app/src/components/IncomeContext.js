@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect, useCallback, useContext } from 'react';
-import { ProfileContext } from './ProfileContext';
 import { DateRangeContext } from './DateRangeContext';
 import { Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
@@ -12,7 +11,6 @@ export const IncomeProvider = ({ children }) => {
     const [notification, setNotification] = useState(null); // Add notification state
 
     const { dateRange } = useContext(DateRangeContext);
-    const { refreshProfile } = useContext(ProfileContext);
     const API_URL = process.env.REACT_APP_API_URL;
 
     const showNotification = (message, type) => {
@@ -34,7 +32,14 @@ export const IncomeProvider = ({ children }) => {
                 start_date: dateRange.startDate.toISOString(),
                 end_date: dateRange.endDate.toISOString()
             }).toString();
-            const response = await fetch(`${API_URL}/income?${queryParams}`);
+            const response = await fetch(`${API_URL}/income?${queryParams}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            });
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to fetch income data');
@@ -59,6 +64,7 @@ export const IncomeProvider = ({ children }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(income),
             });
             if (!response.ok) {
@@ -80,7 +86,8 @@ export const IncomeProvider = ({ children }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(income)
+                body: JSON.stringify(income),
+                credentials: 'include'
             });
             if (!response.ok) {
                 const errorData = await response.json();
@@ -102,7 +109,8 @@ export const IncomeProvider = ({ children }) => {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
+                credentials: 'include'
             });
             if (!response.ok) {
                 const errorData = await response.json();
@@ -129,19 +137,19 @@ export const IncomeProvider = ({ children }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(income),
+                credentials: 'include'
             });
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to add recurring income');
             }
             await refreshIncome();
-            await refreshProfile();
             showNotification('Recurring income added successfully', 'success');
         } catch (error) {
             console.error('Error adding recurring income:', error);
             showNotification(error.message || 'Failed to add recurring income', 'error');
         }
-    }, [API_URL, refreshIncome, refreshProfile]);
+    }, [API_URL, refreshIncome]);
 
     const updateRecurringIncome = useCallback(async (income) => {
         delete income._id;
@@ -151,14 +159,14 @@ export const IncomeProvider = ({ children }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(income)
+                body: JSON.stringify(income),
+                credentials: 'include'
             });
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to update recurring income');
             }
             await refreshIncome();
-            await refreshProfile();
             showNotification('Recurring income updated successfully', 'success');
             return await response.json();
         } catch (error) {
@@ -166,7 +174,7 @@ export const IncomeProvider = ({ children }) => {
             showNotification(error.message || 'Failed to update recurring income', 'error');
             throw error;
         }
-    }, [API_URL, refreshIncome, refreshProfile]);
+    }, [API_URL, refreshIncome]);
 
     const deleteRecurringIncome = useCallback(async (recurringIncomeId) => {
         try {
@@ -174,7 +182,8 @@ export const IncomeProvider = ({ children }) => {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
+                credentials: 'include'
             });
             if (!response.ok) {
                 const errorData = await response.json();

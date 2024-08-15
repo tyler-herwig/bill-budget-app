@@ -9,9 +9,10 @@ import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
 import IncomeSettingsMenu from './IncomeSettingsMenu';
 import NoDataMessage from './NoDataMessage';
+import LoadingBackdrop from './LoadingBackdrop';
 
 const Income = () => {
-    const { incomes } = useContext(IncomeContext);
+    const { incomes, loadingIncome } = useContext(IncomeContext);
 
     const handleIncomeDate = (incomeDate, incomeType) => {
         const today = moment.utc().startOf('day');
@@ -75,6 +76,10 @@ const Income = () => {
                 Sweet! You have <b>{<NumericFormat value={(income.additional_income.reduce((sum, income) => sum + income.amount, 0)).toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</b> of additional income for this period
             </Alert>
         )
+    }
+
+    if (loadingIncome) {
+        return <LoadingBackdrop open={loadingIncome} />;
     }
 
     if (!incomes.length) {
