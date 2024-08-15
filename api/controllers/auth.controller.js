@@ -25,7 +25,7 @@ exports.googleAuthentication = async (req, res) => {
 
         res.cookie('accessToken', idToken, {
             httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
+            maxAge: 60 * 60 * 1000, // 1 hour to match Google ID Token Expiration
             secure: true,
             sameSite: 'None' // Set 'None' if using cross-origin cookies
         });

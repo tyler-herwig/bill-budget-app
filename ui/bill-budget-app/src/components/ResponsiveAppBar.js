@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {
     AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar,
-    Button, Tooltip, MenuItem
+    Button, Tooltip, MenuItem, Divider
 } from '@mui/material';
-import { Menu as MenuIcon, InsertChart, AddBox } from '@mui/icons-material';
+import { Menu as MenuIcon, InsertChart, AddBox, Dashboard, Person2, Logout } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
@@ -22,14 +22,17 @@ function ResponsiveAppBar() {
 
     const settings = [
         {
+            icon: <Dashboard fontSize='small'/>,
             title: 'Dashboard',
             page: '/'
         },
         {
+            icon: <Person2 fontSize='small'/>,
             title: 'Profile',
             page: '/profile'
         },
         {
+            icon: <Logout fontSize='small'/>,
             title: 'Logout'
         }
     ]
@@ -147,17 +150,25 @@ function ResponsiveAppBar() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
+                            {Object.keys(profile).length && (
+                                <MenuItem disabled>
+                                    <Typography textAlign="center" sx={{ fontWeight: 'bold' }}>
+                                        {profile.name}
+                                    </Typography>
+                                </MenuItem>
+                            )}
+                            <Divider />
                             {settings.map((setting) => (
                                 setting.title === 'Logout' ? (
                                     <MenuItem key={setting.title} onClick={() => {
                                         handleCloseUserMenu();
                                         logOut();
                                     }}>
-                                        <Typography textAlign="center">{setting.title}</Typography>
+                                        <Typography textAlign="center">{setting.icon} {setting.title}</Typography>
                                     </MenuItem>
                                 ) : (
                                     <MenuItem key={setting.title} onClick={handleCloseUserMenu} component={Link} to={setting.page}>
-                                        <Typography textAlign="center">{setting.title}</Typography>
+                                        <Typography textAlign="center">{setting.icon} {setting.title}</Typography>
                                     </MenuItem>
                                 )
                             ))}

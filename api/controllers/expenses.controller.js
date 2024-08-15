@@ -8,6 +8,7 @@ const RecurringExpense = require('../models/RecurringExpense');
 */
 exports.getAllExpenses = async (req, res) => {
     const { start_date, end_date } = req.query;
+    const userId = req.user.sub;
 
     // Convert query parameters to JavaScript Date objects
     const start = start_date ? new Date(start_date) : new Date(0); // Default to the earliest date if not provided
@@ -20,7 +21,8 @@ exports.getAllExpenses = async (req, res) => {
                     date_due: {
                         $gte: start,
                         $lte: end
-                    }
+                    },
+                    user_id: userId
                 }
             },
             {
@@ -186,6 +188,7 @@ exports.getAllExpenses = async (req, res) => {
 exports.addOneTimeExpense = async (req, res) => {
     try {
         const { date_due } = req.body;
+        const userId = req.user.sub;
 
         // Ensure date_due is provided
         if (!date_due) {
@@ -195,7 +198,8 @@ exports.addOneTimeExpense = async (req, res) => {
         // Proceed with adding the one-time expense
         const expense = await Expense.create({
             ...req.body,
-            type: 'one-time'
+            type: 'one-time',
+            user_id: userId
         });
 
         res.status(200).json(expense);
@@ -256,6 +260,7 @@ exports.addRecurringExpense = async (req, res) => {
     try {
         const { start_date } = req.body.recurrence;
         const { end_date } = req.body.recurrence;
+        const userId = req.user.sub;
 
         // Ensure start_date is provided
         if (!start_date) {
@@ -276,7 +281,10 @@ exports.addRecurringExpense = async (req, res) => {
         }
 
         // Proceed with adding the recurring expense
-        const recurringExpense = await RecurringExpense.create(req.body);
+        const recurringExpense = await RecurringExpense.create({
+            ...req.body,
+            user_id: userId
+        });
 
         // Generate and add new instances
         const newInstances = generateRecurringInstances(recurringExpense);
@@ -363,7 +371,7 @@ exports.deleteRecurringExpense = async (req, res) => {
 */
 const generateRecurringInstances = (recurringExpense, skipPastDates = false) => {
     const instances = [];
-    const { name, description, amount, recurrence } = recurringExpense;
+    const { user_id, name, description, amount, recurrence } = recurringExpense;
     const { frequency, start_date, end_date } = recurrence;
 
     // Convert start_date and end_date to Date objects in UTC
@@ -411,6 +419,7 @@ const generateRecurringInstances = (recurringExpense, skipPastDates = false) => 
         const dueDate = new Date(currentDate);
 
         instances.push({
+            user_id,
             name,
             description,
             amount,

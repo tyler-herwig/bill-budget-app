@@ -34,7 +34,13 @@ export const ExpensesProvider = ({ children }) => {
                 start_date: dateRange.startDate.toISOString(),
                 end_date: dateRange.endDate.toISOString()
             }).toString();
-            const response = await fetch(`${API_URL}/expenses?${queryParams}`);
+            const response = await fetch(`${API_URL}/expenses?${queryParams}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            });
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to fetch expenses');
@@ -60,6 +66,7 @@ export const ExpensesProvider = ({ children }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(expense),
+                credentials: 'include'
             });
             if (!response.ok) {
                 const errorData = await response.json();
@@ -81,7 +88,8 @@ export const ExpensesProvider = ({ children }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(expense)
+                body: JSON.stringify(expense),
+                credentials: 'include'
             });
             if (!response.ok) {
                 const errorData = await response.json();
@@ -104,7 +112,8 @@ export const ExpensesProvider = ({ children }) => {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
+                credentials: 'include'
             });
             if (!response.ok) {
                 const errorData = await response.json();
@@ -132,6 +141,7 @@ export const ExpensesProvider = ({ children }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(expense),
+                credentials: 'include'
             });
             if (!response.ok) {
                 const errorData = await response.json();
@@ -154,7 +164,8 @@ export const ExpensesProvider = ({ children }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(expense)
+                body: JSON.stringify(expense),
+                credentials: 'include'
             });
             if (!response.ok) {
                 const errorData = await response.json();
@@ -177,7 +188,8 @@ export const ExpensesProvider = ({ children }) => {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
+                credentials: 'include'
             });
             if (!response.ok) {
                 const errorData = await response.json();

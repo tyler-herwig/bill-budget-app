@@ -23,7 +23,8 @@ exports.getAllIncome = async (req, res) => {
         }).sort({ date_received: 1 });
 
         const expenses = await Expense.find({
-            date_due: { $gte: start, $lte: end }
+            date_due: { $gte: start, $lte: end },
+            user_id: userId
         }).sort({ date_due: 1 });
 
         const recurringIncomes = await RecurringIncome.find({

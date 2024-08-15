@@ -1,6 +1,9 @@
 import React from 'react';
-import { SpeedDial, SpeedDialIcon, SpeedDialAction, Dialog, DialogTitle, DialogContent, DialogActions, Button, RadioGroup, FormControlLabel, Radio } from '@mui/material';
-import { AccountBalance, Payments } from '@mui/icons-material';
+import {
+    SpeedDial, SpeedDialIcon, SpeedDialAction, Dialog, DialogTitle, DialogContent,
+    DialogActions, Button, RadioGroup, FormControlLabel, Radio, Divider
+} from '@mui/material';
+import { AccountBalance, Payments, Loop } from '@mui/icons-material';
 import OneTimeIncomeModal from './OneTimeIncomeModal';
 import RecurringIncomeModal from './RecurringIncomeModal';
 import OneTimeExpenseModal from './OneTimeExpenseModal';
@@ -16,7 +19,7 @@ export default function ControlsSpeedDial() {
     const [modalContent, setModalContent] = React.useState('');
     const [expenseType, setExpenseType] = React.useState('one-time');
     const [expenseDialogOpen, setExpenseDialogOpen] = React.useState(false);
-    const [incomeType, setIncomeType] = React.useState('one-time');
+    const [incomeType, setIncomeType] = React.useState('base');
     const [incomeDialogOpen, setIncomeDialogOpen] = React.useState(false);
 
     const handleOpenModal = (content) => {
@@ -34,7 +37,7 @@ export default function ControlsSpeedDial() {
 
     const handleIncomeDialogClose = () => {
         setIncomeDialogOpen(false);
-        setIncomeType('one-time'); // Reset the selection
+        setIncomeType('base'); // Reset the selection
     };
 
     const handleIncomeTypeChange = (event) => {
@@ -42,7 +45,7 @@ export default function ControlsSpeedDial() {
     };
 
     const handleIncomeDialogConfirm = () => {
-        setModalContent(incomeType === 'one-time' ? 'Add One-Time Income' : 'Add Recurring Income');
+        setModalContent(incomeType === 'one-time' ? 'Add One-Time Income' : 'base' ? 'Add Base Income' : 'Add Recurring Income');
         setIncomeDialogOpen(false);
         setOpen(true);
     };
@@ -79,6 +82,9 @@ export default function ControlsSpeedDial() {
                 ))}
             </SpeedDial>
 
+            {modalContent === 'Add Base Income' && (
+                <RecurringIncomeModal action='add' data={{}} open={open} handleClose={handleCloseModal} salary={true} />
+            )}
             {modalContent === 'Add One-Time Income' && (
                 <OneTimeIncomeModal action='add' data={{}} open={open} handleClose={handleCloseModal} />
             )}
@@ -96,8 +102,14 @@ export default function ControlsSpeedDial() {
                 <DialogTitle>Select Income Type</DialogTitle>
                 <DialogContent>
                     <RadioGroup value={incomeType} onChange={handleIncomeTypeChange}>
-                        <FormControlLabel value="one-time" control={<Radio />} label="One-Time Income" />
-                        <FormControlLabel value="recurring" control={<Radio />} label="Recurring Income" />
+                        <FormControlLabel value="base" control={<Radio/>} label="Base Income"/>
+                        <small style={{fontSize: 10}}>Select 'Base Income' for regular paychecks or recurring salaries. You must have at least 1 base income.</small>
+                        <Divider style={{marginTop: 15, marginBottom: 15}}/>
+                        <FormControlLabel value="one-time" control={<Radio/>} label="One-Time Income"/>
+                        <small style={{fontSize: 10}}>Select 'One-Time Income' for irregular or occasional income, such as gifts or freelance work.</small>
+                        <Divider style={{marginTop: 15, marginBottom: 15}}/>
+                        <FormControlLabel value="recurring" control={<Radio/>} label={<><Loop/> Recurring Income</>}/>
+                        <small style={{fontSize: 10}}>Select 'Recurring Income' for income you receive regularly on a consistent basis, such as monthly payments or dividends.</small>
                     </RadioGroup>
                 </DialogContent>
                 <DialogActions>
@@ -110,8 +122,11 @@ export default function ControlsSpeedDial() {
                 <DialogTitle>Select Expense Type</DialogTitle>
                 <DialogContent>
                     <RadioGroup value={expenseType} onChange={handleExpenseTypeChange}>
-                        <FormControlLabel value="one-time" control={<Radio />} label="One-Time Expense" />
-                        <FormControlLabel value="recurring" control={<Radio />} label="Recurring Expense" />
+                        <FormControlLabel value="one-time" control={<Radio/>} label="One-Time Expense"/>
+                        <small style={{fontSize: 10}}>Select 'One-Time Expense' for irregular or non-recurring expenses such as a single purchase, medical bill, or repair.</small>
+                        <Divider style={{marginTop: 15, marginBottom: 15}}/>
+                        <FormControlLabel value="recurring" control={<Radio/>} label={<><Loop/> Recurring Expense</>}/>
+                        <small style={{fontSize: 10}}>Select 'Recurring Expense' for regular, ongoing expenses such as monthly subscriptions, rent, or utilities.</small>
                     </RadioGroup>
                 </DialogContent>
                 <DialogActions>
