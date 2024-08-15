@@ -9,6 +9,7 @@ import { AuthProvider } from './components/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Authentication from './components/Authentication';
 import Dashboard from './components/Dashboard';
+import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
 
 const darkTheme = createTheme({
     palette: {
@@ -28,8 +29,8 @@ class App extends Component {
                                 <ResponsiveAppBar />
                                 <Routes>
                                     <Route path="/authentication" element={<Authentication />} />
-                                    <Route path="/" element={<Dashboard/>} />
-                                    <Route path="/profile" element={<Profile/>} />
+                                    <Route path="/" element={<PrivateRoute element={Dashboard} />} />
+                                    <Route path="/profile" element={<PrivateRoute element={Profile} />} />
                                 </Routes>
                             </AuthProvider>
                         </Router>

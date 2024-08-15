@@ -8,16 +8,6 @@ import { Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
 const pages = [];
-const settings = [
-    {
-        title: 'Profile',
-        page: '/profile'
-    },
-    {
-        title: 'Dashboard',
-        page: '/'
-    }
-]
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -28,7 +18,21 @@ function ResponsiveAppBar() {
     const handleCloseNavMenu = () => setAnchorElNav(null);
     const handleCloseUserMenu = () => setAnchorElUser(null);
 
-    const { profile } = useAuth();
+    const { profile, logOut } = useAuth();
+
+    const settings = [
+        {
+            title: 'Dashboard',
+            page: '/'
+        },
+        {
+            title: 'Profile',
+            page: '/profile'
+        },
+        {
+            title: 'Logout'
+        }
+    ]
 
     return (
         <AppBar position="static">
@@ -144,9 +148,18 @@ function ResponsiveAppBar() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting.title} onClick={handleCloseUserMenu} component={Link} to={setting.page}>
-                                    <Typography textAlign="center">{setting.title}</Typography>
-                                </MenuItem>
+                                setting.title === 'Logout' ? (
+                                    <MenuItem key={setting.title} onClick={() => {
+                                        handleCloseUserMenu();
+                                        logOut();
+                                    }}>
+                                        <Typography textAlign="center">{setting.title}</Typography>
+                                    </MenuItem>
+                                ) : (
+                                    <MenuItem key={setting.title} onClick={handleCloseUserMenu} component={Link} to={setting.page}>
+                                        <Typography textAlign="center">{setting.title}</Typography>
+                                    </MenuItem>
+                                )
                             ))}
                         </Menu>
                     </Box>

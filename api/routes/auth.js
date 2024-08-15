@@ -9,4 +9,14 @@ const authController = require('../controllers/auth.controller');
 */
 router.post('/google', authController.googleAuthentication);
 
+/*
+    Check Google Authentication
+*/
+router.get('/check-auth', authController.checkAuthentication);
+
+/*
+    Logout
+*/
+router.post('/logout', authController.logoutAuthentication);
+
 module.exports = router;
