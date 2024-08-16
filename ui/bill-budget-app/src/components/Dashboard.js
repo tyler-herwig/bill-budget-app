@@ -1,5 +1,6 @@
+import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Box, Container, Grid, Paper } from '@mui/material';
+import { Box, Container, Grid, Paper, Tabs, Tab, useMediaQuery, useTheme } from '@mui/material';
 import { AccountBalance, Payments } from '@mui/icons-material';
 import UserIntroSection from './UserIntroSection';
 import Income from './Income';
@@ -9,7 +10,6 @@ import ControlsSpeedDial from './ControlsSpeedDial';
 import { IncomeProvider } from './IncomeContext';
 import { ExpensesProvider } from './ExpensesContext';
 import { DateRangeProvider } from './DateRangeContext';
-import React from "react";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -20,6 +20,14 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Dashboard = () => {
+    const [tabValue, setTabValue] = useState(0);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const handleTabChange = (event, newValue) => {
+        setTabValue(newValue);
+    };
+
     return (
         <DateRangeProvider>
             <IncomeProvider>
@@ -28,24 +36,53 @@ const Dashboard = () => {
                     <Container maxWidth="100%" style={{ marginTop: 15 }}>
                         <Box sx={{ flexGrow: 1 }}>
                             <UserIntroSection />
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} lg={6}>
-                                    <Item>
-                                        <h2 align="left">
-                                            <AccountBalance /> Income
-                                        </h2>
-                                        <Income />
-                                    </Item>
+                            {isMobile ? (
+                                <Box>
+                                    <Tabs
+                                        value={tabValue}
+                                        onChange={handleTabChange}
+                                        variant="fullWidth"
+                                        sx={{ mb: 2 }}
+                                    >
+                                        <Tab label="Income" />
+                                        <Tab label="Expenses" />
+                                    </Tabs>
+                                    {tabValue === 0 ? (
+                                        <Item>
+                                            <h2 align="left">
+                                                <AccountBalance /> Income
+                                            </h2>
+                                            <Income />
+                                        </Item>
+                                    ) : (
+                                        <Item>
+                                            <h2 align="left">
+                                                <Payments /> Expenses
+                                            </h2>
+                                            <Expenses />
+                                        </Item>
+                                    )}
+                                </Box>
+                            ) : (
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} lg={6}>
+                                        <Item>
+                                            <h2 align="left">
+                                                <AccountBalance /> Income
+                                            </h2>
+                                            <Income />
+                                        </Item>
+                                    </Grid>
+                                    <Grid item xs={12} lg={6}>
+                                        <Item>
+                                            <h2 align="left">
+                                                <Payments /> Expenses
+                                            </h2>
+                                            <Expenses />
+                                        </Item>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12} lg={6}>
-                                    <Item>
-                                        <h2 align="left">
-                                            <Payments /> Expenses
-                                        </h2>
-                                        <Expenses />
-                                    </Item>
-                                </Grid>
-                            </Grid>
+                            )}
                         </Box>
                     </Container>
                     <ControlsSpeedDial />
