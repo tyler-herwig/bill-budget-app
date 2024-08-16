@@ -1,14 +1,17 @@
 import React, { createContext, useState, useEffect, useCallback, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DateRangeContext } from './DateRangeContext';
 import { Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
+import { handleUnauthorizedError } from '../utils/authentication';
 
 export const IncomeContext = createContext();
 
 export const IncomeProvider = ({ children }) => {
     const [incomes, setIncomes] = useState([]);
     const [loadingIncome, setLoadingIncome] = useState(true);
-    const [notification, setNotification] = useState(null); // Add notification state
+    const [notification, setNotification] = useState(null);
+    const navigate = useNavigate();
 
     const { dateRange } = useContext(DateRangeContext);
     const API_URL = process.env.REACT_APP_API_URL;
@@ -40,6 +43,11 @@ export const IncomeProvider = ({ children }) => {
                 credentials: 'include'
             });
 
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to fetch income data');
@@ -67,6 +75,12 @@ export const IncomeProvider = ({ children }) => {
                 credentials: 'include',
                 body: JSON.stringify(income),
             });
+
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to add income');
@@ -89,6 +103,12 @@ export const IncomeProvider = ({ children }) => {
                 body: JSON.stringify(income),
                 credentials: 'include'
             });
+
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to update income');
@@ -112,6 +132,12 @@ export const IncomeProvider = ({ children }) => {
                 },
                 credentials: 'include'
             });
+
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to delete income');
@@ -139,6 +165,12 @@ export const IncomeProvider = ({ children }) => {
                 body: JSON.stringify(income),
                 credentials: 'include'
             });
+
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to add recurring income');
@@ -162,6 +194,12 @@ export const IncomeProvider = ({ children }) => {
                 body: JSON.stringify(income),
                 credentials: 'include'
             });
+
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to update recurring income');
@@ -185,6 +223,12 @@ export const IncomeProvider = ({ children }) => {
                 },
                 credentials: 'include'
             });
+
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to delete recurring income');

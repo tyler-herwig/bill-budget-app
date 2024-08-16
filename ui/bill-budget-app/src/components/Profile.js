@@ -1,121 +1,157 @@
 import React from 'react';
 import {
-    Container, Grid, Paper, Avatar, Typography, TextField, Box, Button, TableContainer, Table, TableHead,
-    TableRow, TableCell, TableBody, IconButton
+    Container, Grid, Card, CardContent, Avatar, Typography, TextField, Box, Button,
+    Divider, List, ListItem, ListItemText, ListItemIcon
 } from '@mui/material';
-import { NumericFormat } from 'react-number-format';
-import {MoreHoriz as MoreHorizIcon, Loop} from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
-import RecurringIncomeModal from './RecurringIncomeModal';
-import moment from 'moment';
-import NoDataMessage from './NoDataMessage';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import PersonIcon from '@mui/icons-material/Person';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
-const Item = styled(Paper)(({ theme }) => ({
+const MenuCard = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
+    boxShadow: theme.shadows[3],
     textAlign: 'center',
-    color: theme.palette.text.secondary,
+    marginTop: theme.spacing(3),
+}));
+
+const ProfileCard = styled(Card)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    padding: theme.spacing(3),
+    boxShadow: theme.shadows[3],
+    marginTop: theme.spacing(3),
+}));
+
+const CustomListItem = styled(ListItem)(({ theme }) => ({
+    borderRadius: theme.shape.borderRadius,
+    '&:hover': {
+        backgroundColor: theme.palette.action.hover,
+        borderRadius: theme.shape.borderRadius,
+    },
+    '&.Mui-selected': {
+        backgroundColor: theme.palette.action.selected,
+        borderRadius: theme.shape.borderRadius,
+    },
+    width: '100%',
+    justifyContent: 'flex-start',
+    padding: theme.spacing(1),
+}));
+
+const MenuList = styled(List)(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: 0,
 }));
 
 const Profile = () => {
-    const [modalOpen, setModalOpen] = React.useState(false);
-
     const { profile, logOut } = useAuth();
-
-    const handleOpenModal = (content) => {
-        setModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setModalOpen(false);
-    };
+    const location = useLocation();
 
     return (
         <Container maxWidth="lg" style={{ marginTop: 20, marginBottom: 20 }}>
-            <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        { Object.keys(profile).length ? (
-                            <Item>
-                                <Avatar
-                                    alt={profile.name}
-                                    src={profile.picture}
-                                    sx={{ width: 100, height: 100, margin: 'auto' }}
-                                />
-                                <Typography variant="h3" component="h1" style={{ marginTop: 10 }}>
-                                    {profile.name}
-                                </Typography>
-                            </Item>
-                        ): '' }
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} md={5}>
-                                <Item>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-                                        <Typography variant="h4" component="h2" align="left">
-                                            Profile
-                                        </Typography>
-                                    </Box>
-                                    <small>This info is from your Google account. You cannot edit it within this application.</small>
-                                    { Object.keys(profile).length ? (
-                                        <TextField
-                                            fullWidth
-                                            label="Name"
-                                            value={profile.name}
-                                            variant="outlined"
-                                            margin="normal"
-                                            disabled
-                                        />
-                                    ): '' }
-                                    { Object.keys(profile).length ? (
-                                        <TextField
-                                            fullWidth
-                                            label="Email"
-                                            value={profile.email}
-                                            variant="outlined"
-                                            margin="normal"
-                                            disabled
-                                        />
-                                    ): '' }
-                                    <Grid item xs={12} display="flex" justifyContent="flex-end">
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            style={{marginTop: 20}}
-                                            onClick={logOut}
-                                        >
-                                            Log Out
-                                        </Button>
-                                    </Grid>
-                                </Item>
-                            </Grid>
-                            <Grid item xs={12} md={7}>
-                                <Item style={{paddingBottom: 20}}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-                                        <Typography variant="h4" component="h2" align="left">
-                                            Salary
-                                        </Typography>
-                                    </Box>
-                                    <Grid item xs={12} display="flex" justifyContent="flex-end">
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            style={{marginBottom: 20}}
-                                            onClick={() => handleOpenModal('Add Income')}
-                                        >
-                                            Add Salary
-                                        </Button>
-                                    </Grid>
-                                </Item>
-                            </Grid>
-                        </Grid>
-                    </Grid>
+            <Grid container spacing={2}>
+                {/* Menu Section */}
+                <Grid item xs={12} md={4}>
+                    <MenuCard>
+                        <CardContent>
+                            <Typography
+                                variant="h6"
+                                component="div"
+                                sx={{
+                                    textAlign: 'left',
+                                    fontSize: 16,
+                                    fontWeight: 'bold'
+                                }}
+                            >
+                                Profile Settings
+                            </Typography>
+                            <Divider sx={{ my: 2 }}/>
+                            <MenuList>
+                                <CustomListItem
+                                    button
+                                    component={Link}
+                                    to="/"
+                                    selected={location.pathname === '/'}
+                                >
+                                    <ListItemIcon>
+                                        <DashboardIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Dashboard" />
+                                </CustomListItem>
+                                <CustomListItem
+                                    button
+                                    component={Link}
+                                    to="/profile"
+                                    selected={location.pathname === '/profile'}
+                                    style={{margin: 5}}
+                                >
+                                    <ListItemIcon>
+                                        <PersonIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Profile" />
+                                </CustomListItem>
+                                <Divider sx={{ my: 2 }} />
+                                <CustomListItem
+                                    button
+                                    onClick={logOut}
+                                >
+                                    <ListItemIcon>
+                                        <ExitToAppIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Logout" />
+                                </CustomListItem>
+                            </MenuList>
+                        </CardContent>
+                    </MenuCard>
                 </Grid>
-            </Box>
-            <RecurringIncomeModal action='add' data={{}} open={modalOpen} handleClose={handleCloseModal} salary={true} />
+
+                {/* Profile Content Section */}
+                <Grid item xs={12} md={8}>
+                    <ProfileCard>
+                        <CardContent>
+                            <Avatar
+                                alt={profile.name}
+                                src={profile.picture}
+                                sx={{ width: 120, height: 120, margin: 'auto' }}
+                            />
+                            <Typography variant="h4" component="h1" sx={{ mt: 2 }}>
+                                {profile.name}
+                            </Typography>
+                            <Typography variant="subtitle1" color="textSecondary" sx={{ mb: 2 }}>
+                                {profile.email}
+                            </Typography>
+
+                            <Divider sx={{ my: 2 }} />
+
+                            <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                                This info is from your Google account. You cannot edit it within this application.
+                            </Typography>
+                            <TextField
+                                fullWidth
+                                label="Name"
+                                value={profile.name}
+                                variant="outlined"
+                                margin="normal"
+                                disabled
+                                sx={{ mb: 2 }}
+                            />
+                            <TextField
+                                fullWidth
+                                label="Email"
+                                value={profile.email}
+                                variant="outlined"
+                                margin="normal"
+                                disabled
+                                sx={{ mb: 2 }}
+                            />
+                        </CardContent>
+                    </ProfileCard>
+                </Grid>
+            </Grid>
         </Container>
     );
 };

@@ -9,7 +9,7 @@ import { AuthProvider } from './components/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Authentication from './components/Authentication';
 import Dashboard from './components/Dashboard';
-import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
+import PrivateRoute from './components/PrivateRoute';
 
 const darkTheme = createTheme({
     palette: {

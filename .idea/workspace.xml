@@ -4,30 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Persisting credentials in local storage... need to work on JWT or some method to store token and tie this data to income and expenses...">
-      <change afterPath="$PROJECT_DIR$/api/controllers/auth.controller.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/middleware/authenticate.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/models/User.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/routes/auth.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Dashboard.js" afterDir="false" />
+    <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Updated expenses to run through google auth, added more descriptions for incomes and expenses, and moved the ability to add a base income out of profile...Also, updated styling and options on avatar settings for user controls.">
+      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/GoogleAuthProvider.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/utils/authentication.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/income.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/controllers/income.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/models/Income.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/models/Income.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/models/RecurringIncome.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/models/RecurringIncome.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/api/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/api/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/routes/income.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes/income.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/controllers/auth.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/controllers/auth.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes/auth.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/server.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/AuthContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/AuthContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Authentication.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Authentication.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Expenses.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Expenses.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Income.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Income.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ExpensesContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ExpensesContext.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/IncomeContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/IncomeContext.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ProtectedRoute.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ResponsiveAppBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ResponsiveAppBar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/UserIntroSection.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/UserIntroSection.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +25,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -120,7 +108,8 @@
       <workItem from="1722952553501" duration="1964000" />
       <workItem from="1723043742272" duration="5506000" />
       <workItem from="1723557417209" duration="41001000" />
-      <workItem from="1723740944863" duration="2032000" />
+      <workItem from="1723740944863" duration="12348000" />
+      <workItem from="1723818148396" duration="4965000" />
     </task>
     <task id="LOCAL-00001" summary="Updated app name and description.">
       <option name="closed" value="true" />
@@ -242,7 +231,31 @@
       <option name="project" value="LOCAL" />
       <updated>1723596027430</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Significant refactoring as I start to add user accounts... moving context providers to components where they're actually used to prevent unnecessary API calls on each re-render, etc. Made some new components for organization sake, and preparing to adjust how profile context works and behaves.">
+      <option name="closed" value="true" />
+      <created>1723743351975</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1723743351975</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Auth is working great. Protecting routes if user is not logged in... added ability to logout and delete cookie from google... need to handle expiring cookie/token gracefully.">
+      <option name="closed" value="true" />
+      <created>1723746310419</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1723746310419</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Updated expenses to run through google auth, added more descriptions for incomes and expenses, and moved the ability to add a base income out of profile...Also, updated styling and options on avatar settings for user controls.">
+      <option name="closed" value="true" />
+      <created>1723758259448</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1723758259464</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -286,6 +299,9 @@
     <MESSAGE value="Pre-fill date paid with date due by setting state." />
     <MESSAGE value="Work in progress for implementing Google Authentication and sign in for user accounts. Next steps will entail updating APIs to account for user accounts and finding a way to perhaps use the Google ID to tie data to their account..." />
     <MESSAGE value="Persisting credentials in local storage... need to work on JWT or some method to store token and tie this data to income and expenses..." />
-    <option name="LAST_COMMIT_MESSAGE" value="Persisting credentials in local storage... need to work on JWT or some method to store token and tie this data to income and expenses..." />
+    <MESSAGE value="Significant refactoring as I start to add user accounts... moving context providers to components where they're actually used to prevent unnecessary API calls on each re-render, etc. Made some new components for organization sake, and preparing to adjust how profile context works and behaves." />
+    <MESSAGE value="Auth is working great. Protecting routes if user is not logged in... added ability to logout and delete cookie from google... need to handle expiring cookie/token gracefully." />
+    <MESSAGE value="Updated expenses to run through google auth, added more descriptions for incomes and expenses, and moved the ability to add a base income out of profile...Also, updated styling and options on avatar settings for user controls." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated expenses to run through google auth, added more descriptions for incomes and expenses, and moved the ability to add a base income out of profile...Also, updated styling and options on avatar settings for user controls." />
   </component>
 </project>

@@ -1,15 +1,18 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IncomeContext } from './IncomeContext';
 import { DateRangeContext } from './DateRangeContext';
 import { Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
+import { handleUnauthorizedError } from '../utils/authentication';
 
 export const ExpensesContext = createContext();
 
 export const ExpensesProvider = ({ children }) => {
     const [expenses, setExpenses] = useState([]);
     const [loadingExpenses, setLoadingExpenses] = useState(true);
-    const [notification, setNotification] = useState(null); // Add notification state
+    const [notification, setNotification] = useState(null);
+    const navigate = useNavigate();
 
     const { dateRange } = useContext(DateRangeContext);
     const { refreshIncome } = useContext(IncomeContext);
@@ -41,6 +44,12 @@ export const ExpensesProvider = ({ children }) => {
                 },
                 credentials: 'include'
             });
+
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to fetch expenses');
@@ -68,6 +77,12 @@ export const ExpensesProvider = ({ children }) => {
                 body: JSON.stringify(expense),
                 credentials: 'include'
             });
+
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to add expense');
@@ -91,6 +106,12 @@ export const ExpensesProvider = ({ children }) => {
                 body: JSON.stringify(expense),
                 credentials: 'include'
             });
+
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to update expense');
@@ -115,6 +136,12 @@ export const ExpensesProvider = ({ children }) => {
                 },
                 credentials: 'include'
             });
+
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to delete expense');
@@ -143,6 +170,12 @@ export const ExpensesProvider = ({ children }) => {
                 body: JSON.stringify(expense),
                 credentials: 'include'
             });
+
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to add recurring expense');
@@ -167,6 +200,12 @@ export const ExpensesProvider = ({ children }) => {
                 body: JSON.stringify(expense),
                 credentials: 'include'
             });
+
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to update recurring expense');
@@ -191,6 +230,12 @@ export const ExpensesProvider = ({ children }) => {
                 },
                 credentials: 'include'
             });
+
+            if (handleUnauthorizedError(response)) {
+                navigate('/authentication');
+                return;
+            } // Handle 401 error
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to delete recurring expense');
