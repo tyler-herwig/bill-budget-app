@@ -11,22 +11,46 @@ import Authentication from './components/Authentication';
 import Dashboard from './components/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 
-const darkTheme = createTheme({
-    palette: {
-        mode: 'dark',
-    },
-});
-
 class App extends Component {
+    constructor(props) {
+        super(props);
+        const storedThemePreference = localStorage.getItem('theme') || 'system';
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        this.state = {
+            themeMode: storedThemePreference === 'system'
+                ? (prefersDarkMode ? 'dark' : 'light')
+                : storedThemePreference,
+        };
+    }
+
+    setThemeMode = (mode) => {
+        if (mode === 'system') {
+            const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            mode = prefersDarkMode ? 'dark' : 'light';
+        }
+
+        this.setState({ themeMode: mode });
+        localStorage.setItem('theme', mode);
+    };
+
     render() {
+        const { themeMode } = this.state;
+
+        const theme = createTheme({
+            palette: {
+                mode: themeMode,
+            },
+        });
+
         return (
             <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-                <ThemeProvider theme={darkTheme}>
+                <ThemeProvider theme={theme}>
                     <CssBaseline />
                     <div className="App">
                         <Router>
                             <AuthProvider>
-                                <ResponsiveAppBar />
+                                <ResponsiveAppBar setThemeMode={this.setThemeMode} themeMode={themeMode} />
                                 <Routes>
                                     <Route path="/authentication" element={<Authentication />} />
                                     <Route path="/" element={<PrivateRoute element={Dashboard} />} />

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {
     AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar,
-    Button, Tooltip, MenuItem, Divider
+    Button, Tooltip, MenuItem, Divider, Select, FormControl, InputLabel
 } from '@mui/material';
-import { Menu as MenuIcon, InsertChart, AddBox, Dashboard, Person2, Logout } from '@mui/icons-material';
+import { Menu as MenuIcon, InsertChart, Dashboard, Person2, Logout } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar({ setThemeMode, themeMode }) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -20,20 +20,25 @@ function ResponsiveAppBar() {
 
     const settings = [
         {
-            icon: <Dashboard fontSize='small'/>,
+            icon: <Dashboard fontSize='small' />,
             title: 'Dashboard',
             page: '/'
         },
         {
-            icon: <Person2 fontSize='small'/>,
+            icon: <Person2 fontSize='small' />,
             title: 'Profile',
             page: '/profile'
         },
         {
-            icon: <Logout fontSize='small'/>,
+            icon: <Logout fontSize='small' />,
             title: 'Logout'
         }
-    ]
+    ];
+
+    const handleThemeChange = (event) => {
+        const selectedMode = event.target.value;
+        setThemeMode(selectedMode);
+    };
 
     return (
         <AppBar position="static">
@@ -80,8 +85,8 @@ function ResponsiveAppBar() {
 
                     <Box sx={{ flexGrow: 0, marginLeft: 'auto' }}>
                         <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                { Object.keys(profile).length ? <Avatar alt={profile.name} src={profile.picture} /> : '' }
+                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                {Object.keys(profile).length ? <Avatar alt={profile.name} src={profile.picture} /> : ''}
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -107,6 +112,19 @@ function ResponsiveAppBar() {
                                     </Typography>
                                 </MenuItem>
                             )}
+                            <FormControl sx={{margin: 2}}>
+                                <InputLabel>Theme</InputLabel>
+                                <Select
+                                    value={themeMode}
+                                    onChange={handleThemeChange}
+                                    label="Theme"
+                                    sx={{ minWidth: 180 }}
+                                >
+                                    <MenuItem value="light">Light</MenuItem>
+                                    <MenuItem value="dark">Dark</MenuItem>
+                                    <MenuItem value="system">Use System Default</MenuItem>
+                                </Select>
+                            </FormControl>
                             <Divider />
                             {settings.map((setting) => (
                                 setting.title === 'Logout' ? (

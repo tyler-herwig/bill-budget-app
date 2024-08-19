@@ -113,7 +113,7 @@ const Income = () => {
                             <Grid item xs={6} lg={3}>
                                 <Card
                                     sx={{
-                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.15)',
+                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.10)',
                                     }}
                                 >
                                     <CardHeader
@@ -132,7 +132,7 @@ const Income = () => {
                             <Grid item xs={6} lg={3}>
                                 <Card
                                     sx={{
-                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.15)',
+                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.10)',
                                     }}
                                 >
                                     <CardHeader
@@ -151,7 +151,7 @@ const Income = () => {
                             <Grid item xs={6} lg={3}>
                                 <Card
                                     sx={{
-                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.15)',
+                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.10)',
                                     }}
                                 >
                                     <CardHeader
@@ -170,7 +170,7 @@ const Income = () => {
                             <Grid item xs={6} lg={3}>
                                 <Card
                                     sx={{
-                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.15)',
+                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.10)',
                                     }}
                                 >
                                     <CardHeader

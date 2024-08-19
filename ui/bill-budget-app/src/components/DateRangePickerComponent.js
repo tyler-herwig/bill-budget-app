@@ -13,8 +13,11 @@ const DateRangePickerComponent = () => {
     return (
         <AppBar
             position={isMobile ? "static" : "sticky"} // Sticky on desktop, static on mobile
-            sx={{ padding: 2 }}
-            className='filter-bar'
+            sx={{
+                padding: 2,
+                backgroundImage: theme.palette.mode === 'dark' ? 'linear-gradient(to right, #2b2b2b, #323232)' : '',
+                backgroundColor: theme.palette.mode === 'light' ? 'white' : ''
+            }}
         >
             <Container maxWidth="xl">
                 <LocalizationProvider dateAdapter={AdapterMoment}>

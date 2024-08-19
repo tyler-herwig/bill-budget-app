@@ -112,7 +112,7 @@ export function UserIntroTabs() {
                     <Grid item xs={12} lg={6}>
                         <Card
                             sx={{
-                                boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.35)',
+                                boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.15)',
                                 height: '100%'
                             }}
                         >
@@ -136,7 +136,7 @@ export function UserIntroTabs() {
                     <Grid item xs={12} lg={6}>
                         <Card
                             sx={{
-                                boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.35)',
+                                boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.15)',
                                 height: '100%'
                             }}
                         >
@@ -161,7 +161,7 @@ export function UserIntroTabs() {
                     <Grid item xs={12} lg={6}>
                         <Card
                             sx={{
-                                boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.35)',
+                                boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.15)',
                                 height: '100%'
                             }}
                         >
@@ -185,7 +185,7 @@ export function UserIntroTabs() {
                     <Grid item xs={12} lg={6}>
                         <Card
                             sx={{
-                                boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.35)',
+                                boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.15)',
                                 height: '100%'
                             }}
                         >

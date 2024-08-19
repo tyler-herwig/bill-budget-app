@@ -24,9 +24,9 @@ const UserIntroSection = () => {
                 <InfoPaper style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
                     <Box>
                         { Object.keys(profile).length ? (
-                            <Typography variant="h3" style={{ color: '#fff' }}>Welcome, {profile.name}!</Typography>
+                            <Typography variant="h3">Welcome, {profile.name}!</Typography>
                         ) : '' }
-                        <Typography variant="body1" style={{ color: '#fff' }}>Here's a quick overview of your financial data.</Typography>
+                        <Typography variant="body1">Here's a quick overview of your financial data.</Typography>
                     </Box>
                     <br/>
                     <UserIntroTabs/>
