@@ -98,7 +98,8 @@ const Income = () => {
                             <Box display="flex" alignItems="center" justifyContent="space-between">
                                 <Box display="flex" alignItems="center">
                                     <Typography variant="h6">
-                                        {income.description} {handleIncomeDate(income.date_received, income.type)}
+                                        {income.description} <br/>
+                                        {handleIncomeDate(income.date_received, income.type)}
                                     </Typography>
                                 </Box>
                                 <IncomeSettingsMenu data={income} />
