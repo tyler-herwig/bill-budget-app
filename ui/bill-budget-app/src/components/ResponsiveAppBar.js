@@ -1,19 +1,16 @@
 import * as React from 'react';
 import {
     AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar,
-    Button, Tooltip, MenuItem, Divider, Select, FormControl, InputLabel
+    Tooltip, MenuItem, Divider, Select, FormControl, InputLabel
 } from '@mui/material';
-import { Menu as MenuIcon, InsertChart, Dashboard, Person2, Logout } from '@mui/icons-material';
+import { InsertChart, Dashboard, Person2, Logout } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
 function ResponsiveAppBar({ setThemeMode, themeMode }) {
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-    const handleOpenNavMenu = (event) => setAnchorElNav(event.currentTarget);
     const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
-    const handleCloseNavMenu = () => setAnchorElNav(null);
     const handleCloseUserMenu = () => setAnchorElUser(null);
 
     const { profile, logOut } = useAuth();
