@@ -1,30 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/system';
-import { Box, Typography, Grid, Alert, Tabs, Tab, Tooltip } from '@mui/material';
+import { Box, Typography, Grid, Alert, Tabs, Tab, Tooltip, Card, CardHeader, CardContent } from '@mui/material';
 import { AccountBalance, Payments, Info } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
 import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
 import { ExpensesContext } from './ExpensesContext';
 import NoDataMessage from './NoDataMessage';
-
-const BackgroundBox = styled(Box)(({ theme }) => ({
-    padding: theme.spacing(2),
-    borderRadius: theme.shape.borderRadius,
-}));
-
-const IncomeBackgroundBox = styled(BackgroundBox)(({ theme }) => ({
-    background: 'linear-gradient(to right, rgba(102, 187, 106, 1), rgba(76, 175, 80, 1))',
-    width: '100%',
-    marginBottom: theme.spacing(2)
-}));
-
-const ExpensesBackgroundBox = styled(BackgroundBox)(({ theme }) => ({
-    background: 'linear-gradient(to right, #00c6ff, #0072ff)',
-    width: '100%',
-    marginBottom: theme.spacing(2)
-}));
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -128,23 +111,47 @@ export function UserIntroTabs() {
             <CustomTabPanel value={value} index={0}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} lg={6}>
-                        <IncomeBackgroundBox>
-                            <Typography variant="h6" style={{fontWeight: 'bold'}}><AccountBalance /> Income</Typography>
-                        </IncomeBackgroundBox>
-                        <Typography variant="h3">{<NumericFormat value={currentData.income.total_income.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
-                        <Typography variant="caption">You got paid on {moment.utc(currentData.income.date_received).format('MMMM Do, YYYY')}</Typography>
-                        {currentData.income.additional_income.length > 0 && (
-                            <Tooltip title="Total reflects additional income">
-                                <Info fontSize='small' color='primary' style={{marginLeft: 4}}/>
-                            </Tooltip>
-                        )}
+                        <Card
+                            sx={{
+                                boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.35)',
+                                height: '100%'
+                            }}
+                        >
+                            <CardHeader
+                                title= {
+                                    <Typography variant="h6" style={{fontWeight: 'bold'}}><AccountBalance /> Income</Typography>
+                                }
+                                style={{borderTop: '5px solid #66BA6AFF'}}
+                            />
+                            <CardContent>
+                                <Typography variant="h3">{<NumericFormat value={currentData.income.total_income.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
+                                <Typography variant="caption">You got paid on {moment.utc(currentData.income.date_received).format('MMMM Do, YYYY')}</Typography>
+                                {currentData.income.additional_income.length > 0 && (
+                                    <Tooltip title="Total reflects additional income">
+                                        <Info fontSize='small' color='primary' style={{marginLeft: 4}}/>
+                                    </Tooltip>
+                                )}
+                            </CardContent>
+                        </Card>
                     </Grid>
                     <Grid item xs={12} lg={6}>
-                        <ExpensesBackgroundBox>
-                            <Typography variant="h6" style={{fontWeight: 'bold'}}><Payments /> Expenses</Typography>
-                        </ExpensesBackgroundBox>
-                        <Typography variant="h3">{<NumericFormat value={currentData.income.total_expenses?.toFixed(2) || '0.00'} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
-                        <Typography variant="caption">{moment.utc(currentData.income.date_received).format('MMMM Do, YYYY')} to {moment.utc(currentData.expense.date_received).format('MMMM Do, YYYY')}</Typography>
+                        <Card
+                            sx={{
+                                boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.35)',
+                                height: '100%'
+                            }}
+                        >
+                            <CardHeader
+                                title= {
+                                    <Typography variant="h6" style={{fontWeight: 'bold'}}><Payments /> Expenses</Typography>
+                                }
+                                style={{borderTop: '5px solid #36A1EAFF'}}
+                            />
+                            <CardContent>
+                                <Typography variant="h3">{<NumericFormat value={currentData.income.total_expenses?.toFixed(2) || '0.00'} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
+                                <Typography variant="caption">{moment.utc(currentData.income.date_received).format('MMMM Do, YYYY')} to {moment.utc(currentData.expense.date_received).format('MMMM Do, YYYY')}</Typography>
+                            </CardContent>
+                        </Card>
                     </Grid>
                 </Grid>
                 <br/>
@@ -153,23 +160,47 @@ export function UserIntroTabs() {
             <CustomTabPanel value={value} index={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} lg={6}>
-                        <IncomeBackgroundBox>
-                            <Typography variant="h6" style={{fontWeight: 'bold'}}><AccountBalance /> Income</Typography>
-                        </IncomeBackgroundBox>
-                        <Typography variant="h3">{<NumericFormat value={upcomingData.income.total_income.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
-                        <Typography variant="caption">Next payment on {moment.utc(upcomingData.income.date_received).format('MMMM Do, YYYY')}</Typography>
-                        {upcomingData.income.additional_income.length > 0 && (
-                            <Tooltip title="Total reflects additional income">
-                                <Info fontSize='small' color='primary' style={{marginLeft: 4}}/>
-                            </Tooltip>
-                        )}
+                        <Card
+                            sx={{
+                                boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.35)',
+                                height: '100%'
+                            }}
+                        >
+                            <CardHeader
+                                title= {
+                                    <Typography variant="h6" style={{fontWeight: 'bold'}}><AccountBalance /> Income</Typography>
+                                }
+                                style={{borderTop: '5px solid #66BA6AFF'}}
+                            />
+                            <CardContent>
+                                <Typography variant="h3">{<NumericFormat value={upcomingData.income.total_income.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
+                                <Typography variant="caption">Next payment on {moment.utc(upcomingData.income.date_received).format('MMMM Do, YYYY')}</Typography>
+                                {upcomingData.income.additional_income.length > 0 && (
+                                    <Tooltip title="Total reflects additional income">
+                                        <Info fontSize='small' color='primary' style={{marginLeft: 4}}/>
+                                    </Tooltip>
+                                )}
+                            </CardContent>
+                        </Card>
                     </Grid>
                     <Grid item xs={12} lg={6}>
-                        <ExpensesBackgroundBox>
-                            <Typography variant="h6" style={{fontWeight: 'bold'}}><Payments /> Expenses</Typography>
-                        </ExpensesBackgroundBox>
-                        <Typography variant="h3">{<NumericFormat value={upcomingData.income.total_expenses?.toFixed(2) || '0.00'} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
-                        <Typography variant="caption">{moment.utc(upcomingData.income.date_received).format('MMMM Do, YYYY')} to {moment.utc(upcomingData.expense.date_received).format('MMMM Do, YYYY')}</Typography>
+                        <Card
+                            sx={{
+                                boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.35)',
+                                height: '100%'
+                            }}
+                        >
+                            <CardHeader
+                                title= {
+                                    <Typography variant="h6" style={{fontWeight: 'bold'}}><Payments /> Expenses</Typography>
+                                }
+                                style={{borderTop: '5px solid #36A1EAFF'}}
+                            />
+                            <CardContent>
+                                <Typography variant="h3">{<NumericFormat value={upcomingData.income.total_expenses?.toFixed(2) || '0.00'} displayType={'text'} thousandSeparator={true} prefix={'$'} />}</Typography>
+                                <Typography variant="caption">{moment.utc(upcomingData.income.date_received).format('MMMM Do, YYYY')} to {moment.utc(upcomingData.expense.date_received).format('MMMM Do, YYYY')}</Typography>
+                            </CardContent>
+                        </Card>
                     </Grid>
                 </Grid>
                 <br/>

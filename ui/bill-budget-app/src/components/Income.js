@@ -97,7 +97,6 @@ const Income = () => {
                         title={
                             <Box display="flex" alignItems="center" justifyContent="space-between">
                                 <Box display="flex" alignItems="center">
-                                    <Paid sx={{ mr: 1 }} />
                                     <Typography variant="h6">
                                         {income.description} {handleIncomeDate(income.date_received, income.type)}
                                     </Typography>
@@ -110,10 +109,10 @@ const Income = () => {
                     />
                     <CardContent>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} lg={3}>
+                            <Grid item xs={6} lg={3}>
                                 <Card
                                     sx={{
-                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.75)',
+                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.15)',
                                     }}
                                 >
                                     <CardHeader
@@ -129,10 +128,10 @@ const Income = () => {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            <Grid item xs={12} lg={3}>
+                            <Grid item xs={6} lg={3}>
                                 <Card
                                     sx={{
-                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.75)',
+                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.15)',
                                     }}
                                 >
                                     <CardHeader
@@ -148,10 +147,10 @@ const Income = () => {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            <Grid item xs={12} lg={3}>
+                            <Grid item xs={6} lg={3}>
                                 <Card
                                     sx={{
-                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.75)',
+                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.15)',
                                     }}
                                 >
                                     <CardHeader
@@ -167,10 +166,10 @@ const Income = () => {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            <Grid item xs={12} lg={3}>
+                            <Grid item xs={6} lg={3}>
                                 <Card
                                     sx={{
-                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.75)',
+                                        boxShadow: '0px -1px 30px -3px rgba(0,0,0,0.15)',
                                     }}
                                 >
                                     <CardHeader
@@ -192,7 +191,7 @@ const Income = () => {
                         {income.additional_income.length > 0 && (
                             <div style={{marginTop: 15}}>
                                 {handleAdditionalIncome(income)}
-                                <TableContainer>
+                                <TableContainer style={{marginTop: 10}}>
                                     <Table size="small" aria-label="additional income">
                                         <TableHead>
                                             <TableRow>

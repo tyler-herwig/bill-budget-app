@@ -10,8 +10,8 @@ import OneTimeExpenseModal from './OneTimeExpenseModal';
 import RecurringExpenseModal from './RecurringExpenseModal';
 
 const actions = [
-    { icon: <AccountBalance />, name: 'Add Income' },
-    { icon: <Payments />, name: 'Add Expense' }
+    { icon: <AccountBalance />, name: 'Income' },
+    { icon: <Payments />, name: 'Expense' }
 ];
 
 export default function ControlsSpeedDial() {
@@ -77,6 +77,7 @@ export default function ControlsSpeedDial() {
                         key={action.name}
                         icon={action.icon}
                         tooltipTitle={action.name}
+                        tooltipOpen
                         onClick={() => handleOpenModal(action.name)}
                     />
                 ))}

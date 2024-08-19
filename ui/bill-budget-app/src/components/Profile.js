@@ -15,14 +15,12 @@ const MenuCard = styled(Card)(({ theme }) => ({
     padding: theme.spacing(2),
     boxShadow: theme.shadows[3],
     textAlign: 'center',
-    marginTop: theme.spacing(3),
 }));
 
 const ProfileCard = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     padding: theme.spacing(3),
-    boxShadow: theme.shadows[3],
-    marginTop: theme.spacing(3),
+    boxShadow: theme.shadows[3]
 }));
 
 const CustomListItem = styled(ListItem)(({ theme }) => ({

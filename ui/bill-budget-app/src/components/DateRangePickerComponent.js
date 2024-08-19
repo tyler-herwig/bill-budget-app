@@ -26,7 +26,7 @@ const DateRangePickerComponent = () => {
                             gap: 2
                         }}
                     >
-                        <FormControl sx={{ mb: isMobile ? 2 : 0 }}>
+                        <FormControl sx={{ mr: isMobile ? 0 : 3 }}>
                             <InputLabel id="date-range-select-label">Date Range</InputLabel>
                             <Select
                                 labelId="date-range-select-label"
@@ -52,7 +52,7 @@ const DateRangePickerComponent = () => {
                                     flexDirection: 'row', // Keep date pickers on the same row
                                     gap: 2,
                                     width: '100%', // Full width to handle responsiveness
-                                    justifyContent: isMobile ? 'space-between' : 'flex-start' // Adjust spacing on mobile
+                                    justifyContent: isMobile ? 'space-between' : 'flex-start', // Adjust spacing on mobile
                                 }}
                             >
                                 <DatePicker
