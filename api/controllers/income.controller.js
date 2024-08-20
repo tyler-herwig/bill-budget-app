@@ -102,6 +102,7 @@ exports.getAllIncome = async (req, res) => {
                     additional_income: additionalIncomeDetails,
                     total_income: totalIncomeAmount,
                     total_expenses: totalExpensesAmount,
+                    expenses: expensesBetween,
                     money_remaining: remainingAmount
                 });
             }

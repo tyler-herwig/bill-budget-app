@@ -1,18 +1,21 @@
 import React, { useContext } from 'react';
 import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip, Tooltip, Box, Alert,
-    Card, CardHeader, CardContent, Typography, Grid
+    Card, CardHeader, CardContent, Typography, Grid, Divider
 } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 import { Paid, CheckCircle, Error, Info, Loop, Payments, AccountBalance } from '@mui/icons-material';
 import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
+import { ExpensesContext } from './ExpensesContext';
 import IncomeSettingsMenu from './IncomeSettingsMenu';
+import ExpenseSettingsMenu from './ExpenseSettingsMenu';
 import NoDataMessage from './NoDataMessage';
 import LoadingBackdrop from './LoadingBackdrop';
 
 const Income = () => {
     const { incomes, loadingIncome } = useContext(IncomeContext);
+    const { expenses, updateExpense, loadingExpenses } = useContext(ExpensesContext);
 
     const handleIncomeDate = (incomeDate, incomeType) => {
         const today = moment.utc().startOf('day');
@@ -77,6 +80,32 @@ const Income = () => {
             </Alert>
         )
     }
+
+    const handleDateDue = (expense) => {
+        const today = moment.utc().startOf('day');
+        const date = moment.utc(expense.date_due).startOf('day');
+
+        return (
+            <small style={{ color: 'grey', fontSize: '12px'}}>
+                {moment.utc(expense.date_due).format('MMMM Do, YYYY')}
+                {expense.type === 'recurring' && (
+                    <Tooltip title="Recurring">
+                        <Loop fontSize='small' color='primary' style={{marginLeft: 4}}/>
+                    </Tooltip>
+                )}
+                {date.isBefore(today) && !expense.date_paid ? (
+                    <Tooltip title="Expense is showing not paid. Have you paid this yet?">
+                        <Error fontSize='small' color='error' style={{marginLeft: 4}}/>
+                    </Tooltip>
+                ) : '' }
+                {date.isSame(today) && !expense.date_paid ? (
+                    <Tooltip title="Expense is due today!">
+                        <Error fontSize='small' color='warning' style={{marginLeft: 4}}/>
+                    </Tooltip>
+                ) : '' }
+            </small>
+        );
+    };
 
     if (loadingIncome) {
         return <LoadingBackdrop open={loadingIncome} />;
@@ -189,52 +218,101 @@ const Income = () => {
                                 </Card>
                             </Grid>
                         </Grid>
-                        {income.additional_income.length > 0 && (
-                            <div style={{marginTop: 15}}>
-                                {handleAdditionalIncome(income)}
-                                <TableContainer style={{marginTop: 10}}>
-                                    <Table size="small" aria-label="additional income">
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell style={{ fontWeight: 'bold' }}>Source</TableCell>
-                                                <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
-                                                <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
-                                                <TableCell style={{ fontWeight: 'bold' }} align="right">Amount</TableCell>
-                                                <TableCell></TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {income.additional_income.map((additional) => (
-                                                <TableRow key={additional._id}>
-                                                    <TableCell>
-                                                        <Chip
-                                                            icon={<Info />}
-                                                            label={additional.source.charAt(0).toUpperCase() + additional.source.slice(1)}
-                                                            color="primary"
-                                                            variant="outlined"
-                                                            size="small"
-                                                            style={{ fontWeight: 100, fontSize: '10px', marginRight: 5 }}
-                                                        />
-                                                    </TableCell>
-                                                    <TableCell>{additional.description}</TableCell>
-                                                    <TableCell>
-                                                        <small style={{ color: 'grey', fontSize: '10px' }}>
-                                                            {handleIncomeDate(additional.date_received, additional.type)}
-                                                        </small>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <NumericFormat value={additional.amount.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} />
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <IncomeSettingsMenu data={additional} />
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </div>
-                        )}
+                        <Grid container spacing={2} sx={{mt: 1}}>
+                            {income.additional_income.length > 0 && (
+                                <Grid item xs={12} lg={6}>
+                                    {handleAdditionalIncome(income)}
+                                    <Grid container spacing={2}>
+                                        {income.additional_income.map((additional) => (
+                                            <Grid key={additional._id} item xs={6} lg={4}>
+                                                <Card>
+                                                    <CardHeader
+                                                        title={
+                                                            <>
+                                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                                            <Chip
+                                                                                icon={<Info />}
+                                                                                label={additional.source.charAt(0).toUpperCase() + additional.source.slice(1)}
+                                                                                color="primary"
+                                                                                variant="outlined"
+                                                                                size="small"
+                                                                                style={{ fontWeight: 100, fontSize: '10px', marginRight: 5 }}
+                                                                            />
+                                                                            <small style={{ color: 'grey', fontSize: '10px' }}>{additional.description}</small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <IncomeSettingsMenu data={additional} />
+                                                                </div>
+                                                            </>
+                                                        }
+                                                    />
+                                                    <CardContent>
+                                                        {handleIncomeDate(additional.date_received, additional.type)}
+                                                        <div style={{fontSize: '20px', fontWeight: 'bold'}}>
+                                                            <NumericFormat
+                                                                value={additional.amount.toFixed(2)}
+                                                                displayType="text"
+                                                                thousandSeparator={true}
+                                                                prefix="$"
+                                                            />
+                                                        </div>
+                                                    </CardContent>
+                                                </Card>
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </Grid>
+                            )}
+                            {income.expenses.length > 0 && (
+                                <Grid item xs={12} lg={6}>
+                                    <Alert
+                                        variant="outlined"
+                                        severity="info"
+                                        iconMapping={{
+                                            success: <Payments fontSize="inherit" />,
+                                        }}
+                                    >
+                                        Your total expenses for this period amount to <b><NumericFormat value={income.total_expenses.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'$'} /></b>
+                                    </Alert>
+                                    <Grid container spacing={2}>
+                                        {income.expenses.map((expense) => (
+                                            <Grid key={expense._id} item xs={6} lg={4}>
+                                                <Card>
+                                                    <CardHeader
+                                                        title={
+                                                            <>
+                                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                                            <b style={{ fontSize: '14px', paddingRight: 10 }}>{expense.name}</b>
+                                                                            <small style={{ color: 'grey', fontSize: '10px' }}>{expense.description}</small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <ExpenseSettingsMenu data={expense} />
+                                                                </div>
+                                                            </>
+                                                        }
+                                                    />
+                                                    <CardContent>
+                                                        {handleDateDue(expense)}
+                                                        <div style={{fontSize: '20px', fontWeight: 'bold'}}>
+                                                            <NumericFormat
+                                                                value={expense.amount.toFixed(2)}
+                                                                displayType="text"
+                                                                thousandSeparator={true}
+                                                                prefix="$"
+                                                            />
+                                                        </div>
+                                                    </CardContent>
+                                                </Card>
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </Grid>
+                            )}
+                        </Grid>
                     </CardContent>
                 </Card>
             ))}

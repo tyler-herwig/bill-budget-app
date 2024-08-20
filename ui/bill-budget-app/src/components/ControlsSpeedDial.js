@@ -23,7 +23,7 @@ export default function ControlsSpeedDial() {
     const [incomeDialogOpen, setIncomeDialogOpen] = React.useState(false);
 
     const handleOpenModal = (content) => {
-        if (content === 'Add Expense') {
+        if (content === 'Expense') {
             setExpenseDialogOpen(true);
         } else {
             setIncomeDialogOpen(true);

@@ -36,53 +36,10 @@ const Dashboard = () => {
                     <Container maxWidth="100%" style={{ marginTop: 15 }}>
                         <Box sx={{ flexGrow: 1 }}>
                             <UserIntroSection />
-                            {isMobile ? (
-                                <Box>
-                                    <Tabs
-                                        value={tabValue}
-                                        onChange={handleTabChange}
-                                        variant="fullWidth"
-                                        sx={{ mb: 2 }}
-                                    >
-                                        <Tab label="Income" />
-                                        <Tab label="Expenses" />
-                                    </Tabs>
-                                    {tabValue === 0 ? (
-                                        <Item>
-                                            <h2 align="left">
-                                                <AccountBalance /> Income
-                                            </h2>
-                                            <Income />
-                                        </Item>
-                                    ) : (
-                                        <Item>
-                                            <h2 align="left">
-                                                <Payments /> Expenses
-                                            </h2>
-                                            <Expenses />
-                                        </Item>
-                                    )}
-                                </Box>
-                            ) : (
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12} lg={6}>
-                                        <Item>
-                                            <h2 align="left">
-                                                <AccountBalance /> Income
-                                            </h2>
-                                            <Income />
-                                        </Item>
-                                    </Grid>
-                                    <Grid item xs={12} lg={6}>
-                                        <Item>
-                                            <h2 align="left">
-                                                <Payments /> Expenses
-                                            </h2>
-                                            <Expenses />
-                                        </Item>
-                                    </Grid>
-                                </Grid>
-                            )}
+                            <h2 align="left">
+                                <AccountBalance /> Income
+                            </h2>
+                            <Income />
                         </Box>
                     </Container>
                     <ControlsSpeedDial />

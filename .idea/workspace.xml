@@ -4,17 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Updated expenses to run through google auth, added more descriptions for incomes and expenses, and moved the ability to add a base income out of profile...Also, updated styling and options on avatar settings for user controls.">
-      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/GoogleAuthProvider.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/utils/authentication.js" afterDir="false" />
+    <list default="true" id="8da350aa-f1f0-4949-85fa-79769f35e493" name="Changes" comment="Ability to toggle dark and light mode and save preference. Various styling tweaks to improve light mode usability as app was originally designed for dark mode :)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/controllers/auth.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/controllers/auth.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/routes/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ExpensesContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ExpensesContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/IncomeContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/IncomeContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/controllers/income.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/api/controllers/income.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ControlsSpeedDial.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/ControlsSpeedDial.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Income.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/bill-budget-app/src/components/Income.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +46,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/google-signin-integration&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/tyler/IdeaProjects/bill-budget-app/ui/bill-budget-app/src/components/income&quot;,
@@ -110,6 +105,8 @@
       <workItem from="1723557417209" duration="41001000" />
       <workItem from="1723740944863" duration="12348000" />
       <workItem from="1723818148396" duration="4965000" />
+      <workItem from="1724076625040" duration="5042000" />
+      <workItem from="1724087756864" duration="8063000" />
     </task>
     <task id="LOCAL-00001" summary="Updated app name and description.">
       <option name="closed" value="true" />
@@ -255,7 +252,31 @@
       <option name="project" value="LOCAL" />
       <updated>1723758259464</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Mobile UX/UI improvements">
+      <option name="closed" value="true" />
+      <created>1724079050641</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1724079050641</updated>
+    </task>
+    <task id="LOCAL-00020" summary="More small UX/UI tweaks.">
+      <option name="closed" value="true" />
+      <created>1724079433171</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1724079433171</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Ability to toggle dark and light mode and save preference. Various styling tweaks to improve light mode usability as app was originally designed for dark mode :)">
+      <option name="closed" value="true" />
+      <created>1724081711864</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1724081711864</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -302,6 +323,9 @@
     <MESSAGE value="Significant refactoring as I start to add user accounts... moving context providers to components where they're actually used to prevent unnecessary API calls on each re-render, etc. Made some new components for organization sake, and preparing to adjust how profile context works and behaves." />
     <MESSAGE value="Auth is working great. Protecting routes if user is not logged in... added ability to logout and delete cookie from google... need to handle expiring cookie/token gracefully." />
     <MESSAGE value="Updated expenses to run through google auth, added more descriptions for incomes and expenses, and moved the ability to add a base income out of profile...Also, updated styling and options on avatar settings for user controls." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated expenses to run through google auth, added more descriptions for incomes and expenses, and moved the ability to add a base income out of profile...Also, updated styling and options on avatar settings for user controls." />
+    <MESSAGE value="Mobile UX/UI improvements" />
+    <MESSAGE value="More small UX/UI tweaks." />
+    <MESSAGE value="Ability to toggle dark and light mode and save preference. Various styling tweaks to improve light mode usability as app was originally designed for dark mode :)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ability to toggle dark and light mode and save preference. Various styling tweaks to improve light mode usability as app was originally designed for dark mode :)" />
   </component>
 </project>
