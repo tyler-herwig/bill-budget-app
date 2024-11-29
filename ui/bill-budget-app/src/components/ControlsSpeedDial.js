@@ -45,7 +45,7 @@ export default function ControlsSpeedDial() {
     };
 
     const handleIncomeDialogConfirm = () => {
-        setModalContent(incomeType === 'one-time' ? 'Add One-Time Income' : 'base' ? 'Add Base Income' : 'Add Recurring Income');
+        setModalContent(incomeType === 'one-time' ? 'Add One-Time Income' : incomeType === 'base' ? 'Add Base Income' : 'Add Recurring Income');
         setIncomeDialogOpen(false);
         setOpen(true);
     };

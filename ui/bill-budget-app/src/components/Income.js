@@ -1,13 +1,9 @@
 import React, { useContext } from 'react';
-import {
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip, Tooltip, Box, Alert,
-    Card, CardHeader, CardContent, Typography, Grid, Divider
-} from '@mui/material';
+import { Chip, Tooltip, Box, Alert, Card, CardHeader, CardContent, Typography, Grid } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 import { Paid, CheckCircle, Error, Info, Loop, Payments, AccountBalance } from '@mui/icons-material';
 import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
-import { ExpensesContext } from './ExpensesContext';
 import IncomeSettingsMenu from './IncomeSettingsMenu';
 import ExpenseSettingsMenu from './ExpenseSettingsMenu';
 import NoDataMessage from './NoDataMessage';
@@ -15,7 +11,6 @@ import LoadingBackdrop from './LoadingBackdrop';
 
 const Income = () => {
     const { incomes, loadingIncome } = useContext(IncomeContext);
-    const { expenses, updateExpense, loadingExpenses } = useContext(ExpensesContext);
 
     const handleIncomeDate = (incomeDate, incomeType) => {
         const today = moment.utc().startOf('day');
@@ -221,6 +216,7 @@ const Income = () => {
                         <Grid container spacing={2} sx={{mt: 1}}>
                             {income.additional_income.length > 0 && (
                                 <Grid item xs={12} lg={6}>
+                                    <Typography variant="h6" style={{marginBottom: '10px'}}><AccountBalance /> Additional Income</Typography>
                                     {handleAdditionalIncome(income)}
                                     <Grid container spacing={2}>
                                         {income.additional_income.map((additional) => (
@@ -267,6 +263,7 @@ const Income = () => {
                             )}
                             {income.expenses.length > 0 && (
                                 <Grid item xs={12} lg={6}>
+                                    <Typography variant="h6" style={{marginBottom: '10px'}}><Payments /> Expenses</Typography>
                                     <Alert
                                         variant="outlined"
                                         severity="info"

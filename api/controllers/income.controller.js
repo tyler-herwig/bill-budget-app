@@ -1,6 +1,7 @@
 const Income = require('../models/Income');
 const RecurringIncome = require('../models/RecurringIncome');
 const Expense = require('../models/Expense');
+const RecurringExpense = require('../models/RecurringExpense');
 
 /* ------------------ General Income ------------------ */
 
@@ -60,6 +61,28 @@ exports.getAllIncome = async (req, res) => {
                 );
                 const totalExpensesAmount = expensesBetween.reduce((total, expense) => total + expense.amount, 0);
 
+                const updatedExpenses = await Promise.all(
+                    expensesBetween.map(async expense => {
+                        const recurringExpense = await RecurringExpense.findOne(
+                            {
+                                _id: expense.recurring_expense_id,
+                                user_id: expense.user_id,
+                            },
+                            {
+                                'recurrence.frequency': 1,
+                                'recurrence.start_date': 1,
+                                'recurrence.end_date': 1,
+                                _id: 0
+                            }
+                        );
+        
+                        return {
+                            ...expense._doc, // Include original expense data
+                            recurrence: recurringExpense?.recurrence || null
+                        };
+                    })
+                );
+
                 // Calculate additional income within the same range
                 const additionalIncomeBetween = incomes.filter(
                     inc => inc.date_received > income.date_received && inc.date_received < nextSalaryIncome.date_received && inc.source !== 'salary'
@@ -102,7 +125,7 @@ exports.getAllIncome = async (req, res) => {
                     additional_income: additionalIncomeDetails,
                     total_income: totalIncomeAmount,
                     total_expenses: totalExpensesAmount,
-                    expenses: expensesBetween,
+                    expenses: updatedExpenses,
                     money_remaining: remainingAmount
                 });
             }
