@@ -60,7 +60,7 @@ export const IncomeProvider = ({ children }) => {
         } finally {
             setLoadingIncome(false);
         }
-    }, [API_URL, dateRange]);
+    }, [API_URL, dateRange, navigate]);
 
     /* ------------------ One-Time Income ------------------ */
 
@@ -91,7 +91,7 @@ export const IncomeProvider = ({ children }) => {
             console.error('Error adding income:', error);
             showNotification(error.message || 'Failed to add income', 'error');
         }
-    }, [API_URL, refreshIncome]);
+    }, [API_URL, refreshIncome, navigate]);
 
     const updateIncome = useCallback(async (income) => {
         try {
@@ -121,7 +121,7 @@ export const IncomeProvider = ({ children }) => {
             showNotification(error.message || 'Failed to update income', 'error');
             throw error;
         }
-    }, [API_URL, refreshIncome]);
+    }, [API_URL, refreshIncome, navigate]);
 
     const deleteIncome = useCallback(async (incomeId) => {
         try {
@@ -150,7 +150,7 @@ export const IncomeProvider = ({ children }) => {
             showNotification(error.message || 'Failed to delete income', 'error');
             throw error;
         }
-    }, [API_URL, refreshIncome]);
+    }, [API_URL, refreshIncome, navigate]);
 
     /* ------------------ Recurring Income ------------------ */
 
@@ -181,7 +181,7 @@ export const IncomeProvider = ({ children }) => {
             console.error('Error adding recurring income:', error);
             showNotification(error.message || 'Failed to add recurring income', 'error');
         }
-    }, [API_URL, refreshIncome]);
+    }, [API_URL, refreshIncome, navigate]);
 
     const updateRecurringIncome = useCallback(async (income) => {
         delete income._id;
@@ -212,7 +212,7 @@ export const IncomeProvider = ({ children }) => {
             showNotification(error.message || 'Failed to update recurring income', 'error');
             throw error;
         }
-    }, [API_URL, refreshIncome]);
+    }, [API_URL, refreshIncome, navigate]);
 
     const deleteRecurringIncome = useCallback(async (recurringIncomeId) => {
         try {
@@ -241,7 +241,7 @@ export const IncomeProvider = ({ children }) => {
             showNotification(error.message || 'Failed to delete recurring income', 'error');
             throw error;
         }
-    }, [API_URL, refreshIncome]);
+    }, [API_URL, refreshIncome, navigate]);
 
     useEffect(() => {
         refreshIncome();
