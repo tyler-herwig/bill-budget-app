@@ -43,6 +43,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         checkAuthentication();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onLoginSuccess = async (response) => {

@@ -62,7 +62,7 @@ export const ExpensesProvider = ({ children }) => {
         } finally {
             setLoadingExpenses(false);
         }
-    }, [API_URL, dateRange]);
+    }, [API_URL, dateRange, navigate]);
 
     /* ------------------ One-Time Expenses ------------------ */
 
@@ -94,7 +94,7 @@ export const ExpensesProvider = ({ children }) => {
             console.error('Error adding expense:', error);
             showNotification(error.message || 'Failed to add expense', 'error');
         }
-    }, [API_URL, refreshExpenses, refreshIncome]);
+    }, [API_URL, refreshExpenses, refreshIncome, navigate]);
 
     const updateExpense = useCallback(async (expense) => {
         try {
@@ -125,7 +125,7 @@ export const ExpensesProvider = ({ children }) => {
             showNotification(error.message || 'Failed to update expense', 'error');
             throw error;
         }
-    }, [API_URL, refreshExpenses, refreshIncome]);
+    }, [API_URL, refreshExpenses, refreshIncome, navigate]);
 
     const deleteExpense = useCallback(async (expenseId) => {
         try {
@@ -155,7 +155,7 @@ export const ExpensesProvider = ({ children }) => {
             showNotification(error.message || 'Failed to delete expense', 'error');
             throw error;
         }
-    }, [API_URL, refreshExpenses, refreshIncome]);
+    }, [API_URL, refreshExpenses, refreshIncome, navigate]);
 
     /* ------------------ Recurring Expenses ------------------ */
 
@@ -187,7 +187,7 @@ export const ExpensesProvider = ({ children }) => {
             console.error('Error adding recurring expense:', error);
             showNotification(error.message || 'Failed to add recurring expense', 'error');
         }
-    }, [API_URL, refreshExpenses, refreshIncome]);
+    }, [API_URL, refreshExpenses, refreshIncome, navigate]);
 
     const updateRecurringExpense = useCallback(async (expense) => {
         delete expense._id;
@@ -219,7 +219,7 @@ export const ExpensesProvider = ({ children }) => {
             showNotification(error.message || 'Failed to update recurring expense', 'error');
             throw error;
         }
-    }, [API_URL, refreshExpenses, refreshIncome]);
+    }, [API_URL, refreshExpenses, refreshIncome, navigate]);
 
     const deleteRecurringExpense = useCallback(async (recurringExpenseId) => {
         try {
@@ -249,7 +249,7 @@ export const ExpensesProvider = ({ children }) => {
             showNotification(error.message || 'Failed to delete recurring expense', 'error');
             throw error;
         }
-    }, [API_URL, refreshExpenses, refreshIncome]);
+    }, [API_URL, refreshExpenses, refreshIncome, navigate]);
 
     useEffect(() => {
         refreshExpenses();
