@@ -102,16 +102,13 @@ const Income = () => {
         );
     };
 
-    if (loadingIncome) {
-        return <LoadingBackdrop open={loadingIncome} />;
-    }
-
     if (!incomes.length) {
         return <NoDataMessage title='Insufficient Data' message='The data available is not sufficient for this widget. Please adjust your filters and try again.'/>;
     }
 
     return (
         <>
+            {loadingIncome && <LoadingBackdrop open={loadingIncome} />}
             {incomes.map((income) => (
                 <Card
                     key={income._id}
