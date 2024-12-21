@@ -3,7 +3,6 @@ import { Box, Container } from '@mui/material';
 import UserIntroSection from './UserIntroSection';
 import Income from './Income';
 import DateRangePickerComponent from './DateRangePickerComponent';
-import ControlsSpeedDial from './ControlsSpeedDial';
 import { IncomeProvider } from './IncomeContext';
 import { ExpensesProvider } from './ExpensesContext';
 import { DateRangeProvider } from './DateRangeContext';
@@ -21,7 +20,6 @@ const Dashboard = () => {
                             <Income />
                         </Box>
                     </Container>
-                    <ControlsSpeedDial />
                 </ExpensesProvider>
             </IncomeProvider>
         </DateRangeProvider>
