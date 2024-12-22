@@ -4,7 +4,7 @@ import {
     RadioGroup, FormControlLabel, Radio, Divider 
 } from '@mui/material';
 import { Loop } from '@mui/icons-material';
-import OneTimeIncomeModal from '../OneTimeIncomeModal';
+import OneTimeIncomeModal from '../Modals/OneTimeIncomeModal.tsx';
 import RecurringIncomeModal from '../RecurringIncomeModal';
 
 interface AddIncomeDialogProps {
@@ -71,7 +71,7 @@ const AddIncomeDialog = ({ open, handleClose }: AddIncomeDialogProps) => {
                 </DialogActions>
             </Dialog>
 
-            <OneTimeIncomeModal action='add' data={{}} open={oneTimeIncomeModalOpen} handleClose={handleOneTimeIncomeModalClose}/>
+            <OneTimeIncomeModal action='add' open={oneTimeIncomeModalOpen} handleClose={handleOneTimeIncomeModalClose}/>
             <RecurringIncomeModal action='add' data={{}} open={recurringIncomeModalOpen} handleClose={handleRecurringIncomeModalClose} salary={salary}/>
         </>
     )

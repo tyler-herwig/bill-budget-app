@@ -7,8 +7,8 @@ import {
     Edit as EditIcon, Delete as DeleteIcon, MoreHoriz as MoreHorizIcon,
     AppRegistration as EditRecurringIcon, DeleteSweep as DeleteRecurringIcon
 } from '@mui/icons-material';
-import OneTimeIncomeModal from './OneTimeIncomeModal';
-import RecurringIncomeModal from './RecurringIncomeModal';
+import OneTimeIncomeModal from './Modals/OneTimeIncomeModal.tsx';
+import RecurringIncomeModal from './RecurringIncomeModal.js';
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -52,6 +52,7 @@ const StyledMenu = styled((props) => (
 }));
 
 const IncomeSettingsMenu = ({ data }) => {
+    console.log(data);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openSettings = Boolean(anchorEl);
     const [open, setOpen] = React.useState(false);

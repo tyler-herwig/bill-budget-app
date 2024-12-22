@@ -209,6 +209,21 @@ exports.deleteOneTimeIncome = async (req, res) => {
     }
 };
 
+exports.getIncomeById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const income = await Income.findById(id);
+
+        if (!income) {
+            return res.status(404).json({ message: 'Income not found' });
+        }
+        
+        res.status(200).json(income);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 /* ------------------ Recurring Income ------------------ */
 
 /*

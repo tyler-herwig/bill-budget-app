@@ -1,16 +1,26 @@
 import React, { useContext } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getAllIncome } from '../fetch/income.ts';
 import { Chip, Tooltip, Box, Alert, Card, CardHeader, CardContent, Typography, Grid } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 import { Paid, CheckCircle, Error, Info, Loop, Payments, AccountBalance } from '@mui/icons-material';
 import moment from 'moment';
 import { IncomeContext } from './IncomeContext';
-import IncomeSettingsMenu from './IncomeSettingsMenu';
+import { DateRangeContext } from './DateRangeContext';
+import IncomeSettingsMenu from './Settings/IncomeSettingsMenu.tsx';
 import ExpenseSettingsMenu from './ExpenseSettingsMenu';
 import NoDataMessage from './NoDataMessage';
 import LoadingBackdrop from './LoadingBackdrop';
 
 const Income = () => {
-    const { incomes, loadingIncome } = useContext(IncomeContext);
+
+    const { dateRange } = useContext(DateRangeContext);
+
+    const { data, isLoading } = useQuery({
+        queryKey: ['income', dateRange.startDate, dateRange.endDate],
+        queryFn: () => getAllIncome(dateRange.startDate, dateRange.endDate), 
+        enabled: !!dateRange.startDate && !!dateRange.endDate
+      });
 
     const handleIncomeDate = (incomeDate, incomeType) => {
         const today = moment.utc().startOf('day');
@@ -102,14 +112,11 @@ const Income = () => {
         );
     };
 
-    if (!incomes.length) {
-        return <NoDataMessage title='Insufficient Data' message='The data available is not sufficient for this widget. Please adjust your filters and try again.'/>;
-    }
+    if (isLoading) return <LoadingBackdrop open={isLoading} />;
 
     return (
         <>
-            {loadingIncome && <LoadingBackdrop open={loadingIncome} />}
-            {incomes.map((income) => (
+            {data?.map((income) => (
                 <Card
                     key={income._id}
                     style={{ marginBottom: '15px', borderLeft: '5px solid #36A1EAFF' }}
@@ -123,7 +130,7 @@ const Income = () => {
                                         {handleIncomeDate(income.date_received, income.type)}
                                     </Typography>
                                 </Box>
-                                <IncomeSettingsMenu data={income} />
+                                <IncomeSettingsMenu incomeId={income._id} recurringIncomeId={income.recurring_income_id}/>
                             </Box>
                         }
                         align="left"
@@ -236,7 +243,7 @@ const Income = () => {
                                                                             <small style={{ color: 'grey', fontSize: '10px' }}>{additional.description}</small>
                                                                         </div>
                                                                     </div>
-                                                                    <IncomeSettingsMenu data={additional} />
+                                                                    <IncomeSettingsMenu incomeId={additional._id} recurringIncomeId={additional.recurring_income_id} />
                                                                 </div>
                                                             </>
                                                         }

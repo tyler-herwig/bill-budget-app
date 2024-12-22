@@ -1,4 +1,4 @@
-import React, { useContext, useMemo} from 'react';
+import React, { useMemo} from 'react';
 import {
     Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput,
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
@@ -7,11 +7,9 @@ import {
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
-import { IncomeContext } from './IncomeContext';
-import useOneTimeIncome from '../hooks/useOneTimeIncome';
+import useOneTimeIncome from '../hooks/useOneTimeIncome.ts';
 
 const OneTimeIncomeModal = ({ action, data, open, handleClose }) => {
-    const incomeContext = useContext(IncomeContext);
     const memoizedData = useMemo(() => data, [data]);
 
     const {
@@ -19,7 +17,7 @@ const OneTimeIncomeModal = ({ action, data, open, handleClose }) => {
         handleChange,
         handleDateChange,
         handleAction
-    } = useOneTimeIncome({ context: incomeContext, data: memoizedData });
+    } = useOneTimeIncome({ data: memoizedData });
 
     const actionVerbage = {
         add: {

@@ -27,6 +27,11 @@ router.put('/one-time/:id', authenticate, incomeController.updateOneTimeIncome);
 */
 router.delete('/one-time/:id', authenticate, incomeController.deleteOneTimeIncome);
 
+/*
+    Get a specific one-time income by ID
+*/
+router.get('/one-time/:id', authenticate, incomeController.getIncomeById);
+
 /* ------------------ Recurring Income Routes ------------------ */
 
 /*
