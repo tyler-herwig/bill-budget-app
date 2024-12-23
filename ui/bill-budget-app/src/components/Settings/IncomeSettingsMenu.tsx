@@ -123,6 +123,7 @@ const IncomeSettingsMenu: React.FC<IncomeSettingsMenuProps> = ({ incomeId, recur
                 income={incomeData} 
                 open={open} 
                 handleClose={handleCloseModal}
+                refetch={refetch}
             />
         </div>
     );

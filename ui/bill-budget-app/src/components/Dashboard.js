@@ -13,7 +13,7 @@ const Dashboard = () => {
 
     const { dateRange } = useContext(DateRangeContext);
 
-    const { data: incomes, isLoading: isLoadingIncomes } = useQuery({
+    const { data: incomes, isLoading: isLoadingIncomes, refetch: refetchIncome } = useQuery({
         queryKey: ['income', dateRange.startDate, dateRange.endDate],
         queryFn: () => getAllIncome(dateRange.startDate, dateRange.endDate), 
         enabled: !!dateRange.startDate && !!dateRange.endDate
@@ -22,11 +22,11 @@ const Dashboard = () => {
     return (
         <IncomeProvider>
             <ExpensesProvider>
-                <DateRangePickerComponent />
+                <DateRangePickerComponent refetch={refetchIncome} />
                 <Container maxWidth="100%" style={{ marginTop: 15 }}>
                     <Box sx={{ flexGrow: 1 }}>
                         <UserIntroSection incomes={incomes} isLoadingIncomes={isLoadingIncomes} />
-                        <Income data={incomes} isLoading={isLoadingIncomes} />
+                        <Income data={incomes} isLoading={isLoadingIncomes} refetch={refetchIncome}/>
                     </Box>
                 </Container>
             </ExpensesProvider>

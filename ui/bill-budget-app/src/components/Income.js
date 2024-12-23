@@ -8,7 +8,7 @@ import ExpenseSettingsMenu from './ExpenseSettingsMenu';
 import NoDataMessage from './NoDataMessage';
 import LoadingBackdrop from './LoadingBackdrop';
 
-const Income = ({data, isLoading}) => {
+const Income = ({data, isLoading, refetch}) => {
 
     const handleIncomeDate = (incomeDate, incomeType) => {
         const today = moment.utc().startOf('day');
@@ -118,7 +118,7 @@ const Income = ({data, isLoading}) => {
                                         {handleIncomeDate(income.date_received, income.type)}
                                     </Typography>
                                 </Box>
-                                <IncomeSettingsMenu incomeId={income._id} recurringIncomeId={income.recurring_income_id} />
+                                <IncomeSettingsMenu incomeId={income._id} recurringIncomeId={income.recurring_income_id} refetch={refetch} />
                             </Box>
                         }
                         align="left"
@@ -231,7 +231,7 @@ const Income = ({data, isLoading}) => {
                                                                             <small style={{ color: 'grey', fontSize: '10px' }}>{additional.description}</small>
                                                                         </div>
                                                                     </div>
-                                                                    <IncomeSettingsMenu incomeId={additional._id} recurringIncomeId={additional.recurring_income_id} />
+                                                                    <IncomeSettingsMenu incomeId={additional._id} recurringIncomeId={additional.recurring_income_id} refetch={refetch}/>
                                                                 </div>
                                                             </>
                                                         }

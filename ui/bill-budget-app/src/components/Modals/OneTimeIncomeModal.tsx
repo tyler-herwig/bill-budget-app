@@ -16,9 +16,10 @@ interface OneTimeIncomeModalProps {
     income?: IOneTimeIncome;
     open: boolean;
     handleClose: () => void;
+    refetch: () => void;
 }
 
-const OneTimeIncomeModal: React.FC<OneTimeIncomeModalProps> = ({ action, income, open, handleClose }) => {
+const OneTimeIncomeModal: React.FC<OneTimeIncomeModalProps> = ({ action, income, open, handleClose, refetch }) => {
     const [formData, setFormData] = useState<IOneTimeIncome>({
         source: '',
         description: '',
@@ -49,12 +50,15 @@ const OneTimeIncomeModal: React.FC<OneTimeIncomeModalProps> = ({ action, income,
             switch (action) {
                 case 'add':
                     await addIncome(formData);
+                    refetch();
                     break;
                 case 'edit':
                     await updateIncome(formData);
+                    refetch();
                     break;
                 case 'delete':
                     await deleteIncome(formData._id);
+                    refetch();
                     break;
                 default:
                     break;
@@ -152,7 +156,7 @@ const OneTimeIncomeModal: React.FC<OneTimeIncomeModalProps> = ({ action, income,
                         </FormControl>
                         <LocalizationProvider dateAdapter={AdapterMoment}>
                             <DatePicker
-                                label="Income Due Received"
+                                label="Income Received"
                                 value={formData.date_received ? moment(formData.date_received) : null}
                                 onChange={(newValue) => handleDateChange(newValue ? newValue.toISOString() : '')}
                                 slotProps={{

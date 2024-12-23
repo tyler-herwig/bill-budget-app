@@ -9,7 +9,7 @@ import { DateRangeContext } from './DateRangeContext';
 import AddIncomeDialog from './Dialogs/AddIncomeDialog.tsx';
 import AddExpenseDialog from './Dialogs/AddExpenseDialog.tsx';
 
-const DateRangePickerComponent = () => {
+const DateRangePickerComponent = ({ refetch }) => {
     const { dateRange, updateDateRange } = useContext(DateRangeContext);
     const [openIncomeDialog, setOpenIncomeDialog] = React.useState(false);
     const [openExpenseDialog, setOpenExpenseDialog] = React.useState(false);
@@ -155,7 +155,7 @@ const DateRangePickerComponent = () => {
             </AppBar>
 
             {/* Add Income Dialog */}
-            <AddIncomeDialog open={openIncomeDialog} handleClose={handleCloseIncomeDialog}/>
+            <AddIncomeDialog open={openIncomeDialog} handleClose={handleCloseIncomeDialog} refetch={refetch} />
 
             {/* Add Expense Dialog */}
             <AddExpenseDialog open={openExpenseDialog} handleClose={handleCloseExpenseDialog}/>

@@ -10,9 +10,10 @@ import RecurringIncomeModal from '../RecurringIncomeModal';
 interface AddIncomeDialogProps {
     open: boolean;
     handleClose: () => void;
+    refetch: () => void;
 }
 
-const AddIncomeDialog = ({ open, handleClose }: AddIncomeDialogProps) => {
+const AddIncomeDialog = ({ open, handleClose, refetch }: AddIncomeDialogProps) => {
     const [incomeType, setIncomeType] = React.useState('base');
     const [oneTimeIncomeModalOpen, setOneTimeIncomeModalOpen] = React.useState(false);
     const [recurringIncomeModalOpen, setRecurringIncomeModalOpen] = React.useState(false);
@@ -71,7 +72,7 @@ const AddIncomeDialog = ({ open, handleClose }: AddIncomeDialogProps) => {
                 </DialogActions>
             </Dialog>
 
-            <OneTimeIncomeModal action='add' open={oneTimeIncomeModalOpen} handleClose={handleOneTimeIncomeModalClose}/>
+            <OneTimeIncomeModal action='add' open={oneTimeIncomeModalOpen} handleClose={handleOneTimeIncomeModalClose} refetch={refetch} />
             <RecurringIncomeModal action='add' data={{}} open={recurringIncomeModalOpen} handleClose={handleRecurringIncomeModalClose} salary={salary}/>
         </>
     )
