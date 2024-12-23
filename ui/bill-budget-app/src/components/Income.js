@@ -16,7 +16,7 @@ const Income = () => {
 
     const { dateRange } = useContext(DateRangeContext);
 
-    const { data, isLoading } = useQuery({
+    const { data, isLoading, refetch: refetchIncome } = useQuery({
         queryKey: ['income', dateRange.startDate, dateRange.endDate],
         queryFn: () => getAllIncome(dateRange.startDate, dateRange.endDate), 
         enabled: !!dateRange.startDate && !!dateRange.endDate
@@ -130,7 +130,7 @@ const Income = () => {
                                         {handleIncomeDate(income.date_received, income.type)}
                                     </Typography>
                                 </Box>
-                                <IncomeSettingsMenu incomeId={income._id} recurringIncomeId={income.recurring_income_id}/>
+                                <IncomeSettingsMenu incomeId={income._id} recurringIncomeId={income.recurring_income_id} />
                             </Box>
                         }
                         align="left"

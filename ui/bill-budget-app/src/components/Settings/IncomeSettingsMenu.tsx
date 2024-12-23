@@ -15,9 +15,10 @@ import { getIncomeById } from '../../fetch/income.ts';
 interface IncomeSettingsMenuProps {
     incomeId: string;
     recurringIncomeId: string | null;
+    refetch: () => void;
 }
 
-const IncomeSettingsMenu: React.FC<IncomeSettingsMenuProps> = ({ incomeId, recurringIncomeId }) => {
+const IncomeSettingsMenu: React.FC<IncomeSettingsMenuProps> = ({ incomeId, recurringIncomeId, refetch }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [open, setOpen] = React.useState(false);
     const [action, setAction] = React.useState<'add' | 'edit' | 'delete'>('edit');
@@ -44,15 +45,28 @@ const IncomeSettingsMenu: React.FC<IncomeSettingsMenuProps> = ({ incomeId, recur
         handleCloseSettings();
         setAction('edit');
 
-        if (type === 'one-time') {
-            await fetchIncome();
+        switch (type) {
+            case 'one-time':
+                await fetchIncome();
+                break;
+            default:
+                break;
         }
 
         setOpen(true);
     };
 
-    const handleDeleteClick = (type: string) => {
+    const handleDeleteClick = async (type: string) => {
         handleCloseSettings();
+
+        switch (type) {
+            case 'one-time':
+                await fetchIncome();
+                break;
+            default:
+                break;
+        }
+
         setAction('delete');
         setOpen(true);
     };
@@ -108,7 +122,8 @@ const IncomeSettingsMenu: React.FC<IncomeSettingsMenuProps> = ({ incomeId, recur
                 action={action} 
                 income={incomeData} 
                 open={open} 
-                handleClose={handleCloseModal} 
+                handleClose={handleCloseModal}
+                refetch={refetch} 
             />
         </div>
     );
