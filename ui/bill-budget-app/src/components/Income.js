@@ -1,26 +1,14 @@
-import React, { useContext } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { getAllIncome } from '../fetch/income.ts';
+import React from 'react';
 import { Chip, Tooltip, Box, Alert, Card, CardHeader, CardContent, Typography, Grid } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 import { Paid, CheckCircle, Error, Info, Loop, Payments, AccountBalance } from '@mui/icons-material';
 import moment from 'moment';
-import { IncomeContext } from './IncomeContext';
-import { DateRangeContext } from './DateRangeContext';
 import IncomeSettingsMenu from './Settings/IncomeSettingsMenu.tsx';
 import ExpenseSettingsMenu from './ExpenseSettingsMenu';
 import NoDataMessage from './NoDataMessage';
 import LoadingBackdrop from './LoadingBackdrop';
 
-const Income = () => {
-
-    const { dateRange } = useContext(DateRangeContext);
-
-    const { data, isLoading, refetch: refetchIncome } = useQuery({
-        queryKey: ['income', dateRange.startDate, dateRange.endDate],
-        queryFn: () => getAllIncome(dateRange.startDate, dateRange.endDate), 
-        enabled: !!dateRange.startDate && !!dateRange.endDate
-      });
+const Income = ({data, isLoading}) => {
 
     const handleIncomeDate = (incomeDate, incomeType) => {
         const today = moment.utc().startOf('day');

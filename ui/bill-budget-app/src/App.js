@@ -10,6 +10,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Authentication from './components/Authentication';
 import Dashboard from './components/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { DateRangeProvider } from './components/DateRangeContext';
 
 const App = () => {
     const storedThemePreference = localStorage.getItem('theme') || 'system';
@@ -51,24 +53,30 @@ const App = () => {
         },
     });
 
+    const queryClient = new QueryClient();
+
     return (
-        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <div className="App">
-                    <Router>
-                        <AuthProvider>
-                            <ResponsiveAppBar setThemeMode={changeThemeMode} themeMode={themeMode} />
-                            <Routes>
-                                <Route path="/authentication" element={<Authentication />} />
-                                <Route path="/" element={<PrivateRoute element={Dashboard} />} />
-                                <Route path="/profile" element={<PrivateRoute element={Profile} />} />
-                            </Routes>
-                        </AuthProvider>
-                    </Router>
-                </div>
-            </ThemeProvider>
-        </GoogleOAuthProvider>
+        <QueryClientProvider client={queryClient}>
+            <DateRangeProvider>
+                <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+                    <ThemeProvider theme={theme}>
+                        <CssBaseline />
+                        <div className="App">
+                            <Router>
+                                <AuthProvider>
+                                    <ResponsiveAppBar setThemeMode={changeThemeMode} themeMode={themeMode} />
+                                    <Routes>
+                                        <Route path="/authentication" element={<Authentication />} />
+                                        <Route path="/" element={<PrivateRoute element={Dashboard} />} />
+                                        <Route path="/profile" element={<PrivateRoute element={Profile} />} />
+                                    </Routes>
+                                </AuthProvider>
+                            </Router>
+                        </div>
+                    </ThemeProvider>
+                </GoogleOAuthProvider>
+            </DateRangeProvider>
+        </QueryClientProvider>
     );
 };
 
