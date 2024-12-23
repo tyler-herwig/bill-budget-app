@@ -2,11 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
 import moment from 'moment';
-import { IncomeContext } from './IncomeContext';
 import NoDataMessage from './NoDataMessage';
 
-export function FinancialOutlookChart() {
-    const { incomes } = useContext(IncomeContext);
+export function FinancialOutlookChart({ incomes = [] }) {
 
     const [chartData, setChartData] = useState({ labels: [], incomes: [], expenses: [] });
 

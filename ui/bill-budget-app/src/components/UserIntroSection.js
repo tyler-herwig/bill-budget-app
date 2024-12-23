@@ -6,17 +6,10 @@ import { FinancialOutlookChart } from './FinancialOutlookChart';
 import { UserIntroTabs } from './UserIntroTabs';
 import { useAuth } from './AuthContext';
 
-const InfoPaper = styled(Paper)(({ theme }) => ({
-    padding: theme.spacing(3),
-    textAlign: 'center',
-    color: theme.palette.text.primary,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[3],
-    borderRadius: theme.shape.borderRadius,
-}));
-
-const UserIntroSection = () => {
+const UserIntroSection = ({incomes, isLoadingIncomes}) => {
     const { profile } = useAuth();
+
+    if (isLoadingIncomes) return <p>Loading...</p>;
 
     return (
         <Grid container spacing={2} style={{ marginBottom: '15px' }}>
@@ -29,7 +22,7 @@ const UserIntroSection = () => {
                         <Typography variant="body1">Here's a quick overview of your financial data.</Typography>
                     </Box>
                     <br/>
-                    <UserIntroTabs/>
+                    <UserIntroTabs incomes={incomes} />
                 </InfoPaper>
             </Grid>
             <Grid item xs={12} md={7}>
@@ -37,12 +30,21 @@ const UserIntroSection = () => {
                     <Box>
                         <Typography variant="h6" style={{fontWeight: 'bold'}}><QueryStats /> Your Financial Outlook</Typography>
                         <br />
-                        <FinancialOutlookChart/>
+                        <FinancialOutlookChart incomes={incomes}/>
                     </Box>
                 </InfoPaper>
             </Grid>
         </Grid>
     );
 };
+
+const InfoPaper = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(3),
+    textAlign: 'center',
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[3],
+    borderRadius: theme.shape.borderRadius,
+}));
 
 export default UserIntroSection;

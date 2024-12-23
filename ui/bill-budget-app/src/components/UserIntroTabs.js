@@ -4,7 +4,6 @@ import { Box, Typography, Grid, Alert, Tabs, Tab, Tooltip, Card, CardHeader, Car
 import { AccountBalance, Payments, Info } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
 import moment from 'moment';
-import { IncomeContext } from './IncomeContext';
 import { ExpensesContext } from './ExpensesContext';
 import NoDataMessage from './NoDataMessage';
 
@@ -37,8 +36,7 @@ function a11yProps(index) {
     };
 }
 
-export function UserIntroTabs() {
-    const { incomes } = useContext(IncomeContext);
+export function UserIntroTabs({ incomes = [] }) {
     const { expenses } = useContext(ExpensesContext);
 
     const [value, setValue] = React.useState(0);
