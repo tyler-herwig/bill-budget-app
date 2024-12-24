@@ -8,6 +8,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import { IOneTimeExpense } from '../../models/expense';
 import { addExpense, deleteExpense, updateExpense } from '../../fetch/expense.ts';
+import { useNotification } from '../Context/NotificationContext.tsx';
 
 interface OneTimeExpenseModalProps {
     action: 'add' | 'edit' | 'delete';
@@ -25,6 +26,8 @@ const OneTimeExpenseModal: React.FC<OneTimeExpenseModalProps> = ({ action, expen
         date_due: ''
     });
 
+    const { showNotification } = useNotification();
+
     useEffect(() => {
         if (expense) {
             setFormData(expense);
@@ -41,28 +44,54 @@ const OneTimeExpenseModal: React.FC<OneTimeExpenseModalProps> = ({ action, expen
 
     const handleAction = async (action: string) => {
         try {
-            switch (action) {
-                case 'add':
+            if (action === 'add') {
+                try {
                     await addExpense(formData);
                     refetch();
-                    break;
-                case 'edit':
+                    showNotification('One-time expense added successfully!', 'success');
+                } catch (error) {
+                    console.error('Error adding expense:', error);
+                    const errorMessage = error instanceof Error ? error.message : 'Failed to add expense.';
+                    showNotification(errorMessage, 'error');
+                    return false;
+                }
+            }
+    
+            if (action === 'edit') {
+                try {
                     await updateExpense(formData);
                     refetch();
-                    break;
-                case 'delete':
+                    showNotification('One-time expense updated successfully!', 'success');
+                } catch (error) {
+                    console.error('Error updating expense:', error);
+                    const errorMessage = error instanceof Error ? error.message : 'Failed to update expense.';
+                    showNotification(errorMessage, 'error');
+                    return false;
+                }
+            }
+    
+            if (action === 'delete') {
+                try {
                     await deleteExpense(formData._id);
                     refetch();
-                    break;
-                default:
-                    break;
+                    showNotification('One-time expense deleted successfully!', 'success');
+                } catch (error) {
+                    console.error('Error deleting expense:', error);
+                    const errorMessage = error instanceof Error ? error.message : 'Failed to delete expense.';
+                    showNotification(errorMessage, 'error');
+                    return false;
+                }
             }
+
             return true;
+    
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Unexpected error:', error);
+            showNotification('An unexpected error occurred. Please try again.', 'error');
             return false;
         }
     };
+    
 
     const actionVerbage = {
         add: {

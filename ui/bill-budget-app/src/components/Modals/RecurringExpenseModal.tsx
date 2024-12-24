@@ -5,6 +5,7 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { IRecurringExpense } from '../../models/expense.ts';
 import { addRecurringExpense, updateRecurringExpense, deleteRecurringExpense } from '../../fetch/expense.ts';
+import { useNotification } from '../Context/NotificationContext.tsx';
 
 interface RecurringExpenseModalProps {
     action: 'add' | 'edit' | 'delete';
@@ -26,6 +27,8 @@ const RecurringIncomeModal: React.FC<RecurringExpenseModalProps> = ({ action, ex
             end_date: ''
         }
     });
+
+    const { showNotification } = useNotification();
 
     useEffect(() => {
         if (expense) {
@@ -55,28 +58,52 @@ const RecurringIncomeModal: React.FC<RecurringExpenseModalProps> = ({ action, ex
 
     const handleAction = async (action: string) => {
         try {
-            switch (action) {
-                case 'add':
+            if (action === 'add') {
+                try {
                     await addRecurringExpense(formData);
                     refetch();
-                    break;
-                case 'edit':
+                    showNotification('Recurring expense added successfully!', 'success');
+                } catch (error) {
+                    console.error('Error adding recurring expense:', error);
+                    const errorMessage = error instanceof Error ? error.message : 'Failed to add recurring expense.';
+                    showNotification(errorMessage, 'error');
+                    return false;
+                }
+            }
+    
+            if (action === 'edit') {
+                try {
                     await updateRecurringExpense(formData);
                     refetch();
-                    break;
-                case 'delete':
+                    showNotification('Recurring expense updated successfully!', 'success');
+                } catch (error) {
+                    console.error('Error updating recurring expense:', error);
+                    const errorMessage = error instanceof Error ? error.message : 'Failed to update recurring expense.';
+                    showNotification(errorMessage, 'error');
+                    return false;
+                }
+            }
+    
+            if (action === 'delete') {
+                try {
                     await deleteRecurringExpense(formData._id);
                     refetch();
-                    break;
-                default:
-                    break;
+                    showNotification('Recurring expense deleted successfully!', 'success');
+                } catch (error) {
+                    console.error('Error deleting recurring expense:', error);
+                    const errorMessage = error instanceof Error ? error.message : 'Failed to delete recurring expense.';
+                    showNotification(errorMessage, 'error');
+                    return false;
+                }
             }
+    
             return true;
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Unexpected error:', error);
+            showNotification('An unexpected error occurred. Please try again.', 'error');
             return false;
         }
-    };
+    };    
 
     const actionVerbage = {
         add: {

@@ -10,6 +10,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import { IOneTimeIncome } from '../../models/income.ts';
 import { addIncome, deleteIncome, updateIncome } from '../../fetch/income.ts';
+import { useNotification } from '../Context/NotificationContext.tsx';
 
 interface OneTimeIncomeModalProps {
     action: 'add' | 'edit' | 'delete';
@@ -26,6 +27,8 @@ const OneTimeIncomeModal: React.FC<OneTimeIncomeModalProps> = ({ action, income,
         amount: 0,
         date_received: ''
     });
+
+    const { showNotification } = useNotification();
 
     useEffect(() => {
         if (income) {
@@ -47,28 +50,52 @@ const OneTimeIncomeModal: React.FC<OneTimeIncomeModalProps> = ({ action, income,
 
     const handleAction = async (action: string) => {
         try {
-            switch (action) {
-                case 'add':
+            if (action === 'add') {
+                try {
                     await addIncome(formData);
                     refetch();
-                    break;
-                case 'edit':
+                    showNotification('Income added successfully!', 'success');
+                } catch (error) {
+                    console.error('Error adding income:', error);
+                    const errorMessage = error instanceof Error ? error.message : 'Failed to add income.';
+                    showNotification(errorMessage, 'error');
+                    return false;
+                }
+            }
+    
+            if (action === 'edit') {
+                try {
                     await updateIncome(formData);
                     refetch();
-                    break;
-                case 'delete':
+                    showNotification('Income updated successfully!', 'success');
+                } catch (error) {
+                    console.error('Error updating income:', error);
+                    const errorMessage = error instanceof Error ? error.message : 'Failed to update income.';
+                    showNotification(errorMessage, 'error');
+                    return false;
+                }
+            }
+    
+            if (action === 'delete') {
+                try {
                     await deleteIncome(formData._id);
                     refetch();
-                    break;
-                default:
-                    break;
+                    showNotification('Income deleted successfully!', 'success');
+                } catch (error) {
+                    console.error('Error deleting income:', error);
+                    const errorMessage = error instanceof Error ? error.message : 'Failed to delete income.';
+                    showNotification(errorMessage, 'error');
+                    return false;
+                }
             }
+    
             return true;
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Unexpected error:', error);
+            showNotification('An unexpected error occurred. Please try again.', 'error');
             return false;
         }
-    };
+    };    
 
     const actionVerbage = {
         add: {

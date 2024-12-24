@@ -12,6 +12,7 @@ import Dashboard from './components/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DateRangeProvider } from './components/DateRangeContext';
+import { NotificationProvider } from './components/Context/NotificationContext.tsx';
 
 const App = () => {
     const storedThemePreference = localStorage.getItem('theme') || 'system';
@@ -63,14 +64,16 @@ const App = () => {
                         <CssBaseline />
                         <div className="App">
                             <Router>
-                                <AuthProvider>
-                                    <ResponsiveAppBar setThemeMode={changeThemeMode} themeMode={themeMode} />
-                                    <Routes>
-                                        <Route path="/authentication" element={<Authentication />} />
-                                        <Route path="/" element={<PrivateRoute element={Dashboard} />} />
-                                        <Route path="/profile" element={<PrivateRoute element={Profile} />} />
-                                    </Routes>
-                                </AuthProvider>
+                                <NotificationProvider>
+                                    <AuthProvider>
+                                        <ResponsiveAppBar setThemeMode={changeThemeMode} themeMode={themeMode} />
+                                        <Routes>
+                                            <Route path="/authentication" element={<Authentication />} />
+                                            <Route path="/" element={<PrivateRoute element={Dashboard} />} />
+                                            <Route path="/profile" element={<PrivateRoute element={Profile} />} />
+                                        </Routes>
+                                    </AuthProvider>
+                                </NotificationProvider>
                             </Router>
                         </div>
                     </ThemeProvider>

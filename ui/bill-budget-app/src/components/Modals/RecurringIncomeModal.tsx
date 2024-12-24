@@ -5,6 +5,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, D
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { addRecurringIncome, deleteRecurringIncome, updateRecurringIncome } from '../../fetch/income.ts';
+import { useNotification } from '../Context/NotificationContext.tsx';
 
 interface RecurringIncomeModalProps {
     action: 'add' | 'edit' | 'delete';
@@ -29,7 +30,9 @@ const RecurringIncomeModal: React.FC<RecurringIncomeModalProps> = ({ action, inc
             start_date: '',
             end_date: ''
         }
-    } as IIncome);
+    });
+
+    const { showNotification } = useNotification();
 
     useEffect(() => {
         if (income) {
@@ -59,28 +62,53 @@ const RecurringIncomeModal: React.FC<RecurringIncomeModalProps> = ({ action, inc
 
     const handleAction = async (action: string) => {
         try {
-            switch (action) {
-                case 'add':
+            if (action === 'add') {
+                try {
                     await addRecurringIncome(formData);
                     refetch();
-                    break;
-                case 'edit':
+                    showNotification('Recurring income added successfully!', 'success');
+                } catch (error) {
+                    console.error('Error adding recurring income:', error);
+                    const errorMessage = error instanceof Error ? error.message : 'Failed to add recurring income.';
+                    showNotification(errorMessage, 'error');
+                    return false;
+                }
+            }
+    
+            if (action === 'edit') {
+                try {
                     await updateRecurringIncome(formData);
                     refetch();
-                    break;
-                case 'delete':
+                    showNotification('Recurring income updated successfully!', 'success');
+                } catch (error) {
+                    console.error('Error updating recurring income:', error);
+                    const errorMessage = error instanceof Error ? error.message : 'Failed to update recurring income.';
+                    showNotification(errorMessage, 'error');
+                    return false;
+                }
+            }
+    
+            if (action === 'delete') {
+                try {
                     await deleteRecurringIncome(formData._id);
                     refetch();
-                    break;
-                default:
-                    break;
+                    showNotification('Recurring income deleted successfully!', 'success');
+                } catch (error) {
+                    console.error('Error deleting recurring income:', error);
+                    const errorMessage = error instanceof Error ? error.message : 'Failed to delete recurring income.';
+                    showNotification(errorMessage, 'error');
+                    return false;
+                }
             }
-            return true;
+    
+            return true; // Return true only if one of the actions succeeds
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Unexpected error:', error);
+            showNotification('An unexpected error occurred. Please try again.', 'error');
             return false;
         }
     };
+    
 
     const actionVerbage = {
         add: {
