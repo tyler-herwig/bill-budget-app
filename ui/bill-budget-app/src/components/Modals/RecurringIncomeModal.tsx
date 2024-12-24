@@ -19,7 +19,7 @@ interface RecurringIncomeModalProps {
 const RecurringIncomeModal: React.FC<RecurringIncomeModalProps> = ({ action, income, salary, open, handleClose, refetch }) => {
     const [formData, setFormData] = useState<IIncome>({
         _id: '',
-        source: '',
+        source: salary ? 'salary' : '',
         description: '',
         amount: 0,
         recurring_income_id: '',
