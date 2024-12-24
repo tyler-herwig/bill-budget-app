@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { Loop } from '@mui/icons-material';
 import OneTimeIncomeModal from '../Modals/OneTimeIncomeModal.tsx';
-import RecurringIncomeModal from '../RecurringIncomeModal';
+import RecurringIncomeModal from '../Modals/RecurringIncomeModal.tsx';
 
 interface AddIncomeDialogProps {
     open: boolean;
@@ -79,7 +79,13 @@ const AddIncomeDialog = ({ open, handleClose, refetch }: AddIncomeDialogProps) =
                 refetch={refetch} 
             />
             
-            <RecurringIncomeModal action='add' data={{}} open={recurringIncomeModalOpen} handleClose={handleRecurringIncomeModalClose} salary={salary}/>
+            <RecurringIncomeModal 
+                action='add' 
+                salary={salary}
+                open={recurringIncomeModalOpen} 
+                handleClose={handleRecurringIncomeModalClose} 
+                refetch={refetch}
+            />
         </>
     )
 }

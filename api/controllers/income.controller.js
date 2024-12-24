@@ -357,6 +357,24 @@ exports.deleteRecurringIncome = async (req, res) => {
     }
 };
 
+/*
+    Get recurring income by ID
+*/
+exports.getRecurringIncomeById = async (req, res) => { 
+    try {
+        const { id } = req.params;
+        const recurringIncome = await RecurringIncome.findById(id);
+        
+        if (!recurringIncome) {
+            return res.status(404).json({ message: 'Recurring income not found' });
+        }
+
+        res.status(200).json(recurringIncome);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 /* ------------------ Utilities ------------------ */
 
 /*

@@ -54,4 +54,9 @@ router.put('/recurring/:id', authenticate, incomeController.updateRecurringIncom
 */
 router.delete('/recurring/:id', authenticate, incomeController.deleteRecurringIncome);
 
+/*
+    Get a specific recurring income by ID
+*/
+router.get('/recurring/:id', authenticate, incomeController.getRecurringIncomeById);
+
 module.exports = router;

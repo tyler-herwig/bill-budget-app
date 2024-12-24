@@ -29,7 +29,7 @@ export interface IExpense {
 }
 
 export interface IIncome {
-    _id: string;
+    _id?: string;
     source: string; // e.g., 'salary', 'miscellaneous'
     description: string;
     date_received: string; // ISO string
