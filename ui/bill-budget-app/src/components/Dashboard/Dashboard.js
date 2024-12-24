@@ -15,13 +15,15 @@ const Dashboard = () => {
     const { data: incomes, isLoading: isLoadingIncomes, refetch: refetchIncome } = useQuery({
         queryKey: ['income', dateRange.startDate, dateRange.endDate],
         queryFn: () => getAllIncome(dateRange.startDate, dateRange.endDate), 
-        enabled: !!dateRange.startDate && !!dateRange.endDate
+        enabled: !!dateRange.startDate && !!dateRange.endDate,
+        refetchOnWindowFocus: false
     });
 
     const { data: expenses, isLoading: isLoadingExpenses, refetch: refetchExpenses } = useQuery({
         queryKey: ['expenses', dateRange.startDate, dateRange.endDate],
         queryFn: () => getAllExpenses(dateRange.startDate, dateRange.endDate), 
-        enabled: !!dateRange.startDate && !!dateRange.endDate
+        enabled: !!dateRange.startDate && !!dateRange.endDate,
+        refetchOnWindowFocus: false
     });
 
     return (
