@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getAllIncome } from '../fetch/income.ts';
-import { getAllExpenses } from '../fetch/expense.ts';
+import { getAllIncome } from '../../fetch/income.ts';
+import { getAllExpenses } from '../../fetch/expense.ts';
 import { Box, Container } from '@mui/material';
 import UserIntroSection from './UserIntroSection';
 import Income from './Income';
 import DateRangePickerComponent from './DateRangePickerComponent';
-import { DateRangeContext } from './DateRangeContext';
+import { DateRangeContext } from '../Context/DateRangeContext';
 
 const Dashboard = () => {
 

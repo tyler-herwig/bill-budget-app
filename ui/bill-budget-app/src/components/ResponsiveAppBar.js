@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { InsertChart, Dashboard, Person2, Logout } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { useAuth } from './AuthContext';
+import { useAuth } from './Context/AuthContext';
 
 function ResponsiveAppBar({ setThemeMode, themeMode }) {
     const [anchorElUser, setAnchorElUser] = React.useState(null);

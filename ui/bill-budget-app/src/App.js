@@ -2,16 +2,16 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ResponsiveAppBar from './components/ResponsiveAppBar';
-import Profile from './components/Profile';
+import Profile from './components/Profile/Profile';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { AuthProvider } from './components/AuthContext';
+import { AuthProvider } from './components/Context/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import Authentication from './components/Authentication';
-import Dashboard from './components/Dashboard';
+import Authentication from './components/Login/Authentication';
+import Dashboard from './components/Dashboard/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { DateRangeProvider } from './components/DateRangeContext';
+import { DateRangeProvider } from './components/Context/DateRangeContext';
 import { NotificationProvider } from './components/Context/NotificationContext.tsx';
 
 const App = () => {

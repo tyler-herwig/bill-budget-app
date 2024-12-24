@@ -4,7 +4,7 @@ import { Box, Typography, Grid, Alert, Tabs, Tab, Tooltip, Card, CardHeader, Car
 import { AccountBalance, Payments, Info } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
 import moment from 'moment';
-import NoDataMessage from './NoDataMessage';
+import NoDataMessage from '../NoDataMessage';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;

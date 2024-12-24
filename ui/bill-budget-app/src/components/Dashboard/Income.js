@@ -3,10 +3,9 @@ import { Chip, Tooltip, Box, Alert, Card, CardHeader, CardContent, Typography, G
 import { NumericFormat } from 'react-number-format';
 import { Paid, CheckCircle, Error, Info, Loop, Payments, AccountBalance } from '@mui/icons-material';
 import moment from 'moment';
-import IncomeSettingsMenu from './Settings/IncomeSettingsMenu.tsx';
-import ExpenseSettingsMenu from './Settings/ExpenseSettingsMenu.tsx';
-import NoDataMessage from './NoDataMessage';
-import LoadingBackdrop from './LoadingBackdrop';
+import IncomeSettingsMenu from '../Settings/IncomeSettingsMenu.tsx';
+import ExpenseSettingsMenu from '../Settings/ExpenseSettingsMenu.tsx';
+import LoadingBackdrop from '../LoadingBackdrop';
 
 const Income = ({incomes, isLoadingIncomes, refetch}) => {
 

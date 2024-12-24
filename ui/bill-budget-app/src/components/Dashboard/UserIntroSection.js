@@ -4,7 +4,7 @@ import { styled } from '@mui/system';
 import { QueryStats } from '@mui/icons-material';
 import { FinancialOutlookChart } from './FinancialOutlookChart';
 import { UserIntroTabs } from './UserIntroTabs';
-import { useAuth } from './AuthContext';
+import { useAuth } from '../Context/AuthContext';
 
 const UserIntroSection = ({incomes, isLoadingIncomes, expenses, isLoadingExpenses}) => {
     const { profile } = useAuth();

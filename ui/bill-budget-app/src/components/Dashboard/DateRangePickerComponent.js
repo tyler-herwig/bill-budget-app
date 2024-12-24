@@ -5,9 +5,9 @@ import { Paid, AccountBalance } from '@mui/icons-material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateRangeContext } from './DateRangeContext';
-import AddIncomeDialog from './Dialogs/AddIncomeDialog.tsx';
-import AddExpenseDialog from './Dialogs/AddExpenseDialog.tsx';
+import { DateRangeContext } from '../Context/DateRangeContext';
+import AddIncomeDialog from '../Dialogs/AddIncomeDialog.tsx';
+import AddExpenseDialog from '../Dialogs/AddExpenseDialog.tsx';
 
 const DateRangePickerComponent = ({ refetch }) => {
     const { dateRange, updateDateRange } = useContext(DateRangeContext);

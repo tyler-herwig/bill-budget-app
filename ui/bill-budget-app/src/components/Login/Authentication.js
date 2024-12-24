@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Card, CardContent, Typography, CircularProgress, Divider } from '@mui/material';
 import { GoogleLogin } from '@react-oauth/google';
-import { useAuth } from './AuthContext';
+import { useAuth } from '../Context/AuthContext';
 
 const Authentication = () => {
     const { loadingAuth, onLoginSuccess, onLoginFailure } = useAuth();
