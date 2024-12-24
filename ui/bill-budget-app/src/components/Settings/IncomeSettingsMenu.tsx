@@ -90,6 +90,7 @@ const IncomeSettingsMenu: React.FC<IncomeSettingsMenuProps> = ({ incomeId, recur
             case 'recurring':
                 await fetchRecurringIncome();
                 setOpenRecurringIncomeModal(true);
+                break;
             default:
                 break;
         }

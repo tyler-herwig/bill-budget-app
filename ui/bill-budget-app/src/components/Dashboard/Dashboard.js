@@ -19,7 +19,7 @@ const Dashboard = () => {
         refetchOnWindowFocus: false
     });
 
-    const { data: expenses, isLoading: isLoadingExpenses, refetch: refetchExpenses } = useQuery({
+    const { data: expenses, isLoading: isLoadingExpenses } = useQuery({
         queryKey: ['expenses', dateRange.startDate, dateRange.endDate],
         queryFn: () => getAllExpenses(dateRange.startDate, dateRange.endDate), 
         enabled: !!dateRange.startDate && !!dateRange.endDate,

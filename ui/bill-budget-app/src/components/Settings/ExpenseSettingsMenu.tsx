@@ -9,7 +9,6 @@ import {
 } from '@mui/icons-material';
 import OneTimeExpenseModal from '../Modals/OneTimeExpenseModal.tsx';
 import { useQuery } from '@tanstack/react-query';
-import { getIncomeById, getRecurringIncomeById } from '../../fetch/income.ts';
 import RecurringExpenseModal from '../Modals/RecurringExpenseModal.tsx';
 import { IOneTimeExpense, IRecurringExpense } from '../../models/expense.ts';
 import { getExpenseById, getRecurringExpenseById } from '../../fetch/expense.ts';
@@ -91,6 +90,7 @@ const ExpenseSettingsMenu: React.FC<ExpenseSettingsMenuProps> = ({ expenseId, re
             case 'recurring':
                 await fetchRecurringExpense();
                 setOpenRecurringExpenseModal(true);
+                break;
             default:
                 break;
         }
