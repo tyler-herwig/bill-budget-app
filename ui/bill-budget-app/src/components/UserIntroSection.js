@@ -6,10 +6,10 @@ import { FinancialOutlookChart } from './FinancialOutlookChart';
 import { UserIntroTabs } from './UserIntroTabs';
 import { useAuth } from './AuthContext';
 
-const UserIntroSection = ({incomes, isLoadingIncomes}) => {
+const UserIntroSection = ({incomes, isLoadingIncomes, expenses, isLoadingExpenses}) => {
     const { profile } = useAuth();
 
-    if (isLoadingIncomes) return <p>Loading...</p>;
+    if (isLoadingIncomes || isLoadingExpenses) return <p>Loading...</p>;
 
     return (
         <Grid container spacing={2} style={{ marginBottom: '15px' }}>
@@ -22,7 +22,10 @@ const UserIntroSection = ({incomes, isLoadingIncomes}) => {
                         <Typography variant="body1">Here's a quick overview of your financial data.</Typography>
                     </Box>
                     <br/>
-                    <UserIntroTabs incomes={incomes} />
+                    <UserIntroTabs 
+                        incomes={incomes} 
+                        expenses={expenses}
+                    />
                 </InfoPaper>
             </Grid>
             <Grid item xs={12} md={7}>

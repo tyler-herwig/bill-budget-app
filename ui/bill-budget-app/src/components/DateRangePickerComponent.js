@@ -162,7 +162,11 @@ const DateRangePickerComponent = ({ refetch }) => {
             />
 
             {/* Add Expense Dialog */}
-            <AddExpenseDialog open={openExpenseDialog} handleClose={handleCloseExpenseDialog}/>
+            <AddExpenseDialog 
+                open={openExpenseDialog} 
+                handleClose={handleCloseExpenseDialog}
+                refetch={refetch}
+            />
         </>
     );
 };

@@ -251,6 +251,24 @@ exports.deleteOneTimeExpense = async (req, res) => {
     }
 };
 
+/*
+    Get one-time expense by ID
+*/
+exports.getExpenseById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const expense = await Expense.findById(id);
+
+        if (!expense) {
+            return res.status(404).json({ message: 'Expense not found' });
+        }
+        
+        res.status(200).json(expense);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 /* ------------------ Recurring Expenses ------------------ */
 
 /*
@@ -359,6 +377,24 @@ exports.deleteRecurringExpense = async (req, res) => {
         await Expense.deleteMany({ recurring_expense_id: id });
 
         res.status(200).json({ message: 'Recurring expense and related expenses successfully deleted' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+/*
+    Get recurring expense by ID
+*/
+exports.getRecurringExpenseById = async (req, res) => { 
+    try {
+        const { id } = req.params;
+        const recurringExpense = await RecurringExpense.findById(id);
+        
+        if (!recurringExpense) {
+            return res.status(404).json({ message: 'Recurring expense not found' });
+        }
+
+        res.status(200).json(recurringExpense);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

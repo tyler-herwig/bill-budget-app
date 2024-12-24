@@ -7,45 +7,46 @@ import {
     Edit as EditIcon, Delete as DeleteIcon, MoreHoriz as MoreHorizIcon,
     AppRegistration as EditRecurringIcon, DeleteSweep as DeleteRecurringIcon
 } from '@mui/icons-material';
-import OneTimeIncomeModal from '../Modals/OneTimeIncomeModal.tsx';
-import { IIncome, IOneTimeIncome } from '../../models/income';
+import OneTimeExpenseModal from '../Modals/OneTimeExpenseModal.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { getIncomeById, getRecurringIncomeById } from '../../fetch/income.ts';
-import RecurringIncomeModal from '../Modals/RecurringIncomeModal.tsx';
+import RecurringExpenseModal from '../Modals/RecurringExpenseModal.tsx';
+import { IOneTimeExpense, IRecurringExpense } from '../../models/expense.ts';
+import { getExpenseById, getRecurringExpenseById } from '../../fetch/expense.ts';
 
-interface IncomeSettingsMenuProps {
-    incomeId: string;
-    recurringIncomeId: string | null;
+interface ExpenseSettingsMenuProps {
+    expenseId: string;
+    recurringExpenseId: string | null;
     refetch: () => void;
 }
 
-const IncomeSettingsMenu: React.FC<IncomeSettingsMenuProps> = ({ incomeId, recurringIncomeId, refetch }) => {
+const ExpenseSettingsMenu: React.FC<ExpenseSettingsMenuProps> = ({ expenseId, recurringExpenseId, refetch }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [openOneTimeIncomeModal, setOpenOneTimeIncomeModal] = React.useState(false);
-    const [openRecurringIncomeModal, setOpenRecurringIncomeModal] = React.useState(false);
+    const [openOneTimeExpenseModal, setOpenOneTimeExpenseModal] = React.useState(false);
+    const [openRecurringExpenseModal, setOpenRecurringExpenseModal] = React.useState(false);
     const [action, setAction] = React.useState<'add' | 'edit' | 'delete'>('edit');
 
     const openSettings = Boolean(anchorEl);
 
-    const { data: incomeData, refetch: fetchIncome } = useQuery<IOneTimeIncome>({
-        queryKey: ['income', incomeId],
-        queryFn: () => getIncomeById(incomeId),
+    const { data: expenseData, refetch: fetchExpense } = useQuery<IOneTimeExpense>({
+        queryKey: ['expense', expenseId],
+        queryFn: () => getExpenseById(expenseId),
         enabled: false
     });
 
-    const { data: recurringIncomeData, refetch: fetchRecurringIncome } = useQuery<IIncome>({
-        queryKey: ['recurringIncome', recurringIncomeId],
-        queryFn: () => getRecurringIncomeById(recurringIncomeId),
+    const { data: recurringExpenseData, refetch: fetchRecurringExpense } = useQuery<IRecurringExpense>({
+        queryKey: ['recurringExpense', recurringExpenseId],
+        queryFn: () => getRecurringExpenseById(recurringExpenseId),
         enabled: false
     });
 
     const handleCloseModal = (type) =>  {
         switch (type) {
             case 'one-time':
-                setOpenOneTimeIncomeModal(false);
+                setOpenOneTimeExpenseModal(false);
                 break;
             case 'recurring':
-                setOpenRecurringIncomeModal(false);
+                setOpenRecurringExpenseModal(false);
                 break;
             default:
                 break;
@@ -66,12 +67,12 @@ const IncomeSettingsMenu: React.FC<IncomeSettingsMenuProps> = ({ incomeId, recur
 
         switch (type) {
             case 'one-time':
-                await fetchIncome();
-                setOpenOneTimeIncomeModal(true);
+                await fetchExpense();
+                setOpenOneTimeExpenseModal(true);
                 break;
             case 'recurring':
-                await fetchRecurringIncome();
-                setOpenRecurringIncomeModal(true);
+                await fetchRecurringExpense();
+                setOpenRecurringExpenseModal(true);
                 break;
             default:
                 break;
@@ -84,12 +85,12 @@ const IncomeSettingsMenu: React.FC<IncomeSettingsMenuProps> = ({ incomeId, recur
 
         switch (type) {
             case 'one-time':
-                await fetchIncome();
-                setOpenOneTimeIncomeModal(true);
+                await fetchExpense();
+                setOpenOneTimeExpenseModal(true);
                 break;
             case 'recurring':
-                await fetchRecurringIncome();
-                setOpenRecurringIncomeModal(true);
+                await fetchRecurringExpense();
+                setOpenRecurringExpenseModal(true);
             default:
                 break;
         }
@@ -100,8 +101,8 @@ const IncomeSettingsMenu: React.FC<IncomeSettingsMenuProps> = ({ incomeId, recur
             <IconButton
                 aria-label="edit"
                 color="primary"
-                id={`edit-income-settings-${incomeId}`}
-                aria-controls={openSettings ? 'income-settings-menu' : undefined}
+                id={`edit-expense-settings-${expenseId}`}
+                aria-controls={openSettings ? 'expense-settings-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={openSettings ? 'true' : undefined}
                 onClick={handleClickSettings}
@@ -110,15 +111,15 @@ const IncomeSettingsMenu: React.FC<IncomeSettingsMenuProps> = ({ incomeId, recur
             </IconButton>
 
             <StyledMenu
-                id="income-settings-menu"
+                id="expense-settings-menu"
                 MenuListProps={{
-                    'aria-labelledby': `edit-income-settings-${incomeId}`,
+                    'aria-labelledby': `edit-expense-settings-${expenseId}`,
                 }}
                 anchorEl={anchorEl}
                 open={openSettings}
                 onClose={handleCloseSettings}
             >
-                {recurringIncomeId && [
+                {recurringExpenseId && [
                     <ListSubheader key="recurrence-header">Recurrence</ListSubheader>,
                     <MenuItem key="edit-recurring" onClick={() => handleEditClick('recurring')} disableRipple>
                         <EditRecurringIcon />
@@ -142,18 +143,18 @@ const IncomeSettingsMenu: React.FC<IncomeSettingsMenuProps> = ({ incomeId, recur
             </StyledMenu>
 
             {/* Pass fetched income data to the modal */}
-            <OneTimeIncomeModal 
+            <OneTimeExpenseModal 
                 action={action} 
-                income={incomeData} 
-                open={openOneTimeIncomeModal} 
+                expense={expenseData} 
+                open={openOneTimeExpenseModal} 
                 handleClose={() => handleCloseModal('one-time')}
                 refetch={refetch}
             />
 
-            <RecurringIncomeModal 
+            <RecurringExpenseModal 
                 action={action} 
-                income={recurringIncomeData} 
-                open={openRecurringIncomeModal} 
+                expense={recurringExpenseData} 
+                open={openRecurringExpenseModal} 
                 handleClose={() => handleCloseModal('recurring')}
                 refetch={refetch}
             />
@@ -202,4 +203,4 @@ const StyledMenu = styled((props: any) => (
     },
 }));
 
-export default IncomeSettingsMenu;
+export default ExpenseSettingsMenu;

@@ -4,7 +4,6 @@ import { Box, Typography, Grid, Alert, Tabs, Tab, Tooltip, Card, CardHeader, Car
 import { AccountBalance, Payments, Info } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
 import moment from 'moment';
-import { ExpensesContext } from './ExpensesContext';
 import NoDataMessage from './NoDataMessage';
 
 function CustomTabPanel(props) {
@@ -36,9 +35,7 @@ function a11yProps(index) {
     };
 }
 
-export function UserIntroTabs({ incomes = [] }) {
-    const { expenses } = useContext(ExpensesContext);
-
+export function UserIntroTabs({ incomes = [], expenses = []}) {
     const [value, setValue] = React.useState(0);
     const [currentData, setCurrentData] = useState(null);
     const [upcomingData, setUpcomingData] = useState(null);

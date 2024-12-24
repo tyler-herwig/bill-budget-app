@@ -27,6 +27,12 @@ router.put('/one-time/:id', authenticate, expensesController.updateOneTimeExpens
 */
 router.delete('/one-time/:id', authenticate, expensesController.deleteOneTimeExpense);
 
+/*
+    Get a specific one-time expense by ID
+*/
+router.get('/one-time/:id', authenticate, expensesController.getExpenseById);
+
+
 /* ------------------ Recurring Expense Routes ------------------ */
 
 /*
@@ -43,5 +49,10 @@ router.put('/recurring/:id', authenticate, expensesController.updateRecurringExp
     Delete a specific recurring expense by ID
 */
 router.delete('/recurring/:id', authenticate, expensesController.deleteRecurringExpense);
+
+/*
+    Get a specific recurring expense by ID
+*/
+router.get('/recurring/:id', authenticate, expensesController.getRecurringExpenseById);
 
 module.exports = router;

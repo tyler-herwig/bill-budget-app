@@ -4,15 +4,16 @@ import {
     RadioGroup, FormControlLabel, Radio, Divider 
 } from '@mui/material';
 import { Loop } from '@mui/icons-material';
-import OneTimeExpenseModal from '../OneTimeExpenseModal';
-import RecurringExpenseModal from '../RecurringExpenseModal';
+import OneTimeExpenseModal from '../Modals/OneTimeExpenseModal.tsx';
+import RecurringExpenseModal from '../Modals/RecurringExpenseModal.tsx';
 
 interface AddExpenseDialogProps {
     open: boolean;
     handleClose: () => void;
+    refetch: () => void;
 }
 
-const AddExpenseDialog = ({ open, handleClose }: AddExpenseDialogProps) => {
+const AddExpenseDialog = ({ open, handleClose, refetch }: AddExpenseDialogProps) => {
     const [expenseType, setIncomeType] = React.useState('one-time');
     const [oneTimeExpenseModalOpen, setOneTimeExpenseModalOpen] = React.useState(false);
     const [recurringExpenseModalOpen, setRecurringExpenseModalOpen] = React.useState(false);
@@ -62,8 +63,18 @@ const AddExpenseDialog = ({ open, handleClose }: AddExpenseDialogProps) => {
                 </DialogActions>
             </Dialog>
 
-            <OneTimeExpenseModal action='add' data={{}} open={oneTimeExpenseModalOpen} handleClose={handleOneTimeExpenseModalClose}/>
-            <RecurringExpenseModal action='add' data={{}} open={recurringExpenseModalOpen} handleClose={handleRecurringExpenseModalClose}/>
+            <OneTimeExpenseModal 
+                action='add'
+                open={oneTimeExpenseModalOpen} 
+                handleClose={handleOneTimeExpenseModalClose}
+                refetch={refetch}
+            />
+            <RecurringExpenseModal 
+                action='add' 
+                open={recurringExpenseModalOpen} 
+                handleClose={handleRecurringExpenseModalClose}
+                refetch={refetch}
+            />
         </>
     )
 }

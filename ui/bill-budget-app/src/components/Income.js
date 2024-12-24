@@ -4,11 +4,11 @@ import { NumericFormat } from 'react-number-format';
 import { Paid, CheckCircle, Error, Info, Loop, Payments, AccountBalance } from '@mui/icons-material';
 import moment from 'moment';
 import IncomeSettingsMenu from './Settings/IncomeSettingsMenu.tsx';
-import ExpenseSettingsMenu from './ExpenseSettingsMenu';
+import ExpenseSettingsMenu from './Settings/ExpenseSettingsMenu.tsx';
 import NoDataMessage from './NoDataMessage';
 import LoadingBackdrop from './LoadingBackdrop';
 
-const Income = ({data, isLoading, refetch}) => {
+const Income = ({incomes, isLoadingIncomes, refetch}) => {
 
     const handleIncomeDate = (incomeDate, incomeType) => {
         const today = moment.utc().startOf('day');
@@ -100,11 +100,11 @@ const Income = ({data, isLoading, refetch}) => {
         );
     };
 
-    if (isLoading) return <LoadingBackdrop open={isLoading} />;
+    if (isLoadingIncomes) return <LoadingBackdrop open={isLoadingIncomes} />;
 
     return (
         <>
-            {data?.map((income) => (
+            {incomes?.map((income) => (
                 <Card
                     key={income._id}
                     style={{ marginBottom: '15px', borderLeft: '5px solid #36A1EAFF' }}
@@ -287,7 +287,11 @@ const Income = ({data, isLoading, refetch}) => {
                                                                             <small style={{ color: 'grey', fontSize: '10px' }}>{expense.description}</small>
                                                                         </div>
                                                                     </div>
-                                                                    <ExpenseSettingsMenu data={expense} />
+                                                                    <ExpenseSettingsMenu 
+                                                                        expenseId={expense._id}
+                                                                        recurringExpenseId={expense.recurring_expense_id}
+                                                                        refetch={refetch} 
+                                                                    />
                                                                 </div>
                                                             </>
                                                         }
