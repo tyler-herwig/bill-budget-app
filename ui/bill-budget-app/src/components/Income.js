@@ -118,7 +118,11 @@ const Income = ({data, isLoading, refetch}) => {
                                         {handleIncomeDate(income.date_received, income.type)}
                                     </Typography>
                                 </Box>
-                                <IncomeSettingsMenu incomeId={income._id} recurringIncomeId={income.recurring_income_id} refetch={refetch} />
+                                <IncomeSettingsMenu 
+                                    incomeId={income._id} 
+                                    recurringIncomeId={income.recurring_income_id} 
+                                    refetch={refetch} 
+                                />
                             </Box>
                         }
                         align="left"
@@ -231,7 +235,11 @@ const Income = ({data, isLoading, refetch}) => {
                                                                             <small style={{ color: 'grey', fontSize: '10px' }}>{additional.description}</small>
                                                                         </div>
                                                                     </div>
-                                                                    <IncomeSettingsMenu incomeId={additional._id} recurringIncomeId={additional.recurring_income_id} refetch={refetch}/>
+                                                                    <IncomeSettingsMenu 
+                                                                        incomeId={additional._id} 
+                                                                        recurringIncomeId={additional.recurring_income_id} 
+                                                                        refetch={refetch}
+                                                                    />
                                                                 </div>
                                                             </>
                                                         }

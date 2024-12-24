@@ -155,7 +155,11 @@ const DateRangePickerComponent = ({ refetch }) => {
             </AppBar>
 
             {/* Add Income Dialog */}
-            <AddIncomeDialog open={openIncomeDialog} handleClose={handleCloseIncomeDialog} refetch={refetch} />
+            <AddIncomeDialog 
+                open={openIncomeDialog} 
+                handleClose={handleCloseIncomeDialog} 
+                refetch={refetch} 
+            />
 
             {/* Add Expense Dialog */}
             <AddExpenseDialog open={openExpenseDialog} handleClose={handleCloseExpenseDialog}/>

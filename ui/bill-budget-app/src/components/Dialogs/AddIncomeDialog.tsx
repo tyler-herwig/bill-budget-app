@@ -72,7 +72,13 @@ const AddIncomeDialog = ({ open, handleClose, refetch }: AddIncomeDialogProps) =
                 </DialogActions>
             </Dialog>
 
-            <OneTimeIncomeModal action='add' open={oneTimeIncomeModalOpen} handleClose={handleOneTimeIncomeModalClose} refetch={refetch} />
+            <OneTimeIncomeModal 
+                action='add' 
+                open={oneTimeIncomeModalOpen} 
+                handleClose={handleOneTimeIncomeModalClose} 
+                refetch={refetch} 
+            />
+            
             <RecurringIncomeModal action='add' data={{}} open={recurringIncomeModalOpen} handleClose={handleRecurringIncomeModalClose} salary={salary}/>
         </>
     )

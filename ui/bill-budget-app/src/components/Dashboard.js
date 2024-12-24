@@ -25,8 +25,15 @@ const Dashboard = () => {
                 <DateRangePickerComponent refetch={refetchIncome} />
                 <Container maxWidth="100%" style={{ marginTop: 15 }}>
                     <Box sx={{ flexGrow: 1 }}>
-                        <UserIntroSection incomes={incomes} isLoadingIncomes={isLoadingIncomes} />
-                        <Income data={incomes} isLoading={isLoadingIncomes} refetch={refetchIncome}/>
+                        <UserIntroSection 
+                            incomes={incomes} 
+                            isLoadingIncomes={isLoadingIncomes} 
+                        />
+                        <Income 
+                            data={incomes} 
+                            isLoading={isLoadingIncomes} 
+                            refetch={refetchIncome}
+                        />
                     </Box>
                 </Container>
             </ExpensesProvider>
