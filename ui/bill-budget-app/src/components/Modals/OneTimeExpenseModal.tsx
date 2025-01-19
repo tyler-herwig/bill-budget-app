@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
     Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput,
-    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+    Select,
+    MenuItem,
+    SelectChangeEvent
 } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
@@ -23,7 +26,8 @@ const OneTimeExpenseModal: React.FC<OneTimeExpenseModalProps> = ({ action, expen
         name: '',
         description: '',
         amount: 0,
-        date_due: ''
+        date_due: '',
+        category: ''
     });
 
     const { showNotification } = useNotification();
@@ -36,6 +40,10 @@ const OneTimeExpenseModal: React.FC<OneTimeExpenseModalProps> = ({ action, expen
 
     const handleInputChange = (field: keyof IOneTimeExpense) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [field]: event.target.value });
+    };
+
+    const handleSelectChange = (field: keyof IOneTimeExpense) => (event: SelectChangeEvent<string>) => {
+        setFormData({ ...formData, [field]: event.target.value as string });
     };
 
     const handleDateChange = (date: moment.Moment | null) => {
@@ -146,6 +154,33 @@ const OneTimeExpenseModal: React.FC<OneTimeExpenseModalProps> = ({ action, expen
                                 onChange={handleInputChange('description')}
                                 label="Description"
                             />
+                        </FormControl>
+                        <FormControl>
+                            <InputLabel htmlFor="outlined-adornment-category">Expense Category</InputLabel>
+                            <Select
+                                labelId="outlined-adornment-category"
+                                id="outlined-adornment-category"
+                                value={formData.category}
+                                onChange={handleSelectChange('category')}
+                            >
+                                <MenuItem value="debt">Debt</MenuItem>
+                                <MenuItem value="dining-entertainment">Dining & Entertainment</MenuItem>
+                                <MenuItem value="education">Education</MenuItem>
+                                <MenuItem value="gifts-donations">Gifts & Donations</MenuItem>
+                                <MenuItem value="groceries">Groceries</MenuItem>
+                                <MenuItem value="health">Health</MenuItem>
+                                <MenuItem value="hobbies">Hobbies</MenuItem>
+                                <MenuItem value="housing">Housing</MenuItem>
+                                <MenuItem value="insurance">Insurance</MenuItem>
+                                <MenuItem value="misc">Miscellaneous</MenuItem>
+                                <MenuItem value="personal-care">Personal Care</MenuItem>
+                                <MenuItem value="savings">Savings</MenuItem>
+                                <MenuItem value="technology">Technology</MenuItem>
+                                <MenuItem value="transportation">Transportation</MenuItem>
+                                <MenuItem value="travel">Travel</MenuItem>
+                                <MenuItem value="utilities">Utilities</MenuItem>
+                                <MenuItem value="other">Other</MenuItem>
+                            </Select>
                         </FormControl>
                         <FormControl>
                             <InputLabel htmlFor="outlined-adornment-amount">Expense Amount</InputLabel>

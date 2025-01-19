@@ -1,16 +1,19 @@
 import React, { useContext } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { TextField, Box, AppBar, Select, MenuItem, InputLabel, FormControl, Button, useMediaQuery, useTheme } from '@mui/material';
+import { TextField, Box, AppBar, Select, MenuItem, InputLabel, FormControl, Button, useMediaQuery, useTheme, OutlinedInput, Chip } from '@mui/material';
 import { Paid, AccountBalance } from '@mui/icons-material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateRangeContext } from '../Context/DateRangeContext';
+import { useExpenseCategoryContext } from '../Context/ExpenseCategoryContext.tsx';
 import AddIncomeDialog from '../Dialogs/AddIncomeDialog.tsx';
 import AddExpenseDialog from '../Dialogs/AddExpenseDialog.tsx';
 
 const DateRangePickerComponent = ({ refetch }) => {
     const { dateRange, updateDateRange } = useContext(DateRangeContext);
+    const { expenseCategories } = useExpenseCategoryContext();
+    const [expenseCategory, setExpenseCategory] = React.useState([]);
     const [openIncomeDialog, setOpenIncomeDialog] = React.useState(false);
     const [openExpenseDialog, setOpenExpenseDialog] = React.useState(false);
 
@@ -24,6 +27,15 @@ const DateRangePickerComponent = ({ refetch }) => {
     const handleCloseExpenseDialog = () => {    
         setOpenExpenseDialog(false);
     }
+
+    const handleChange = (event) => {
+        const {
+          target: { value },
+        } = event;
+        setExpenseCategory(
+          typeof value === 'string' ? value.split(',') : value,
+        );
+      };
 
     return (
         <>
@@ -118,6 +130,34 @@ const DateRangePickerComponent = ({ refetch }) => {
                                     />
                                 </Box>
                             )}
+                            
+                            <FormControl sx={{ m: 1, width: 300 }}>
+                                <InputLabel id="expense-category-label">Expense Category</InputLabel>
+                                <Select
+                                labelId="expense-category-label"
+                                id="expense-category"
+                                multiple
+                                value={expenseCategory}
+                                onChange={handleChange}
+                                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                                renderValue={(selected) => (
+                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                    {selected.map((value) => (
+                                        <Chip key={value} label={value} />
+                                    ))}
+                                    </Box>
+                                )}
+                                >
+                                {expenseCategories.map((expenseCategory) => (
+                                    <MenuItem
+                                        key={expenseCategory._id}
+                                        value={expenseCategory.description}
+                                    >
+                                    {expenseCategory.description}
+                                    </MenuItem>
+                                ))}
+                                </Select>
+                            </FormControl>
                         </Box>
                         {/* Buttons Section */}
                         <Box

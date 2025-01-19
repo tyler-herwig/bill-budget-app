@@ -10,6 +10,11 @@ const authenticate = require('../middleware/authenticate');
 */
 router.get('/', authenticate, expensesController.getAllExpenses);
 
+/*
+    Get all expense categories
+*/
+router.get('/categories', authenticate, expensesController.getAllExpenseCategories);
+
 /* ------------------ One-Time Expense Routes ------------------ */
 
 /*

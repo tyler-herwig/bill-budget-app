@@ -7,6 +7,7 @@ import UserIntroSection from './UserIntroSection';
 import Income from './Income';
 import DateRangePickerComponent from './DateRangePickerComponent';
 import { DateRangeContext } from '../Context/DateRangeContext';
+import { ExpenseCategoryProvider } from '../Context/ExpenseCategoryContext.tsx';
 
 const Dashboard = () => {
 
@@ -27,7 +28,7 @@ const Dashboard = () => {
     });
 
     return (
-        <>
+        <ExpenseCategoryProvider>
             <DateRangePickerComponent refetch={refetchIncome} />
             <Container maxWidth="100%" style={{ marginTop: 15 }}>
                 <Box sx={{ flexGrow: 1 }}>
@@ -44,7 +45,7 @@ const Dashboard = () => {
                     />
                 </Box>
             </Container>
-        </>
+        </ExpenseCategoryProvider>
     );
 };
 

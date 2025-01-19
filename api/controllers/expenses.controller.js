@@ -1,4 +1,5 @@
 const Expense = require('../models/Expense');
+const ExpenseCategory = require('../models/ExpenseCategory');
 const RecurringExpense = require('../models/RecurringExpense');
 
 /* ------------------ General Expenses ------------------ */
@@ -175,6 +176,15 @@ exports.getAllExpenses = async (req, res) => {
         ]);
 
         res.status(200).json(expenses);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.getAllExpenseCategories = async (req, res) => {
+    try {
+        const categories = await ExpenseCategory.find().sort({ order: 1 });
+        res.status(200).json(categories);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

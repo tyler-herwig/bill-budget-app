@@ -8,6 +8,11 @@ const ExpenseSchema = new Schema({
     amount: { type: Number, required: true },
     date_due: { type: Date, required: true },
     date_paid: Date,
+    category: {type: String, enum: [
+        'housing', 'utilities', 'transportation', 'groceries', 'dining-entertainment', 
+        'health', 'debt', 'savings', 'personal-care', 'gifts-donations', 'education', 
+        'misc', 'travel', 'technology', 'insurance', 'hobbies', 'other'
+    ]},
     type: { type: String, enum: ['one-time', 'recurring'], required: true },
     status: { type: String, enum: ['paid', 'unpaid'], default: 'unpaid' },
     recurring_expense_id: { type: Schema.Types.ObjectId, ref: 'RecurringExpense' }

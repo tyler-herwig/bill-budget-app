@@ -4,6 +4,7 @@ export interface IOneTimeExpense {
     description: string;
     amount: number;
     date_due: string;
+    category: string;
   }  
 
   export interface IRecurringExpense {

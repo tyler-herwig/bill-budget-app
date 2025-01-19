@@ -20,6 +20,16 @@ export const getAllExpenses = async (start_date: string, end_date: string) => {
     }
   };
 
+export const getExpenseCategories = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/expenses/categories`, { withCredentials: true });
+        return response.data;
+    } catch (error: any) {
+        console.error('Error fetching expense categories:', error.message);
+        throw new Error(error.response?.data?.message || 'Failed to fetch expense categories');
+    }
+;}
+
 export const addExpense = async (expense: IOneTimeExpense) => {
     try {
         const response = await axios.post(`${API_URL}/expenses/one-time`, expense, { withCredentials: true });
